@@ -1,9 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:swipe_app/screens/registrationScreen.dart';
 import 'package:swipe_app/services/auth.dart';
 import 'package:swipe_app/User.dart';
 
@@ -20,7 +16,6 @@ class UserActions {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   Future<void> addUser() {
-    //var answer = _users.doc(_phone).get();
         return _users
         .doc(_phone)
         .set({
@@ -39,33 +34,25 @@ class UserActions {
         print(value.exists);
         if(value.exists == true){
           print("user already exist");
-         
         }
         if(value.exists == false){
           verifyPhone();
-         // if(verifyPhone())
-          
-          //addUser();
         }
     })
         .catchError((error) => print("Failed to check: $error"));
   }
 
-
-
   Future verifyPhone() async{
-    bool result;
     await _firebaseAuth.verifyPhoneNumber(
       //forceResendingToken: 3,
       phoneNumber: _phone,
       verificationCompleted: (PhoneAuthCredential credential) async{
         print("verification complete called ");
-        await _firebaseAuth.signInWithCredential(credential).whenComplete(() => result = true);
+        await _firebaseAuth.signInWithCredential(credential);
       },
       verificationFailed: (FirebaseAuthException e) {
         if (e.code == 'invalid-phone-number') {
           print('The provided phone number is not valid.');
-          result = false;
         }
       },
       codeSent: (String verificationId, int resendToken) async{
@@ -75,8 +62,6 @@ class UserActions {
         currentCode = verificationId;
       },
     );
-    if(result == true)
-      addUser();
   }
 
   Future codeCompare(String smsCode) async{
@@ -86,8 +71,7 @@ class UserActions {
           smsCode: smsCode))
           .then((value) async{
         if(value.user!=null){
-          //TODO:СДЕЛАТЬ ТУТ ПРОВЕРКУ, СТРОЧАКУ НИЖЕ УДАЛИТЬ НАХУЙ
-          //addUser();
+          addUser();
           print(value.user.uid);
           return ConcreteUser.fromFirebase(value.user);
         }
@@ -96,5 +80,10 @@ class UserActions {
       print("We got some troubles!");
       print(e);
     }
+  }
+
+  Stream<ConcreteUser> get currentUser{
+    return _firebaseAuth.authStateChanges()
+        .map((User user) => user !=null ? ConcreteUser.fromFirebase(user) :null);
   }
 }

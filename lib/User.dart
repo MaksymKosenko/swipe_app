@@ -7,5 +7,7 @@ class ConcreteUser{
     _id = user.uid;
     _phone = user.phoneNumber;
   }
+  get id => _id;
+  get phone => _phone;
 }
 

@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:swipe_app/basicThings/basic.dart';
 import 'package:swipe_app/screens/verificationScreen.dart';
-import 'package:swipe_app/services/auth.dart';
 import 'package:swipe_app/services/databaseInteract.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -21,7 +20,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   bool _isNameGood;
   bool _isSurNameGood;
   bool _isEmailGood;
-  AuthService _authService = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -96,24 +94,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 child: Text("Далее",
                     style: TextStyle(fontFamily: 'Montserrat', fontWeight: FontWeight.bold, color: Colors.white, fontSize: 16)),
                 onTap: (){
-                  _authService.checkPhone(_phoneController.text);
-                  print("${_authService.result}");
-                  //if(_authService.result == true) {
-                    var userActions = UserActions(
-                        _nameController.text, _surController.text,
-                        _emailController.text, _phoneController.text);
-                   // userActions.isExist();
-                      userActions.isExist();
-                      print("our status !!!${userActions.status}");
-
-                  Navigator.push(context, MaterialPageRoute(
-                      builder: (context) => VerificationScreen(_phoneController.text, AuthService())));
-                     // builder: (context) => GetUserName(_phoneController.text)));
-                  //correctDataCheck(_phoneController.text, _nameController.text, _surController.text, _emailController.text);
+                  correctDataCheck(_phoneController.text, _nameController.text,
+                      _surController.text, _emailController.text);
                 }
-                  //_authService.checkPhone(_phoneController.text);
-                  //Navigator.push(context, MaterialPageRoute(
-                      //builder: (context) => VerificationScreen(_phoneController.text, _authService)));}
               ),
             ),
           ],
@@ -123,22 +106,29 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   correctDataCheck(String phoneToCheck, String nameToCheck,String surNameToCheck, String emailToCheck){
+    String unwantedNameSymbols = "1234567890!@#%^&*()_+-=^/№;%:? ";
+    String unwantedEmailSymbols = "!#%^&*()+=№;%:?";
     if(phoneToCheck.startsWith("+") && phoneToCheck.length >= 12 && phoneToCheck.length <= 16) {
       print("fine user phone");
       _isNumberGood = true;
     }
-    if(nameToCheck.isNotEmpty && surNameToCheck.isNotEmpty){
+    if(nameToCheck.isNotEmpty && !nameToCheck.contains(unwantedNameSymbols) &&
+        surNameToCheck.isNotEmpty && !surNameToCheck.contains(unwantedNameSymbols)){
       _isNameGood = true;
       _isSurNameGood = true;
     }
-    if(emailToCheck.length>4 && emailToCheck.contains("@") && emailToCheck.contains(".")){
+    if(emailToCheck.length>4 && emailToCheck.contains("@") && emailToCheck.contains(".") && !emailToCheck.contains(unwantedEmailSymbols)){
       _isEmailGood = true;
     }
-    if(_isNumberGood && _isNameGood && _isSurNameGood && _isEmailGood && isCheck){
-      _authService.checkPhone(_phoneController.text);
-      //_authService.setUserData("${_emailController.text}", "${_nameController.text} ${_surController.text}");
+    if(_isNumberGood == true && _isNameGood == true && _isSurNameGood == true && _isEmailGood == true && isCheck == true){
+      var userActions = UserActions(
+          nameToCheck, surNameToCheck,
+          emailToCheck, phoneToCheck);
+
+      userActions.isExist();
+
       Navigator.push(context, MaterialPageRoute(
-          builder: (context) => VerificationScreen(_phoneController.text, _authService)));
+          builder: (context) => VerificationScreen(_phoneController.text, userActions, null)));
     }else{
       _isNumberGood = false;
       _isNameGood = false;

@@ -1,16 +1,14 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:swipe_app/User.dart';
 import 'package:swipe_app/basicThings/basic.dart';
-import 'package:swipe_app/main.dart';
-import 'package:swipe_app/screens/mapScreen.dart';
-import 'package:swipe_app/screens/registrationScreen.dart';
+import 'package:swipe_app/screens/LandingScreen.dart';
 import 'package:swipe_app/services/auth.dart';
+import 'package:swipe_app/services/databaseInteract.dart';
 
 class VerificationScreen extends StatefulWidget {
   final String _phone;
+  final UserActions _userActions;
   final AuthService _authService;
-  VerificationScreen(this._phone, this._authService);
+  VerificationScreen(this._phone, this._userActions, this._authService);
 
   @override
   _VerificationScreenState createState() => _VerificationScreenState();
@@ -24,12 +22,12 @@ class _VerificationScreenState extends State<VerificationScreen> {
   TextEditingController _letter5Controller = TextEditingController();
   TextEditingController _letter6Controller = TextEditingController();
   String _verificationCode;
-  AuthService _authService = AuthService();
 
 
   @override
   Widget build(BuildContext context) {
-    _authService.checkPhone(widget._phone);
+    AuthService _authService = widget._authService;
+    UserActions _userActions = widget._userActions;
     return Material(
       child: Container(
         decoration: GradientBack(),
@@ -155,10 +153,18 @@ class _VerificationScreenState extends State<VerificationScreen> {
                   _verificationCode = _letter1Controller.text + _letter2Controller.text + _letter3Controller.text +
                       _letter4Controller.text + _letter5Controller.text + _letter6Controller.text;
 
+                  print("*****");
+                  print(_userActions);
+                  print(_authService);
+                  print("*****");
+                  if(_userActions == null)
                   _authService.codeCompare(_verificationCode);
 
+                  if(_authService == null)
+                    _userActions.codeCompare(_verificationCode);
+
                     Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => MapPage()));
+                        builder: (context) => LandingPage()));
                   },
 
             ),
