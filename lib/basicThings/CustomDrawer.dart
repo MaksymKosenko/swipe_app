@@ -30,7 +30,7 @@ Widget CustomDrawer(context, _userData, ){
             SizedBox(width: 70),
             IconButton(icon: Icon(Icons.settings_outlined, color: Colors.white, size: 30),
                 onPressed: ()=> Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => ProfileScreen())))
+                    builder: (context) => ProfileScreen(_userData))))
           ],
         ),
         SizedBox(height: 20),
@@ -44,10 +44,10 @@ Widget CustomDrawer(context, _userData, ){
             ),),
           child: _isImageExist
               ? Text("pic")//TODO Когда сделаю возможным добавить фотку(загрузить в обл хранилище), поменять текст на имедж.фромнетворк
-              : Text("${_userData['name'][0]}${_userData['surName'][0]}", style: SemiBoldText(30),),
+              : Text("${_userData['name'][0]}${_userData['surName'][0]}", style: SemiBoldText(30, Colors.white),),
         ),
         SizedBox(height: 16),
-        Container(height: 24, child: Text("${_userData['name']} ${_userData['surName']}", style: SemiBoldText(20),)),
+        Container(height: 24, child: Text("${_userData['name']} ${_userData['surName']}", style: SemiBoldText(20, Colors.white),)),
         SizedBox(height: 5),
         Container(height: 17, child: Text("${_userData['email']}", style: RegularText(14, Colors.white60),)),
         SizedBox(height: 40),
@@ -62,7 +62,7 @@ Widget CustomDrawer(context, _userData, ){
               GestureDetector(
                   child: Container(height: 20, child: Text("Личный кабинет",style: MediumText(16, Colors.white),),),
                   onTap: ()=> Navigator.push(context, MaterialPageRoute(
-                      builder: (context) => ProfileScreen()))),
+                      builder: (context) => ProfileScreen(_userData)))),
               SizedBox(height: 20),
               Container(height: 20, child: Text("Мое объявление",style: MediumText(16, Colors.white),),),
               SizedBox(height: 20),

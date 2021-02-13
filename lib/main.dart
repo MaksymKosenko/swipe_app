@@ -51,7 +51,7 @@ class HomePage extends StatelessWidget {
           SizedBox(height: 50.5),
           GestureDetector(
             //Color(0xff41BFB5)
-            child: CustomButton(253, 50, 10, Color(0xff56C385), Color(0xff41BFB5), Alignment.topCenter, Alignment.bottomCenter, "Войти", SemiBoldText(16), Colors.transparent),
+            child: CustomButton(253, 50, 10, Color(0xff56C385), Color(0xff41BFB5), Alignment.topCenter, Alignment.bottomCenter, "Войти", SemiBoldText(16, Colors.white), Colors.transparent),
             onTap: () => Navigator.push(context,
                 MaterialPageRoute(builder: (context) => LoginScreen())),
           ),
@@ -65,7 +65,7 @@ class HomePage extends StatelessWidget {
                 //Regular_Text(13, Colors.white60, "Впервые у нас?", TextAlign.center),
                 SizedBox(width: 10),
                 GestureDetector(
-                  child: Text("Регистрация", style: SemiBoldText(13)),
+                  child: Text("Регистрация", style: SemiBoldText(13, Colors.white)),
                   onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(

@@ -56,11 +56,11 @@ BoxDecoration GradientInputBack() {
   );
 }
 
-TextStyle SemiBoldText(double fontSize) {
+TextStyle SemiBoldText(double fontSize, Color color) {
   return TextStyle(
       fontFamily: 'Montserrat',
       fontWeight: FontWeight.bold,
-      color: Colors.white,
+      color: color,
       fontSize: fontSize);
 }
 
