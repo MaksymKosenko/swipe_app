@@ -23,6 +23,7 @@ class UserActions {
           'surName': _surName,
           'email': _email,
           'phone': _phone,
+          'profilePic': "null",
         })
         .then((value) => print("user added"))
         .catchError((error) => print("Failed to add user: $error"));

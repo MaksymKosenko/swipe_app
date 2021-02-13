@@ -42,7 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
                    // builder: (context) => VerificationScreen(_phoneController.text, _authService)));
                 },
               child:CustomButton(253, 50, 10, Color(0xff56C385), Color(0xff41BFB5),Alignment.topCenter,
-                  Alignment.bottomCenter, "Далее", SemiBoldText(16)),
+                  Alignment.bottomCenter, "Далее", SemiBoldText(16), Colors.transparent),
             ),
           ],
         ),

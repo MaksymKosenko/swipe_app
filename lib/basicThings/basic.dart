@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swipe_app/screens/ProfileScreen.dart';
 
 class Logo extends StatelessWidget {
   double _size;
@@ -55,28 +56,6 @@ BoxDecoration GradientInputBack() {
   );
 }
 
-/*
-class Regular_Text extends StatelessWidget {
-  double _fontSize;
-  Color _color;
-  String _text;
-  TextAlign _textAlign;
-
-  Regular_Text(double fontSize, Color color, String text, TextAlign textAlign) {
-    this._fontSize = fontSize;
-    this._color = color;
-    this._text = text;
-    this._textAlign = textAlign;
-  }
-
-  Widget build(BuildContext context) {
-    return Text("$_text",
-        textAlign: _textAlign,
-        style: TextStyle(
-            fontFamily: 'Montserrat', fontSize: _fontSize, color: _color));
-  }
-}
-*/
 TextStyle SemiBoldText(double fontSize) {
   return TextStyle(
       fontFamily: 'Montserrat',
@@ -89,6 +68,10 @@ TextStyle RegularText(double fontSize, Color color) {
   return TextStyle(fontFamily: 'Montserrat', color: color, fontSize: fontSize);
 }
 
+TextStyle MediumText(double fontSize, Color color) {
+  return TextStyle(fontFamily: 'Montserrat', fontWeight: FontWeight.w500, color: color, fontSize: fontSize);
+}
+
 Widget CustomButton(
   double _width,
   double _height,
@@ -99,6 +82,7 @@ Widget CustomButton(
   Alignment _endGradient,
   String _text,
   TextStyle _style,
+  Color _borderColor,
 ) {
   return Container(
     height: _height,
@@ -106,6 +90,7 @@ Widget CustomButton(
     alignment: Alignment.center,
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(_borderRadiusCircular),
+      border: Border.all(color: _borderColor),
       gradient: LinearGradient(
         begin: _beginGradient,
         end: _endGradient,
@@ -118,17 +103,6 @@ Widget CustomButton(
 
 Widget input(double width, double height, TextEditingController controller, bool obscure,TextInputType inputType,
     TextStyle textStyle, TextStyle hintStyle,String hint, Color borderColor) {
- /*
-  String _hint;
-  TextEditingController _controller;
-  bool _obscure;
-  double _width;
-  double _height;
-  TextInputType _inputType;
-  TextStyle _textStyle;
-  TextStyle _hintStyle;
-  Color _borderColor;
-*/
   return Container(
     height: height,
     width: width,
@@ -152,3 +126,4 @@ Widget input(double width, double height, TextEditingController controller, bool
     ),
   );
 }
+

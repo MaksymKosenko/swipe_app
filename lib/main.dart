@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -52,7 +51,7 @@ class HomePage extends StatelessWidget {
           SizedBox(height: 50.5),
           GestureDetector(
             //Color(0xff41BFB5)
-            child: CustomButton(253, 50, 10, Color(0xff56C385), Color(0xff41BFB5), Alignment.topCenter, Alignment.bottomCenter, "Войти", SemiBoldText(16)),
+            child: CustomButton(253, 50, 10, Color(0xff56C385), Color(0xff41BFB5), Alignment.topCenter, Alignment.bottomCenter, "Войти", SemiBoldText(16), Colors.transparent),
             onTap: () => Navigator.push(context,
                 MaterialPageRoute(builder: (context) => LoginScreen())),
           ),
