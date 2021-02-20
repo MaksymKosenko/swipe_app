@@ -12,13 +12,15 @@ class LandingPage extends StatelessWidget {
     final ConcreteUser user = Provider.of<ConcreteUser>(context);
     final String _documentId = user.phone;
     CollectionReference _users = FirebaseFirestore.instance.collection('users');
-
+   // DocumentReference _agent = _users.doc(_documentId).collection("user_collections").doc("Agent");
+   // var test = _agent.get();
     return FutureBuilder<DocumentSnapshot>(
         future: _users.doc(_documentId).get(),
         builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 Map<String, dynamic> data = snapshot.data.data();
                 _userFromFirestoreData = data;
+
                 return Scaffold(
                   //drawerScrimColor: Color(0xff27AEA4),
                     drawer: CustomDrawer(context, _userFromFirestoreData),
@@ -27,13 +29,13 @@ class LandingPage extends StatelessWidget {
                       iconTheme: IconThemeData(color: Color(0xff27AEA4)),
                     ),
                     body: Container(
-                      width: 100,
-                      height: 300,
                       child: Column(
                         children: [
                           SizedBox(height: 50),
                           Text(user.id),
-                          Text(user.phone),
+                          //Text(user.phone),
+                          Text(_userFromFirestoreData.toString()),
+                          //Text(test)
                         ],
                       ),
                     )

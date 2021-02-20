@@ -28,7 +28,46 @@ class UserActions {
         .then((value) => print("user added"))
         .catchError((error) => print("Failed to add user: $error"));
   }
-
+  Future<void> addAgentData() {
+    return _users
+        .doc(_phone)
+        .collection("user_collections")
+        .doc("Agent")
+        .set({
+          'agentName': "null",
+          'agentSurName': "null",
+          'agentEmail': "null",
+          'agentPhone': "null",
+        })
+        .then((value) => print("Agent added"))
+        .catchError((error) => print("Failed to add Agent: $error"));
+  }
+  Future<void> addSubscribeData() {
+    return _users
+        .doc(_phone)
+        .collection("user_collections")
+        .doc("Subscribe").set({
+      'startData': "null",
+      'endData': "null",
+      'status': false,
+      'autoSubscribe': false,
+    })
+        .then((value) => print("Subscribe added"))
+        .catchError((error) => print("Failed to add Subscribe: $error"));
+  }
+  Future<void> addNotificationsData() {
+    return _users
+        .doc(_phone)
+        .collection("user_collections")
+        .doc("Notifications").set({
+      'disable': false,
+      'toAgent': false,
+      'toEach': true,
+      'toUser': false,
+    })
+        .then((value) => print("Notifications added"))
+        .catchError((error) => print("Failed to add Notifications: $error"));
+  }
   isExist(){
     return _users.doc(_phone).get()
         .then((value){
@@ -73,6 +112,9 @@ class UserActions {
           .then((value) async{
         if(value.user!=null){
           addUser();
+          addAgentData();
+          addNotificationsData();
+          addSubscribeData();
           print(value.user.uid);
           return ConcreteUser.fromFirebase(value.user);
         }

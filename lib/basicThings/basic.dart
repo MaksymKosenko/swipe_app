@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:swipe_app/screens/ProfileScreen.dart';
 
 class Logo extends StatelessWidget {
   double _size;
