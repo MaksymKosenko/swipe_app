@@ -108,7 +108,7 @@ class _CustomSubscriptionState extends State<CustomSubscription> {
                       SizedBox(width: 14),
                       Text(_endData,
                           style: MediumText(14, Color(0xff41BFB5))),
-                      //TODO добавить в бд дату подписки и булевую переменную автопродления
+                      //TODO закончить кнопки и их связь с бд
                     ],
                   ),
                 ),

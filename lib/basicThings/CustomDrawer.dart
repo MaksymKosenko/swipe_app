@@ -37,13 +37,16 @@ Widget CustomDrawer(context, _userData, ){
         Container(height: 80, width: 80,
           alignment: Alignment.center,
           decoration: BoxDecoration(borderRadius: BorderRadius.circular(40),
+            image: _isImageExist
+                ?DecorationImage(image: NetworkImage(_userData['profilePic']), fit: BoxFit.fill)
+                :null,
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [Color(0xff56C385), Color(0xff41BFB5)],
             ),),
           child: _isImageExist
-              ? Text("pic")//TODO Когда сделаю возможным добавить фотку(загрузить в обл хранилище), поменять текст на имедж.фромнетворк
+              ? null//Image.network(_userData['profilePic'], fit: BoxFit.cover,)
               : Text("${_userData['name'][0]}${_userData['surName'][0]}", style: SemiBoldText(30, Colors.white),),
         ),
         SizedBox(height: 16),

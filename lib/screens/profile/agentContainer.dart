@@ -31,7 +31,7 @@ class _CustomAgentContactsState extends State<CustomAgentContacts> {
           if (snapshot.connectionState == ConnectionState.done) {
             Map<String, dynamic> data = snapshot.data.data();
             //_userFromFirestoreData = data;
-            return AgentContacts(data);
+            return AgentContacts(data, _agent);
           }
           return Container(
             height: 64,
@@ -58,12 +58,55 @@ class _CustomAgentContactsState extends State<CustomAgentContacts> {
         });
   }
 
-  Widget AgentContacts(_userData) {
+  Widget AgentContacts(_userData, _agent) {
+    Future<void> setAgentName(String agentName) {
+      // print("testing $_user, $name");
+      return _agent
+          .update({
+        'agentName': agentName
+      })
+          .then((value) => print("Contacts updated, $agentName"))
+          .catchError((error) => print("Failed update Contacts: $error"));
+    }
+
+    Future<void> setAgentSurName(String agentSurName) {
+      return _agent
+          .update({
+        'agentSurName': agentSurName,
+      })
+          .then((value) => print("Contacts updated, $agentSurName"))
+          .catchError((error) => print("Failed update Contacts: $error"));
+    }
+    Future<void> setAgentEmail(String agentEmail) {
+      return _agent
+          .update({
+        'agentEmail': agentEmail,
+      })
+          .then((value) => print("Contacts updated, $agentEmail"))
+          .catchError((error) => print("Failed update Contacts: $error"));
+    }
+    Future<void> setAgentPhone(String agentPhone) {
+      return _agent
+          .update({
+        'agentPhone': agentPhone,
+      })
+          .then((value) => print("Contacts updated, $agentPhone"))
+          .catchError((error) => print("Failed update Contacts: $error"));
+    }
+
     changeView() {
       setState(() {
         isExpandedAgentCont = !isExpandedAgentCont;
         print(isExpandedAgentCont);
       });
+      if(_nameController.text != "")
+      setAgentName(_nameController.text);
+      if(_surController.text != "")
+        setAgentSurName(_surController.text);
+      if(_emailController.text != "")
+        setAgentEmail(_emailController.text);
+      if(_emailController.text != "")
+        setAgentPhone(_emailController.text);
     }
 
     return isExpandedAgentCont

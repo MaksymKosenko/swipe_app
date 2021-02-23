@@ -1,16 +1,18 @@
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:swipe_app/User.dart';
 import 'package:swipe_app/basicThings/CustomAppBars.dart';
-import 'file:///C:/flutter_projects/flutterlearning/flutter_Dart_courses/swipe_app/lib/screens/profile/ProfileInput.dart';
 import 'package:swipe_app/basicThings/basic.dart';
 import 'package:swipe_app/screens/LandingScreen.dart';
 import 'package:swipe_app/screens/profile/agentContainer.dart';
 import 'package:swipe_app/screens/profile/conactContainer.dart';
 import 'package:swipe_app/screens/profile/notificationContainer.dart';
 import 'package:swipe_app/screens/profile/subscribtionContainer.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:image_picker/image_picker.dart';
 
 class ProfileScreen extends StatefulWidget {
   final dynamic _userData;
@@ -22,9 +24,71 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  Widget build(BuildContext context) {
-    bool _isImageExist = false;
+  CollectionReference _users = FirebaseFirestore.instance.collection('users');
+  firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
+  File _image;
+  final picker = ImagePicker();
 
+  Future getImage(source) async {
+    final pickedFile = await picker.getImage(source: source);//ImageSource.gallery);//ImageSource.camera);
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+        storage
+            .ref()
+            .child(widget._userData['phone'])
+            .child("profilePic")
+            .putFile(_image);
+
+        downloadURL();
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
+
+  Future<void> addUserPhoto(String link) {
+    String _phone = widget._userData['phone'];
+    return _users
+        .doc(_phone)
+        .update({
+      'profilePic': "$link",
+    })
+        .then((value) => print("user profilePic added"))
+        .catchError((error) => print("Failed to add user: $error"));
+  }
+  Future<void> downloadURL() async {
+    String downloadURL = await firebase_storage.FirebaseStorage.instance
+        .ref("${widget._userData['phone']}/profilePic")
+        .getDownloadURL();
+    addUserPhoto(downloadURL);
+  }
+
+  Future <void> choosePicker() async{
+    return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text("choose input type", style: SemiBoldText(16, Colors.black)),
+        content: Text("Выберите способ ввода данных", style: RegularText(14, Colors.black)),
+        actions: [
+          TextButton(
+            onPressed: (){Navigator.of(context).pop(); getImage(ImageSource.camera);},
+            child: Text("Камера",style: SemiBoldText(16, Colors.black))),
+          TextButton(
+            onPressed: (){Navigator.of(context).pop();getImage(ImageSource.gallery);},
+            child: Text("Галерея", style:SemiBoldText(16, Colors.black)))
+    ],
+    );
+    });}
+
+  Widget build(BuildContext context) {
+    bool _isImageExist;
+    if(widget._userData['profilePic'] == "null")
+    _isImageExist = false;
+    else
+      _isImageExist = true;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: MyCustomAppBar(
@@ -44,15 +108,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   width: 80,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
+                    image: _isImageExist ? DecorationImage(image: NetworkImage(widget._userData['profilePic']), fit: BoxFit.fill) : null,
                       borderRadius: BorderRadius.circular(40),
                       border: Border.all(color: Color(0xff969696))),
-                  child: _isImageExist ? Text("yep") : Icon(CupertinoIcons.plus,size: 32,)),
-              onTap: ()=> SnackBar(
-                content: Text("choose a photo",),
-                action: SnackBarAction(label: "label",
-                  onPressed: ()=> Container( height: 100, width: 100, color: Colors.blue,),
-                ),
-              ) ,
+                  child: _isImageExist ? null : Icon(CupertinoIcons.plus,size: 32,)),
+              onTap: (){choosePicker();},
             ),//Text("no")),
             //TODO сделать вместо надписей картинку/+
             SizedBox(width: 20),
@@ -153,7 +213,6 @@ class _CustomSliderState extends State<CustomSlider> {
           if (snapshot.connectionState == ConnectionState.done) {
             Map<String, dynamic> data = snapshot.data.data();
             _currentValue = data['toAgent'];
-            print("****$_currentValue***");
             //_userFromFirestoreData = data;
             return Container(
                 width: 45,

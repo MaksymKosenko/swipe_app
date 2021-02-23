@@ -18,20 +18,25 @@ class _CustomMyContactsState extends State<CustomMyContacts> {
   TextEditingController _phoneController = TextEditingController();
 
   @override
+
+
   Widget build(BuildContext context) {
     final ConcreteUser user = Provider.of<ConcreteUser>(context);
     final String _documentId = user.phone;
     CollectionReference _users = FirebaseFirestore.instance.collection('users');
+    DocumentReference _user = _users.doc(_documentId);
+
+
     //DocumentReference _agent = _users.doc(_documentId).collection("user_collections").doc("Agent");
     // var test = _agent.get();
     return FutureBuilder<DocumentSnapshot>(
-        future: _users.doc(_documentId).get(),
+        future: _users.doc(user.phone).get(),
         builder:
             (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             Map<String, dynamic> data = snapshot.data.data();
-            //_userFromFirestoreData = data;
-            return MyContacts(data);
+            print(data);
+            return MyContacts(user.phone, data,_users);
           }
           return Container(
             height: 64,
@@ -58,12 +63,47 @@ class _CustomMyContactsState extends State<CustomMyContacts> {
         });
   }
 
-  Widget MyContacts(_userData) {
+  Widget MyContacts(phone,_user, _users) {
+    Future<void> setUserName(String name) {
+     // print("testing $_user, $name");
+      return _users
+          .doc(phone)
+          .update({
+            'name': '$name'
+          })
+          .then((value) => print("Contacts updated, $name"))
+          .catchError((error) => print("Failed update Contacts: $error"));
+    }
+
+    Future<void> setUserSurName(String surName) {
+      return _users
+          .doc(phone)
+          .update({
+            'surName': surName,
+          })
+          .then((value) => print("Contacts updated, $surName"))
+          .catchError((error) => print("Failed update Contacts: $error"));
+    }
+    Future<void> setUserEmail(String email) {
+      return _users
+          .doc(phone)
+          .update({
+            'email': email,
+          })
+          .then((value) => print("Contacts updated, $email"))
+          .catchError((error) => print("Failed update Contacts: $error"));
+    }
     changeView() {
       setState(() {
         isExpandedMyCont = !isExpandedMyCont;
         print(isExpandedMyCont);
       });
+      if(_nameController.text != "")
+        setUserName(_nameController.text);
+      if(_surController.text != "")
+        setUserSurName(_surController.text);
+      if(_emailController.text != "")
+        setUserEmail(_emailController.text);
     }
 
     return isExpandedMyCont
@@ -94,7 +134,10 @@ class _CustomMyContactsState extends State<CustomMyContacts> {
                         ),
                       ],
                     ),
-                      onTap: () => changeView()
+                      onTap: (){
+                      changeView();
+                      print("$_nameController, $_emailController, $_phoneController, $_surController");
+                    }//() => changeView()
                   ),
                 ),
                 SizedBox(width: 24),
@@ -107,7 +150,7 @@ class _CustomMyContactsState extends State<CustomMyContacts> {
                     children: [
                       Text("Имя", style: SemiBoldText(14, Color(0xff2E2E2E))),
                       SizedBox(height: 10),
-                      ProfileInput(_userData['name'], _nameController, false)
+                      ProfileInput(_user['name'], _nameController, false)
                     ],
                   ),
                 ),
@@ -122,7 +165,7 @@ class _CustomMyContactsState extends State<CustomMyContacts> {
                       Text("Фамилия",
                           style: SemiBoldText(14, Color(0xff2E2E2E))),
                       SizedBox(height: 10),
-                      ProfileInput(_userData['surName'], _surController, false)
+                      ProfileInput(_user['surName'], _surController, false)
                     ],
                   ),
                 ),
@@ -137,7 +180,16 @@ class _CustomMyContactsState extends State<CustomMyContacts> {
                       Text("Телефон",
                           style: SemiBoldText(14, Color(0xff2E2E2E))),
                       SizedBox(height: 10),
-                      ProfileInput(_userData['phone'], _phoneController, false)
+                      Container(
+                        height: 44,
+                        padding: EdgeInsets.symmetric(horizontal: 12),
+                        alignment: Alignment.centerLeft,
+                        decoration: BoxDecoration(
+                          color: Color(0x64DADADA),//32
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Text("${_user['phone']}", style: RegularText(14,Color(0xff737373)),),)
+                      //ProfileInput(_user['phone'], _phoneController, false)
                     ],
                   ),
                 ),
@@ -151,7 +203,7 @@ class _CustomMyContactsState extends State<CustomMyContacts> {
                     children: [
                       Text("Email", style: SemiBoldText(14, Color(0xff2E2E2E))),
                       SizedBox(height: 10),
-                      ProfileInput(_userData['email'], _emailController, false)
+                      ProfileInput(_user['email'], _emailController, false)
                     ],
                   ),
                 ),
