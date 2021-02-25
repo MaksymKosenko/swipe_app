@@ -16,13 +16,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
   bool isCheck = false;
-  bool _isNumberGood;
   bool _isNameGood;
   bool _isSurNameGood;
   bool _isEmailGood;
-
   @override
   Widget build(BuildContext context) {
+
     return Material(
       child: Container(
         decoration: GradientBack(),
@@ -94,8 +93,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 child: Text("Далее",
                     style: TextStyle(fontFamily: 'Montserrat', fontWeight: FontWeight.bold, color: Colors.white, fontSize: 16)),
                 onTap: (){
-                  correctDataCheck(_phoneController.text, _nameController.text,
-                      _surController.text, _emailController.text);
+                  var userActions = UserActions(_nameController.text, _surController.text, _emailController.text, _phoneController.text, context);
+                  correctDataCheck(_nameController.text, _surController.text, _emailController.text, userActions);
+                 // userActions = UserActions(_nameController.text, _surController.text, _emailController.text, _phoneController.text, context);
+
                 }
               ),
             ),
@@ -105,39 +106,25 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     );
   }
 
-  correctDataCheck(String phoneToCheck, String nameToCheck,String surNameToCheck, String emailToCheck){
-    String unwantedNameSymbols = "1234567890!@#%^&*()_+-=^/№;%:? ";
-    String unwantedEmailSymbols = "!#%^&*()+=№;%:?";
-    if(phoneToCheck.startsWith("+") && phoneToCheck.length >= 12 && phoneToCheck.length <= 16) {
-      print("fine user phone");
-      _isNumberGood = true;
-    }
+  correctDataCheck(String nameToCheck,String surNameToCheck, String emailToCheck, userActions){
+    String unwantedNameSymbols = "[]{}<>|`₴'1234567890!@#%^&*()_+-=^/№;%:? ";
+    String unwantedEmailSymbols = "[]{}<>|`₴'!#%^&*()+=^/№;%:? ";
     if(nameToCheck.isNotEmpty && !nameToCheck.contains(unwantedNameSymbols) &&
         surNameToCheck.isNotEmpty && !surNameToCheck.contains(unwantedNameSymbols)){
       _isNameGood = true;
       _isSurNameGood = true;
-    }
+    }else showError("wrong name or surname");
     if(emailToCheck.length>4 && emailToCheck.contains("@") && emailToCheck.contains(".") && !emailToCheck.contains(unwantedEmailSymbols)){
       _isEmailGood = true;
-    }
-    if(_isNumberGood == true && _isNameGood == true && _isSurNameGood == true && _isEmailGood == true && isCheck == true){
-      var userActions = UserActions(
-          nameToCheck, surNameToCheck,
-          emailToCheck, phoneToCheck);
+    }else showError("Wrong Email");
 
+
+    if(_isNameGood == true && _isSurNameGood == true && _isEmailGood == true && isCheck == true){
       userActions.isExist();
-
-      Navigator.push(context, MaterialPageRoute(
-          builder: (context) => VerificationScreen(_phoneController.text, userActions, null)));
-    }else{
-      _isNumberGood = false;
-      _isNameGood = false;
-      _isSurNameGood = false;
-      _isEmailGood = false;
-      showError();
     }
   }
-  Future <void> showError() async{
+
+  Future <void> showError(String errorText) async{
     return showDialog<void>(
         context: context,
         barrierDismissible: false, // user must tap button!
@@ -147,11 +134,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             content: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
-                  Text('Entered data is incorrect'),
-                  Text('Try to correct it'),
-                  Text('Make sure that'),
-                  Text('field is not null and'),
-                  Text('phone & email correct'),
+                  Text(errorText),
                 ],
               ),
             ),

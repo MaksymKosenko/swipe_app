@@ -1,14 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:swipe_app/User.dart';
 import 'package:swipe_app/basicThings/basic.dart';
-import 'package:swipe_app/screens/LandingScreen.dart';
+import 'package:swipe_app/screens/Feed/LandingScreen.dart';
+
 import 'package:swipe_app/services/auth.dart';
-import 'package:swipe_app/services/databaseInteract.dart';
 
 class VerificationScreen extends StatefulWidget {
   final String _phone;
-  final UserActions _userActions;
-  final AuthService _authService;
-  VerificationScreen(this._phone, this._userActions, this._authService);
+  VerificationScreen(this._phone);
 
   @override
   _VerificationScreenState createState() => _VerificationScreenState();
@@ -21,13 +21,12 @@ class _VerificationScreenState extends State<VerificationScreen> {
   TextEditingController _letter4Controller = TextEditingController();
   TextEditingController _letter5Controller = TextEditingController();
   TextEditingController _letter6Controller = TextEditingController();
+  TextEditingController _verificationCodeCode = TextEditingController();
   String _verificationCode;
 
 
   @override
   Widget build(BuildContext context) {
-    AuthService _authService = widget._authService;
-    UserActions _userActions = widget._userActions;
     return Material(
       child: Container(
         decoration: GradientBack(),
@@ -57,6 +56,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
               ),
             ),
             SizedBox(height: 30),
+
             Container(
               height: 51,
               width: 264,
@@ -153,16 +153,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                   _verificationCode = _letter1Controller.text + _letter2Controller.text + _letter3Controller.text +
                       _letter4Controller.text + _letter5Controller.text + _letter6Controller.text;
 
-                  print("*****");
-                  print(_userActions);
-                  print(_authService);
-                  print("*****");
-                  if(_userActions == null)
-                  _authService.codeCompare(_verificationCode);
-
-                  if(_authService == null)
-                    _userActions.codeCompare(_verificationCode);
-
+                  codeCompare(_verificationCode);
                     Navigator.push(context, MaterialPageRoute(
                         builder: (context) => LandingPage()));
                   },
@@ -195,4 +186,23 @@ class _VerificationScreenState extends State<VerificationScreen> {
       ),
     );
   }
+
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  Future codeCompare(String smsCode) async{
+    try {
+      await _firebaseAuth.signInWithCredential(PhoneAuthProvider.credential(
+          verificationId: currentCode,
+          smsCode: smsCode))
+          .then((value) async{
+        if(value.user!=null){
+          print(value.user.uid);
+          return ConcreteUser.fromFirebase(value.user);
+        }
+      });
+    }catch (e){
+      print("We got some troubles!");
+      print(e);
+    }
+  }
+
 }

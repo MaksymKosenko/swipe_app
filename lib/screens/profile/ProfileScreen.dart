@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:swipe_app/User.dart';
 import 'package:swipe_app/basicThings/CustomAppBars.dart';
 import 'package:swipe_app/basicThings/basic.dart';
-import 'package:swipe_app/screens/LandingScreen.dart';
+import 'package:swipe_app/screens/Feed/LandingScreen.dart';
 import 'package:swipe_app/screens/profile/agentContainer.dart';
 import 'package:swipe_app/screens/profile/conactContainer.dart';
 import 'package:swipe_app/screens/profile/notificationContainer.dart';

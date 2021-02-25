@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:swipe_app/basicThings/basic.dart';
 import 'package:swipe_app/screens/verificationScreen.dart';
@@ -29,17 +31,13 @@ class _LoginScreenState extends State<LoginScreen> {
             SizedBox(height: 25),
             GestureDetector(
               onTap: (){
-                var phoneToCheck = _phoneController.text;
-                if(phoneToCheck.startsWith("+") && phoneToCheck.length >= 12 && phoneToCheck.length <= 16) {
-                  print("fine user phone");
-                  _authService.checkPhone(_phoneController.text);
-                  Navigator.push(context, MaterialPageRoute(
-                       builder: (context) => VerificationScreen(_phoneController.text, null, _authService)));
-                }else{
-                  showError();
-                }
-                //Navigator.push(context, MaterialPageRoute(
-                   // builder: (context) => VerificationScreen(_phoneController.text, _authService)));
+                var _phoneToCheck = _phoneController.text;
+                _authService.isExist(_phoneToCheck, context);
+                //isExist(_phoneToCheck);
+                //checkPhone(_phoneToCheck);
+                  //_authService.checkPhone(_phoneToCheck);
+                  //Navigator.push(context, MaterialPageRoute(
+                    //   builder: (context) => VerificationScreen(_phoneController.text, null, _authService)));
                 },
               child:CustomButton(253, 50, 10, Color(0xff56C385), Color(0xff41BFB5),Alignment.topCenter,
                   Alignment.bottomCenter, "Далее", SemiBoldText(16, Colors.white), Colors.transparent),
@@ -50,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Future <void> showError() async{
+/*  Future <void> showError(String errorText) async{
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -60,9 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('Your phone number is incorrect'),
-                Text('Try to start with + and country code'),
-                Text('or check input correction'),
+                Text(errorText),
               ],
             ),
           ),
@@ -78,4 +74,47 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     );
   }
+
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  CollectionReference _users = FirebaseFirestore.instance.collection('users');
+
+  isExist(String phone){
+    return _users.doc(phone).get()
+        .then((value){
+      //print(value.exists);
+      if(value.exists == true){
+        checkPhone(phone);
+      }
+      if(value.exists == false){
+        print("user not exist, create it");
+        showError("user not created");
+      }
+    })
+        .catchError((error) => print("Failed to check: $error"));
+  }
+
+  Future checkPhone(String phone) async {
+    await _firebaseAuth.verifyPhoneNumber(
+      forceResendingToken: 3,
+      phoneNumber: phone,
+      verificationCompleted: (PhoneAuthCredential credential) async{
+        print("verification complete called ");
+        await _firebaseAuth.signInWithCredential(credential);
+      },
+      verificationFailed: (FirebaseAuthException e) {
+        if (e.code == 'invalid-phone-number') {
+          print('The provided phone number is not valid.');
+          showError("nuber is not valid");
+        }
+      },
+      codeSent: (String verificationId, int resendToken) async{
+        currentCode = verificationId;
+        Navigator.push(context, MaterialPageRoute(
+               builder: (context) => VerificationScreen(phone, null, _authService)));
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {
+        currentCode = verificationId;
+      },
+    );
+  }*/
 }

@@ -1,14 +1,17 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:swipe_app/services/auth.dart';
 import 'package:swipe_app/User.dart';
+import 'package:swipe_app/screens/verificationScreen.dart';
 
 class UserActions {
   final String _name;
   final String _surName;
   final String _email;
   final String _phone;
-  UserActions(this._name, this._surName, this._email, this._phone);
+  final BuildContext context;
+  UserActions(this._name, this._surName, this._email, this._phone, this.context);
 
   String status;
   CollectionReference _users = FirebaseFirestore.instance.collection('users');
@@ -74,6 +77,7 @@ class UserActions {
         print(value.exists);
         if(value.exists == true){
           print("user already exist");
+          showError("user already exist", context);
         }
         if(value.exists == false){
           verifyPhone();
@@ -82,9 +86,10 @@ class UserActions {
         .catchError((error) => print("Failed to check: $error"));
   }
 
+
   Future verifyPhone() async{
     await _firebaseAuth.verifyPhoneNumber(
-      //forceResendingToken: 3,
+      forceResendingToken: 3,
       phoneNumber: _phone,
       verificationCompleted: (PhoneAuthCredential credential) async{
         print("verification complete called ");
@@ -93,10 +98,17 @@ class UserActions {
       verificationFailed: (FirebaseAuthException e) {
         if (e.code == 'invalid-phone-number') {
           print('The provided phone number is not valid.');
+          showError("invalid phone number", context);
         }
       },
       codeSent: (String verificationId, int resendToken) async{
         currentCode = verificationId;
+        addUser();
+        addAgentData();
+        addNotificationsData();
+        addSubscribeData();
+        Navigator.push(context, MaterialPageRoute(
+            builder: (context) => VerificationScreen(_phone)));
       },
       codeAutoRetrievalTimeout: (String verificationId) {
         currentCode = verificationId;
@@ -111,10 +123,6 @@ class UserActions {
           smsCode: smsCode))
           .then((value) async{
         if(value.user!=null){
-          addUser();
-          addAgentData();
-          addNotificationsData();
-          addSubscribeData();
           print(value.user.uid);
           return ConcreteUser.fromFirebase(value.user);
         }
@@ -128,5 +136,32 @@ class UserActions {
   Stream<ConcreteUser> get currentUser{
     return _firebaseAuth.authStateChanges()
         .map((User user) => user !=null ? ConcreteUser.fromFirebase(user) :null);
+  }
+
+  Future <void> showError(String errorText, context) async{
+    return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Login error'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text(errorText),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text('Try again'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        }
+    );
   }
 }

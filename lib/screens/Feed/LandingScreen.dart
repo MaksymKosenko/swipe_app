@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:swipe_app/User.dart';
 import 'package:swipe_app/basicThings/CustomDrawer.dart';
 import 'package:swipe_app/screens/Feed/FeedAppBar.dart';
+import 'file:///C:/flutter_projects/flutterlearning/flutter_Dart_courses/swipe_app/lib/screens/Feed/CustomFilters.dart';
 
 class LandingPage extends StatelessWidget {
   var _userFromFirestoreData;
@@ -25,17 +26,12 @@ class LandingPage extends StatelessWidget {
                   //drawerScrimColor: Color(0xff27AEA4),
                     drawer: CustomDrawer(context, _userFromFirestoreData),
                     appBar: CustomFeedAppBar(),
-                    body: Container(
-                      child: Column(
-                        children: [
-                          SizedBox(height: 50),
-                          Text(user.id),
-                          //Text(user.phone),
-                          Text(_userFromFirestoreData.toString()),
-                          //Text(test)
-                        ],
-                      ),
-                    )
+                    body: Column(
+                      children: [
+                        SizedBox(height: 12),
+                        CustomFilters(),
+                      ],
+                    ),
                 );
               }
               return Scaffold(backgroundColor: Colors.white,
