@@ -5,6 +5,8 @@ import 'package:swipe_app/User.dart';
 import 'package:swipe_app/basicThings/CustomDrawer.dart';
 import 'package:swipe_app/screens/Feed/FeedAppBar.dart';
 import 'file:///C:/flutter_projects/flutterlearning/flutter_Dart_courses/swipe_app/lib/screens/Feed/CustomFilters.dart';
+import 'package:swipe_app/screens/Feed/StandartADCard.dart';
+import 'package:swipe_app/screens/Feed/UpgradedADCard.dart';
 
 class LandingPage extends StatelessWidget {
   var _userFromFirestoreData;
@@ -23,14 +25,24 @@ class LandingPage extends StatelessWidget {
                 Map<String, dynamic> data = snapshot.data.data();
                 _userFromFirestoreData = data;
                 return Scaffold(
-                  //drawerScrimColor: Color(0xff27AEA4),
                     drawer: CustomDrawer(context, _userFromFirestoreData),
                     appBar: CustomFeedAppBar(),
-                    body: Column(
-                      children: [
-                        SizedBox(height: 12),
-                        CustomFilters(),
-                      ],
+                    body: Container(
+                      color: Colors.white,
+                      child: Column(
+                        children: [
+                          SizedBox(height: 12),
+                          CustomFilters(),
+                          SizedBox(height: 20),
+                         /* Container(
+                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            child: SAdCard(),
+                             ),*/
+                         SAdCard(),
+                         SizedBox(height: 20),
+                         UpAdCard(),
+                        ],
+                      ),
                     ),
                 );
               }
