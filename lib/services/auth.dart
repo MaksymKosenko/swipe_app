@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:swipe_app/User.dart';
-import 'package:swipe_app/screens/verificationScreen.dart';
+import 'file:///C:/flutter_projects/flutterlearning/flutter_Dart_courses/swipe_app/lib/basicThings/User.dart';
+import 'file:///C:/flutter_projects/flutterlearning/flutter_Dart_courses/swipe_app/lib/screens/singInUp/verificationScreen.dart';
 
 String currentCode;
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:swipe_app/basicThings/basic.dart';
 import 'file:///C:/flutter_projects/flutterlearning/flutter_Dart_courses/swipe_app/lib/screens/profile/ProfileScreen.dart';
+import 'package:swipe_app/screens/myAD/myAD.dart';
 
 // ignore: non_constant_identifier_names
 Widget CustomDrawer(context, _userData, ){
@@ -67,7 +68,9 @@ Widget CustomDrawer(context, _userData, ){
                   onTap: ()=> Navigator.push(context, MaterialPageRoute(
                       builder: (context) => ProfileScreen(_userData)))),
               SizedBox(height: 20),
-              Container(height: 20, child: Text("Мое объявление",style: MediumText(16, Colors.white),),),
+              GestureDetector(child: Container(height: 20, child: Text("Мое объявление",style: MediumText(16, Colors.white),),),
+                onTap:()=>Navigator.push(context, MaterialPageRoute(
+                    builder: (context) => MyNewAD()))),
               SizedBox(height: 20),
               Container(height: 20, child: Text("Избранные",style: MediumText(16, Colors.white),),),
               SizedBox(height: 20),
