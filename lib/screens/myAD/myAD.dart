@@ -4,6 +4,7 @@ import 'package:swipe_app/basicThings/CustomAppBars.dart';
 import 'package:swipe_app/basicThings/basic.dart';
 import 'package:swipe_app/screens/Feed/LandingScreen.dart';
 import 'package:swipe_app/screens/myAD/Adress.dart';
+import 'package:swipe_app/screens/myAD/ApartamentsType.dart';
 import 'package:swipe_app/screens/myAD/ChooseZHK.dart';
 
 class MyNewAD extends StatefulWidget {
@@ -24,6 +25,8 @@ class _MyNewADState extends State<MyNewAD> {
             Adress(),
             SizedBox(height: 13),
             ZhK(),
+            SizedBox(height: 13),
+            ApartmentType()
           ],
         ),
       ),
