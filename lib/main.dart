@@ -1,10 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'file:///C:/flutter_projects/flutterlearning/flutter_Dart_courses/swipe_app/lib/basicThings/User.dart';
+import 'package:swipe_app/basicThings/User.dart';
 import 'package:swipe_app/basicThings/basic.dart';
-import 'file:///C:/flutter_projects/flutterlearning/flutter_Dart_courses/swipe_app/lib/screens/singInUp/logInScreen.dart';
-import 'file:///C:/flutter_projects/flutterlearning/flutter_Dart_courses/swipe_app/lib/screens/singInUp/registrationScreen.dart';
+import 'package:swipe_app/screens/singInUp/registrationScreen.dart';
+import 'package:swipe_app/screens/singInUp/logInScreen.dart';
 import 'package:swipe_app/services/auth.dart';
 
 void main() async{

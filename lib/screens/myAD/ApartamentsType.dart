@@ -55,19 +55,89 @@ class _ApartmentTypeState extends State<ApartmentType> {
                                 onPressed: () => changeView())
                           ],
                         ),
-                        Text(
-                          "Жк Семейный",
-                          style: RegularText(14, Color(0xff27AEA4)),
+                        Container(
+                          padding: EdgeInsets.only(right: 15, top: 5, bottom: 5),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Апарт-отель",
+                                style: RegularText(14, Color(0xff737373)),
+                              ),
+                              Container(
+                                height: 15,
+                                width: 15,
+                                decoration: BoxDecoration(
+                                  color: Color(0xffE8E8E8),
+                                  borderRadius: BorderRadius.circular(7.5),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+
+                        SizedBox(height: 8),
+                        Container(
+                          padding: EdgeInsets.only(right: 15, top: 5, bottom: 5),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Дохоной дом",
+                                style: RegularText(14, Color(0xff737373)),
+                              ),
+                              Container(
+                                height: 15,
+                                width: 15,
+                                decoration: BoxDecoration(
+                                  color: Color(0xffE8E8E8),
+                                  borderRadius: BorderRadius.circular(7.5),
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                         SizedBox(height: 8),
-                        Text(
-                          "Жк Дружба",
-                          style: RegularText(14, Color(0xff27AEA4)),
+                        Container(
+                          padding: EdgeInsets.only(right: 15, top: 5, bottom: 5),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Кондоминимум",
+                                style: RegularText(14, Color(0xff737373)),
+                              ),
+                              Container(
+                                height: 15,
+                                width: 15,
+                                decoration: BoxDecoration(
+                                  color: Color(0xffE8E8E8),
+                                  borderRadius: BorderRadius.circular(7.5),
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                         SizedBox(height: 8),
-                        Text(
-                          "Жк София",
-                          style: RegularText(14, Color(0xff27AEA4)),
+                        Container(
+                          padding: EdgeInsets.only(right: 15, top: 5, bottom: 5),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Апартаменты",
+                                style: RegularText(14, Color(0xff737373)),
+                              ),
+                              Container(
+                                height: 15,
+                                width: 15,
+                                decoration: BoxDecoration(
+                                  color: Color(0xffE8E8E8),
+                                  borderRadius: BorderRadius.circular(7.5),
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                         SizedBox(height: 13),
                       ],

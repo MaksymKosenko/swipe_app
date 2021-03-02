@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'file:///C:/flutter_projects/flutterlearning/flutter_Dart_courses/swipe_app/lib/basicThings/User.dart';
+import 'package:swipe_app/basicThings/User.dart';
 import 'package:swipe_app/basicThings/CustomDrawer.dart';
 import 'package:swipe_app/screens/Feed/FeedAppBar.dart';
-import 'file:///C:/flutter_projects/flutterlearning/flutter_Dart_courses/swipe_app/lib/screens/Feed/CustomFilters.dart';
+import 'package:swipe_app/screens/Feed/CustomFilters.dart';
 import 'package:swipe_app/screens/Feed/StandartADCard.dart';
 import 'package:swipe_app/screens/Feed/UpgradedADCard.dart';
 

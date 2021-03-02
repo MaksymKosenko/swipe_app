@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:swipe_app/basicThings/basic.dart';
-import 'file:///C:/flutter_projects/flutterlearning/flutter_Dart_courses/swipe_app/lib/screens/profile/ProfileScreen.dart';
+import 'package:swipe_app/screens/profile/ProfileScreen.dart';
 import 'package:swipe_app/screens/myAD/myAD.dart';
 
 // ignore: non_constant_identifier_names

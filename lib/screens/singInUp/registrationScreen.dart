@@ -1,7 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/material.dart';
 import 'package:swipe_app/basicThings/basic.dart';
-import 'file:///C:/flutter_projects/flutterlearning/flutter_Dart_courses/swipe_app/lib/screens/singInUp/verificationScreen.dart';
 import 'package:swipe_app/services/databaseInteract.dart';
 
 class RegistrationScreen extends StatefulWidget {
