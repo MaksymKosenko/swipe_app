@@ -15,7 +15,54 @@ class _RoomQuantityState extends State<RoomQuantity> {
       _isExpand = !_isExpand;
     });
   }
-
+  String selectedVar = "1 комнатная";
+  bool active1 = true;
+  bool active2 = false;
+  bool active3 = false;
+  bool active4 = false;
+  bool active5 = false;
+  setNewChoise(String newSelected) {
+    setState(() {
+      selectedVar = newSelected;
+      switch (newSelected) {
+        case "1 комнатная":
+          active1 = true;
+          active2 = false;
+          active3 = false;
+          active4 = false;
+          active5 = false;
+          break;
+        case "2 комнатная":
+          active1 = false;
+          active2 = true;
+          active3 = false;
+          active4 = false;
+          active5 = false;
+          break;
+        case "3 комнатная":
+          active1 = false;
+          active2 = false;
+          active3 = true;
+          active4 = false;
+          active5 = false;
+          break;
+        case "4 комнатная":
+          active1 = false;
+          active2 = false;
+          active3 = false;
+          active4 = true;
+          active5 = false;
+          break;
+        case "5+ комнатная":
+          active1 = false;
+          active2 = false;
+          active3 = false;
+          active4 = false;
+          active5 = true;
+          break;
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return _isExpand
@@ -42,7 +89,7 @@ class _RoomQuantityState extends State<RoomQuantity> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "1 комнатная",
+                        selectedVar,
                         style: RegularText(14, Color(0xff737373)),
                       ),
                       //Text("Введите название жк:", style: RegularText(14, Color(0xff737373)),),
@@ -54,6 +101,35 @@ class _RoomQuantityState extends State<RoomQuantity> {
                           onPressed: () => changeView())
                     ],
                   ),
+                  GestureDetector(
+                    onTap: ()=> setNewChoise("1 комнатная"),
+                    child: Container(
+                      padding: EdgeInsets.only(right: 15, top: 5, bottom: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "1 комнатная",
+                            style: RegularText(14, Color(0xff737373)),
+                          ),
+                          Container(
+                            height: 15,
+                            width: 15,
+                            decoration: BoxDecoration(
+                              color: active1
+                                  ? Color(0xff41BFB5)
+                                  : Color(0xffE8E8E8),
+                              borderRadius: BorderRadius.circular(7.5),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 8),
+              GestureDetector(
+                onTap: ()=> setNewChoise("2 комнатная"),
+                  child:
                   Container(
                     padding: EdgeInsets.only(right: 15, top: 5, bottom: 5),
                     child: Row(
@@ -67,15 +143,20 @@ class _RoomQuantityState extends State<RoomQuantity> {
                           height: 15,
                           width: 15,
                           decoration: BoxDecoration(
-                            color: Color(0xffE8E8E8),
+                            color: active2
+                                ? Color(0xff41BFB5)
+                                : Color(0xffE8E8E8),
                             borderRadius: BorderRadius.circular(7.5),
                           ),
                         )
                       ],
                     ),
-                  ),
+                  ),),
 
                   SizedBox(height: 8),
+              GestureDetector(
+                onTap: ()=> setNewChoise("3 комнатная"),
+                  child:
                   Container(
                     padding: EdgeInsets.only(right: 15, top: 5, bottom: 5),
                     child: Row(
@@ -89,14 +170,19 @@ class _RoomQuantityState extends State<RoomQuantity> {
                           height: 15,
                           width: 15,
                           decoration: BoxDecoration(
-                            color: Color(0xffE8E8E8),
+                            color: active3
+                                ? Color(0xff41BFB5)
+                                : Color(0xffE8E8E8),
                             borderRadius: BorderRadius.circular(7.5),
                           ),
                         )
                       ],
                     ),
-                  ),
+                  ),),
                   SizedBox(height: 8),
+              GestureDetector(
+                onTap: ()=> setNewChoise("4 комнатная"),
+                  child:
                   Container(
                     padding: EdgeInsets.only(right: 15, top: 5, bottom: 5),
                     child: Row(
@@ -110,14 +196,19 @@ class _RoomQuantityState extends State<RoomQuantity> {
                           height: 15,
                           width: 15,
                           decoration: BoxDecoration(
-                            color: Color(0xffE8E8E8),
+                            color: active4
+                                ? Color(0xff41BFB5)
+                                : Color(0xffE8E8E8),
                             borderRadius: BorderRadius.circular(7.5),
                           ),
                         )
                       ],
                     ),
-                  ),
+                  ),),
                   SizedBox(height: 8),
+              GestureDetector(
+                onTap: ()=> setNewChoise("5+ комнатная"),
+                  child:
                   Container(
                     padding: EdgeInsets.only(right: 15, top: 5, bottom: 5),
                     child: Row(
@@ -131,13 +222,15 @@ class _RoomQuantityState extends State<RoomQuantity> {
                           height: 15,
                           width: 15,
                           decoration: BoxDecoration(
-                            color: Color(0xffE8E8E8),
+                            color: active5
+                                ? Color(0xff41BFB5)
+                                : Color(0xffE8E8E8),
                             borderRadius: BorderRadius.circular(7.5),
                           ),
                         )
                       ],
                     ),
-                  ),
+                  ),),
                   SizedBox(height: 13),
                 ],
               ),
@@ -165,7 +258,7 @@ class _RoomQuantityState extends State<RoomQuantity> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "1 комнатная",
+                    selectedVar,
                     style: RegularText(14, Color(0xff737373)),
                   ),
                   Icon(

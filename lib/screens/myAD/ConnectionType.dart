@@ -15,6 +15,43 @@ class _ConnectionTypeState extends State<ConnectionType> {
       _isExpand = !_isExpand;
     });
   }
+  String selectedVar = "Звонок + сообщение";
+  bool active1 = true;
+  bool active2 = false;
+  bool active3 = false;
+  bool active4 = false;
+
+  setNewChoise(String newSelected) {
+    setState(() {
+      selectedVar = newSelected;
+      switch (newSelected) {
+        case "Звонок + сообщение":
+          active1 = true;
+          active2 = false;
+          active3 = false;
+          active4 = false;
+          break;
+        case "Только звонки":
+          active1 = false;
+          active2 = true;
+          active3 = false;
+          active4 = false;
+          break;
+        case "Звонок + сообщение агенту":
+          active1 = false;
+          active2 = false;
+          active3 = true;
+          active4 = false;
+          break;
+        case "Только звонки агенту":
+          active1 = false;
+          active2 = false;
+          active3 = false;
+          active4 = true;
+          break;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +79,7 @@ class _ConnectionTypeState extends State<ConnectionType> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Звонок + сообщение",
+                        selectedVar,
                         style: RegularText(14, Color(0xff737373)),
                       ),
                       //Text("Введите название жк:", style: RegularText(14, Color(0xff737373)),),
@@ -54,28 +91,35 @@ class _ConnectionTypeState extends State<ConnectionType> {
                           onPressed: () => changeView())
                     ],
                   ),
-                  Container(
-                    padding: EdgeInsets.only(right: 15, top: 5, bottom: 5),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Звонок + сообщение",
-                          style: RegularText(14, Color(0xff737373)),
-                        ),
-                        Container(
-                          height: 15,
-                          width: 15,
-                          decoration: BoxDecoration(
-                            color: Color(0xffE8E8E8),
-                            borderRadius: BorderRadius.circular(7.5),
+                  GestureDetector(
+                    onTap: ()=>  setNewChoise("Звонок + сообщение"),
+                    child: Container(
+                      padding: EdgeInsets.only(right: 15, top: 5, bottom: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Звонок + сообщение",
+                            style: RegularText(14, Color(0xff737373)),
                           ),
-                        )
-                      ],
+                          Container(
+                            height: 15,
+                            width: 15,
+                            decoration: BoxDecoration(
+                              color: active1
+                                  ? Color(0xff41BFB5)
+                                  : Color(0xffE8E8E8),
+                              borderRadius: BorderRadius.circular(7.5),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                   SizedBox(height: 13),
-                  Container(
+              GestureDetector(
+                onTap: ()=> setNewChoise("Только звонки"),
+                child:Container(
                     padding: EdgeInsets.only(right: 15, top: 5, bottom: 5),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -88,15 +132,19 @@ class _ConnectionTypeState extends State<ConnectionType> {
                           height: 15,
                           width: 15,
                           decoration: BoxDecoration(
-                            color: Color(0xffE8E8E8),
+                            color: active2
+                                ? Color(0xff41BFB5)
+                                : Color(0xffE8E8E8),
                             borderRadius: BorderRadius.circular(7.5),
                           ),
                         )
                       ],
                     ),
-                  ),
+                  ),),
                   SizedBox(height: 13),
-                  Container(
+              GestureDetector(
+                onTap: ()=> setNewChoise("Звонок + сообщение агенту"),
+                child:Container(
                     padding: EdgeInsets.only(right: 15, top: 5, bottom: 5),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -109,15 +157,19 @@ class _ConnectionTypeState extends State<ConnectionType> {
                           height: 15,
                           width: 15,
                           decoration: BoxDecoration(
-                            color: Color(0xffE8E8E8),
+                            color: active3
+                                ? Color(0xff41BFB5)
+                                : Color(0xffE8E8E8),
                             borderRadius: BorderRadius.circular(7.5),
                           ),
                         )
                       ],
                     ),
-                  ),
+                  ),),
                   SizedBox(height: 13),
-                  Container(
+              GestureDetector(
+                onTap: ()=> setNewChoise("Только звонки агенту"),
+                child:Container(
                     padding: EdgeInsets.only(right: 15, top: 5, bottom: 5),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -130,13 +182,15 @@ class _ConnectionTypeState extends State<ConnectionType> {
                           height: 15,
                           width: 15,
                           decoration: BoxDecoration(
-                            color: Color(0xffE8E8E8),
+                            color: active4
+                                ? Color(0xff41BFB5)
+                                : Color(0xffE8E8E8),
                             borderRadius: BorderRadius.circular(7.5),
                           ),
                         )
                       ],
                     ),
-                  ),
+                  ),),
                   SizedBox(height: 13),
                 ],
               ),
@@ -164,7 +218,7 @@ class _ConnectionTypeState extends State<ConnectionType> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Звонок + сообщение",
+                    selectedVar,
                     style: RegularText(14, Color(0xff737373)),
                   ),
                   Icon(

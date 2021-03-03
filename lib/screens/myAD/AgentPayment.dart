@@ -15,6 +15,44 @@ class _AgentPaymentState extends State<AgentPayment> {
       _isExpand = !_isExpand;
     });
   }
+  String selectedVar = "Договорная сумма";
+  bool active1 = false;
+  bool active2 = false;
+  bool active3 = false;
+  bool active4 = true;
+
+  setNewChoise(String newSelected) {
+    setState(() {
+      selectedVar = newSelected;
+      switch (newSelected) {
+        case "5% от суммы":
+          active1 = true;
+          active2 = false;
+          active3 = false;
+          active4 = false;
+          break;
+        case "3% от суммы":
+          active1 = false;
+          active2 = true;
+          active3 = false;
+          active4 = false;
+          break;
+        case "7% от суммы":
+          active1 = false;
+          active2 = false;
+          active3 = true;
+          active4 = false;
+          break;
+        case "Договорная сумма":
+          active1 = false;
+          active2 = false;
+          active3 = false;
+          active4 = true;
+          break;
+      }
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +80,7 @@ class _AgentPaymentState extends State<AgentPayment> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "5%(сумма)",
+                        selectedVar,
                         style: RegularText(14, Color(0xff737373)),
                       ),
                       //Text("Введите название жк:", style: RegularText(14, Color(0xff737373)),),
@@ -54,70 +92,85 @@ class _AgentPaymentState extends State<AgentPayment> {
                           onPressed: () => changeView())
                     ],
                   ),
-                  Container(
+                  GestureDetector(
+                    onTap: ()=> setNewChoise("5% от суммы"),
+                    child: Container(
+                      padding: EdgeInsets.only(right: 15, top: 5, bottom: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "5% от суммы",
+                            style: RegularText(14, Color(0xff737373)),
+                          ),
+                          Container(
+                            height: 15,
+                            width: 15,
+                            decoration: BoxDecoration(
+                              color: active1
+                                  ? Color(0xff41BFB5)
+                                  : Color(0xffE8E8E8),
+                              borderRadius: BorderRadius.circular(7.5),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 13),
+              GestureDetector(
+                onTap: ()=> setNewChoise("3% от суммы"),
+                child: Container(
                     padding: EdgeInsets.only(right: 15, top: 5, bottom: 5),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "5%(сумма)",
+                          "3% от суммы",
                           style: RegularText(14, Color(0xff737373)),
                         ),
                         Container(
                           height: 15,
                           width: 15,
                           decoration: BoxDecoration(
-                            color: Color(0xffE8E8E8),
+                            color: active2
+                                ? Color(0xff41BFB5)
+                                : Color(0xffE8E8E8),
                             borderRadius: BorderRadius.circular(7.5),
                           ),
                         )
                       ],
                     ),
-                  ),
+                  ),),
                   SizedBox(height: 13),
-                  Container(
+              GestureDetector(
+                onTap: ()=> setNewChoise("7% от суммы"),
+                child: Container(
                     padding: EdgeInsets.only(right: 15, top: 5, bottom: 5),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "3%(сумма)",
+                          "7% от суммы",
                           style: RegularText(14, Color(0xff737373)),
                         ),
                         Container(
                           height: 15,
                           width: 15,
                           decoration: BoxDecoration(
-                            color: Color(0xffE8E8E8),
+                            color: active3
+                                ? Color(0xff41BFB5)
+                                : Color(0xffE8E8E8),
                             borderRadius: BorderRadius.circular(7.5),
                           ),
                         )
                       ],
                     ),
-                  ),
+                  ),),
                   SizedBox(height: 13),
-                  Container(
-                    padding: EdgeInsets.only(right: 15, top: 5, bottom: 5),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "7%(сумма)",
-                          style: RegularText(14, Color(0xff737373)),
-                        ),
-                        Container(
-                          height: 15,
-                          width: 15,
-                          decoration: BoxDecoration(
-                            color: Color(0xffE8E8E8),
-                            borderRadius: BorderRadius.circular(7.5),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 13),
-                  Container(
+              GestureDetector(
+                onTap: ()=> setNewChoise("Договорная сумма"),
+                child: Container(
                     padding: EdgeInsets.only(right: 15, top: 5, bottom: 5),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -130,13 +183,15 @@ class _AgentPaymentState extends State<AgentPayment> {
                           height: 15,
                           width: 15,
                           decoration: BoxDecoration(
-                            color: Color(0xffE8E8E8),
+                            color: active4
+                                ? Color(0xff41BFB5)
+                                : Color(0xffE8E8E8),
                             borderRadius: BorderRadius.circular(7.5),
                           ),
                         )
                       ],
                     ),
-                  ),
+                  ),),
                   SizedBox(height: 13),
                 ],
               ),
@@ -164,7 +219,7 @@ class _AgentPaymentState extends State<AgentPayment> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "сумма",
+                    selectedVar,
                     style: RegularText(14, Color(0xff737373)),
                   ),
                   Icon(

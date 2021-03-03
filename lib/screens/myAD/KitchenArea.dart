@@ -6,7 +6,6 @@ class KitchenArea extends StatefulWidget {
   @override
   _KitchenAreaState createState() => _KitchenAreaState();
 }
-
 class _KitchenAreaState extends State<KitchenArea> {
   TextEditingController _inputController = TextEditingController();
   @override
@@ -26,7 +25,7 @@ class _KitchenAreaState extends State<KitchenArea> {
                 borderRadius: BorderRadius.circular(10)
             ),
             //child: Text("current adress",style: RegularText(14, Color(0xff737373)),),
-            child: InputField(_inputController, "m2"),
+            child: InputField(_inputController, "М\u{00B2}",1),
           ),
         ],
       ),

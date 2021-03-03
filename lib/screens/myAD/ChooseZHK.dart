@@ -17,6 +17,17 @@ class _ZhKState extends State<ZhK> {
     });
   }
 
+  String currentZhK = "Жк ";
+  String var1 = "Жк Семейный";
+  String var2 = "Жк Дружба";
+  String var3 = "Жк София";
+
+  setNewCurrentZhK(String newCurrent){
+    setState(() {
+      currentZhK = newCurrent;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     TextEditingController _zhkNameController = TextEditingController();
@@ -56,16 +67,22 @@ class _ZhKState extends State<ZhK> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            SearchField(_zhkNameController, "Введите название жк:"),
+                            SearchField(_zhkNameController, currentZhK),
                             //Text("Введите название жк:", style: RegularText(14, Color(0xff737373)),),
                             IconButton(icon: Icon(CupertinoIcons.chevron_up, size: 24,), onPressed: ()=> changeView())
                           ],
                         ),
-                        Text("Жк Семейный",style: RegularText(14, Color(0xff27AEA4)),),
+                        GestureDetector(
+                            child: Text(var1,style: RegularText(14, Color(0xff27AEA4))),
+                        onTap: ()=> setNewCurrentZhK(var1),),
                         SizedBox(height:8),
-                        Text("Жк Дружба",style: RegularText(14, Color(0xff27AEA4)),),
+                        GestureDetector(
+                          child: Text(var2,style: RegularText(14, Color(0xff27AEA4))),
+                          onTap: ()=> setNewCurrentZhK(var2),),
                         SizedBox(height:8),
-                        Text("Жк София",style: RegularText(14, Color(0xff27AEA4)),),
+                        GestureDetector(
+                          child: Text(var3,style: RegularText(14, Color(0xff27AEA4))),
+                          onTap: ()=> setNewCurrentZhK(var3),),
                         SizedBox(height:13),
                       ],
                     ),
@@ -108,7 +125,7 @@ class _ZhKState extends State<ZhK> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "current ZhK",
+                          currentZhK,
                           style: RegularText(14, Color(0xff737373)),
                         ),
                         Icon(CupertinoIcons.chevron_down, size: 24,)

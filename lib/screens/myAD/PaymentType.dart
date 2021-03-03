@@ -16,6 +16,44 @@ class _PaymentTypeState extends State<PaymentType> {
     });
   }
 
+  String selectedVar = "Наличными из рук в руки";
+  bool active1 = true;
+  bool active2 = false;
+  bool active3 = false;
+  bool active4 = false;
+
+  setNewChoise(String newSelected) {
+    setState(() {
+      selectedVar = newSelected;
+      switch (newSelected) {
+        case "Наличными из рук в руки":
+          active1 = true;
+          active2 = false;
+          active3 = false;
+          active4 = false;
+          break;
+        case "Наличными, черезбанковскою ячейку":
+          active1 = false;
+          active2 = true;
+          active3 = false;
+          active4 = false;
+          break;
+        case "Безналичным путем, через аккредитив":
+          active1 = false;
+          active2 = false;
+          active3 = true;
+          active4 = false;
+          break;
+        case "Перевод на банковскую карту":
+          active1 = false;
+          active2 = false;
+          active3 = false;
+          active4 = true;
+          break;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return _isExpand
@@ -42,7 +80,7 @@ class _PaymentTypeState extends State<PaymentType> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Мат.капитал",
+                        selectedVar,
                         style: RegularText(14, Color(0xff737373)),
                       ),
                       //Text("Введите название жк:", style: RegularText(14, Color(0xff737373)),),
@@ -54,89 +92,109 @@ class _PaymentTypeState extends State<PaymentType> {
                           onPressed: () => changeView())
                     ],
                   ),
-                  Container(
-                    padding: EdgeInsets.only(right: 15, top: 5, bottom: 5),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Мат.капитал",
-                          style: RegularText(14, Color(0xff737373)),
-                        ),
-                        Container(
-                          height: 15,
-                          width: 15,
-                          decoration: BoxDecoration(
-                            color: Color(0xffE8E8E8),
-                            borderRadius: BorderRadius.circular(7.5),
+                  GestureDetector(
+                    onTap: ()=> setNewChoise("Наличными из рук в руки"),
+                    child: Container(
+                      padding: EdgeInsets.only(right: 15, top: 5, bottom: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Наличными из рук в руки",
+                            style: RegularText(14, Color(0xff737373)),
                           ),
-                        )
-                      ],
+                          Container(
+                            height: 15,
+                            width: 15,
+                            decoration: BoxDecoration(
+                              color: active1
+                                  ? Color(0xff41BFB5)
+                                  : Color(0xffE8E8E8),
+                              borderRadius: BorderRadius.circular(7.5),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                   SizedBox(height: 13),
+              GestureDetector(
+                onTap: ()=> setNewChoise("Наличными, черезбанковскою ячейку"),
+                child:
                   Container(
                     padding: EdgeInsets.only(right: 15, top: 5, bottom: 5),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "В2",
+                          "Наличными, черезбанковскою ячейку",
                           style: RegularText(14, Color(0xff737373)),
                         ),
                         Container(
                           height: 15,
                           width: 15,
                           decoration: BoxDecoration(
-                            color: Color(0xffE8E8E8),
+                            color: active2
+                                ? Color(0xff41BFB5)
+                                : Color(0xffE8E8E8),
                             borderRadius: BorderRadius.circular(7.5),
                           ),
                         )
                       ],
                     ),
-                  ),
+                  ),),
                   SizedBox(height: 13),
+              GestureDetector(
+                onTap: ()=> setNewChoise("Безналичным путем, через аккредитив"),
+                child:
                   Container(
                     padding: EdgeInsets.only(right: 15, top: 5, bottom: 5),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "в3",
+                          "Безналичным путем, через аккредитив",
                           style: RegularText(14, Color(0xff737373)),
                         ),
                         Container(
                           height: 15,
                           width: 15,
                           decoration: BoxDecoration(
-                            color: Color(0xffE8E8E8),
+                            color: active3
+                                ? Color(0xff41BFB5)
+                                : Color(0xffE8E8E8),
                             borderRadius: BorderRadius.circular(7.5),
                           ),
                         )
                       ],
                     ),
-                  ),
+                  ),),
                   SizedBox(height: 13),
+              GestureDetector(
+                onTap: ()=> setNewChoise("Перевод на банковскую карту"),
+                child:
                   Container(
                     padding: EdgeInsets.only(right: 15, top: 5, bottom: 5),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "в4",
+                          "Перевод на банковскую карту",
                           style: RegularText(14, Color(0xff737373)),
                         ),
                         Container(
                           height: 15,
                           width: 15,
                           decoration: BoxDecoration(
-                            color: Color(0xffE8E8E8),
+                            color: active4
+                                ? Color(0xff41BFB5)
+                                : Color(0xffE8E8E8),
                             borderRadius: BorderRadius.circular(7.5),
                           ),
                         )
                       ],
                     ),
-                  ),
+                  ),),
                   SizedBox(height: 13),
                 ],
               ),
@@ -164,7 +222,7 @@ class _PaymentTypeState extends State<PaymentType> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Мат.капитал",
+                    selectedVar,
                     style: RegularText(14, Color(0xff737373)),
                   ),
                   Icon(

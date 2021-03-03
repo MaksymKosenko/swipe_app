@@ -26,7 +26,7 @@ class _OverallAreaState extends State<OverallArea> {
                 borderRadius: BorderRadius.circular(10)
             ),
             //child: Text("current adress",style: RegularText(14, Color(0xff737373)),),
-            child: InputField(_inputController, "m2"),
+            child: InputField(_inputController, "М\u{00B2}",1),
           ),
         ],
       ),

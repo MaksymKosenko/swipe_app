@@ -17,7 +17,46 @@ class _ApartmentTypeState extends State<ApartmentType> {
     });
   }
 
+  String selectedVar = "Aпартаменты";
+  bool active1 = false;
+  bool active2 = false;
+  bool active3 = false;
+  bool active4 = true;
+
+  setNewChoise(String newSelected) {
+    setState(() {
+      selectedVar = newSelected;
+      switch (newSelected) {
+        case "Апарт-отель":
+          active1 = true;
+          active2 = false;
+          active3 = false;
+          active4 = false;
+          break;
+        case "Доходной дом":
+          active1 = false;
+          active2 = true;
+          active3 = false;
+          active4 = false;
+          break;
+        case "Кондоминимум":
+          active1 = false;
+          active2 = false;
+          active3 = true;
+          active4 = false;
+          break;
+        case "Апартаменты":
+          active1 = false;
+          active2 = false;
+          active3 = false;
+          active4 = true;
+          break;
+      }
+    });
+  }
+
   @override
+
   Widget build(BuildContext context) {
     return _isExpand
         ? Container(
@@ -43,7 +82,7 @@ class _ApartmentTypeState extends State<ApartmentType> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "Апартаменты",
+                              selectedVar,
                               style: RegularText(14, Color(0xff737373)),
                             ),
                             //Text("Введите название жк:", style: RegularText(14, Color(0xff737373)),),
@@ -55,88 +94,111 @@ class _ApartmentTypeState extends State<ApartmentType> {
                                 onPressed: () => changeView())
                           ],
                         ),
-                        Container(
-                          padding: EdgeInsets.only(right: 15, top: 5, bottom: 5),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Апарт-отель",
-                                style: RegularText(14, Color(0xff737373)),
-                              ),
-                              Container(
-                                height: 15,
-                                width: 15,
-                                decoration: BoxDecoration(
-                                  color: Color(0xffE8E8E8),
-                                  borderRadius: BorderRadius.circular(7.5),
+                        GestureDetector(
+                          onTap: ()=> setNewChoise("Апарт-отель"),
+                          child: Container(
+                            padding:
+                                EdgeInsets.only(right: 15, top: 5, bottom: 5),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Апарт-отель",
+                                  style: RegularText(14, Color(0xff737373)),
                                 ),
-                              )
-                            ],
-                          ),
-                        ),
-
-                        SizedBox(height: 8),
-                        Container(
-                          padding: EdgeInsets.only(right: 15, top: 5, bottom: 5),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Дохоной дом",
-                                style: RegularText(14, Color(0xff737373)),
-                              ),
-                              Container(
-                                height: 15,
-                                width: 15,
-                                decoration: BoxDecoration(
-                                  color: Color(0xffE8E8E8),
-                                  borderRadius: BorderRadius.circular(7.5),
-                                ),
-                              )
-                            ],
+                                Container(
+                                  height: 15,
+                                  width: 15,
+                                  decoration: BoxDecoration(
+                                    color: active1
+                                        ? Color(0xff41BFB5)
+                                        : Color(0xffE8E8E8),
+                                    borderRadius: BorderRadius.circular(7.5),
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         ),
                         SizedBox(height: 8),
-                        Container(
-                          padding: EdgeInsets.only(right: 15, top: 5, bottom: 5),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Кондоминимум",
-                                style: RegularText(14, Color(0xff737373)),
-                              ),
-                              Container(
-                                height: 15,
-                                width: 15,
-                                decoration: BoxDecoration(
-                                  color: Color(0xffE8E8E8),
-                                  borderRadius: BorderRadius.circular(7.5),
+                        GestureDetector(
+                          onTap: ()=> setNewChoise("Доходной дом"),
+                          child: Container(
+                            padding:
+                                EdgeInsets.only(right: 15, top: 5, bottom: 5),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Доходной дом",
+                                  style: RegularText(14, Color(0xff737373)),
                                 ),
-                              )
-                            ],
+                                Container(
+                                  height: 15,
+                                  width: 15,
+                                  decoration: BoxDecoration(
+                                    color: active2
+                                        ? Color(0xff41BFB5)
+                                        : Color(0xffE8E8E8),
+                                    borderRadius: BorderRadius.circular(7.5),
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         ),
                         SizedBox(height: 8),
-                        Container(
-                          padding: EdgeInsets.only(right: 15, top: 5, bottom: 5),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Апартаменты",
-                                style: RegularText(14, Color(0xff737373)),
-                              ),
-                              Container(
-                                height: 15,
-                                width: 15,
-                                decoration: BoxDecoration(
-                                  color: Color(0xffE8E8E8),
-                                  borderRadius: BorderRadius.circular(7.5),
+                        GestureDetector(
+                          onTap: ()=> setNewChoise("Кондоминимум"),
+                          child: Container(
+                            padding:
+                                EdgeInsets.only(right: 15, top: 5, bottom: 5),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Кондоминимум",
+                                  style: RegularText(14, Color(0xff737373)),
                                 ),
-                              )
-                            ],
+                                Container(
+                                  height: 15,
+                                  width: 15,
+                                  decoration: BoxDecoration(
+                                    color: active3
+                                        ? Color(0xff41BFB5)
+                                        : Color(0xffE8E8E8),
+                                    borderRadius: BorderRadius.circular(7.5),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                        GestureDetector(
+                          onTap: ()=> setNewChoise("Апартаменты"),
+                          child: Container(
+                            padding:
+                                EdgeInsets.only(right: 15, top: 5, bottom: 5),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Апартаменты",
+                                  style: RegularText(14, Color(0xff737373)),
+                                ),
+                                Container(
+                                  height: 15,
+                                  width: 15,
+                                  decoration: BoxDecoration(
+                                    color: active4
+                                        ? Color(0xff41BFB5)
+                                        : Color(0xffE8E8E8),
+                                    borderRadius: BorderRadius.circular(7.5),
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         ),
                         SizedBox(height: 13),
@@ -152,8 +214,7 @@ class _ApartmentTypeState extends State<ApartmentType> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Назначение ",
-                    style: SemiBoldText(14, Color(0xff2E2E2E))),
+                Text("Назначение ", style: SemiBoldText(14, Color(0xff2E2E2E))),
                 SizedBox(height: 10),
                 GestureDetector(
                   child: Container(
@@ -166,7 +227,7 @@ class _ApartmentTypeState extends State<ApartmentType> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Апартаменты",
+                          selectedVar,
                           style: RegularText(14, Color(0xff737373)),
                         ),
                         Icon(

@@ -27,7 +27,7 @@ class _CostState extends State<Cost> {
                 borderRadius: BorderRadius.circular(10)
             ),
             //child: Text("current adress",style: RegularText(14, Color(0xff737373)),),
-            child: InputField(_inputController, "Цена ₴"),
+            child: InputField(_inputController, "Цена ₽",1),
           ),
         ],
       ),

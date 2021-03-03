@@ -15,7 +15,25 @@ class _BalconyStateState extends State<BalconyState> {
       _isExpand = !_isExpand;
     });
   }
-
+  
+  String selectedVar = "Да";
+  bool active1 = true;
+  bool active2 = false;
+  
+  setNewChoise(String newSelected) {
+    setState(() {
+      selectedVar = newSelected;
+      switch (newSelected) {
+        case "Да":
+          active1 = true;
+          active2 = false;
+          break;
+        case "Нет":
+          active1 = false;
+          active2 = true;
+          break;
+      }});}
+      
   @override
   Widget build(BuildContext context) {
     return _isExpand
@@ -42,7 +60,7 @@ class _BalconyStateState extends State<BalconyState> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Да",
+                       selectedVar,
                         style: RegularText(14, Color(0xff737373)),
                       ),
                       //Text("Введите название жк:", style: RegularText(14, Color(0xff737373)),),
@@ -54,45 +72,55 @@ class _BalconyStateState extends State<BalconyState> {
                           onPressed: () => changeView())
                     ],
                   ),
-                  Container(
-                    padding: EdgeInsets.only(right: 15, top: 5, bottom: 5),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Нет",
-                          style: RegularText(14, Color(0xff737373)),
-                        ),
-                        Container(
-                          height: 15,
-                          width: 15,
-                          decoration: BoxDecoration(
-                            color: Color(0xffE8E8E8),
-                            borderRadius: BorderRadius.circular(7.5),
+                  GestureDetector(
+                    onTap:()=> setNewChoise("Да"),
+                    child: Container(
+                      padding: EdgeInsets.only(right: 15, top: 5, bottom: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Да",
+                            style: RegularText(14, Color(0xff737373)),
                           ),
-                        )
-                      ],
+                          Container(
+                            height: 15,
+                            width: 15,
+                            decoration: BoxDecoration(
+                              color: active1
+                                  ? Color(0xff41BFB5)
+                                  : Color(0xffE8E8E8),
+                              borderRadius: BorderRadius.circular(7.5),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                   SizedBox(height: 13),
-                  Container(
-                    padding: EdgeInsets.only(right: 15, top: 5, bottom: 5),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Да",
-                          style: RegularText(14, Color(0xff737373)),
-                        ),
-                        Container(
-                          height: 15,
-                          width: 15,
-                          decoration: BoxDecoration(
-                            color: Color(0xffE8E8E8),
-                            borderRadius: BorderRadius.circular(7.5),
+                  GestureDetector(
+                    onTap: ()=> setNewChoise("Нет"),
+                    child: Container(
+                      padding: EdgeInsets.only(right: 15, top: 5, bottom: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Нет",
+                            style: RegularText(14, Color(0xff737373)),
                           ),
-                        )
-                      ],
+                          Container(
+                            height: 15,
+                            width: 15,
+                            decoration: BoxDecoration(
+                              color: active2
+                                  ? Color(0xff41BFB5)
+                                  : Color(0xffE8E8E8),
+                              borderRadius: BorderRadius.circular(7.5),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                   SizedBox(height: 13),
@@ -122,7 +150,7 @@ class _BalconyStateState extends State<BalconyState> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Да",
+                    selectedVar,
                     style: RegularText(14, Color(0xff737373)),
                   ),
                   Icon(

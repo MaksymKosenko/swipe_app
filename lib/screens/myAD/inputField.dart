@@ -4,7 +4,8 @@ import 'package:swipe_app/basicThings/basic.dart';
 class InputField extends StatefulWidget {
   final TextEditingController _controller;
   final String _hint;
-  InputField(this._controller, this._hint);
+  final int _maxLines;
+  InputField(this._controller, this._hint, this._maxLines);
   @override
   _InputFieldState createState() => _InputFieldState();
 }
@@ -17,6 +18,7 @@ class _InputFieldState extends State<InputField> {
       //height: double.minPositive,
       alignment: Alignment.centerLeft,
       child: TextField(
+        maxLines: widget._maxLines,
         controller: widget._controller,
         obscureText: false,
         keyboardType: TextInputType.text,//TextInputType.number,

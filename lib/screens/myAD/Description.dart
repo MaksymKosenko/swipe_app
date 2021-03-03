@@ -27,7 +27,7 @@ class _DescriptionState extends State<Description> {
                 borderRadius: BorderRadius.circular(10)
             ),
             //child: Text("current adress",style: RegularText(14, Color(0xff737373)),),
-            child: InputField(_inputController, "Описание вашей недвижимости"),
+            child: InputField(_inputController, "Описание вашей недвижимости",10),
           ),
         ],
       ),

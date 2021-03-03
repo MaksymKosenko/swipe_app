@@ -59,13 +59,13 @@ class _MyNewADState extends State<MyNewAD> {
             SizedBox(height: 13),
             ConnectionType(),
             SizedBox(height: 13),
-            Description(),//TODO поменять бокс описания
+            Description(),
             SizedBox(height: 13),
             Cost(),
             SizedBox(height: 13),
             AgentPayment(),
             SizedBox(height: 13),
-            ADPhotos(),
+            ADPhotos(),//TODO прикрутить фотолоадер
             SizedBox(height: 40),
             Container(padding: EdgeInsets.symmetric(horizontal: 10),
                 child: CustomButton(double.maxFinite, 45, 10, Color(0xff56C486), Color(0xff42C0B5),
