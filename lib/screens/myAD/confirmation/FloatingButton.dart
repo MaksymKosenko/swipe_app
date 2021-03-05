@@ -7,9 +7,10 @@ class FloatingButton extends StatelessWidget {
   final String cost;
   final String icon;
   final Gradient gradient;
+  final Color borderColor;
   const FloatingButton({
     Key key,
-    @required this.title, this.cost, this.icon, this.gradient
+    @required this.title, this.cost, this.icon, this.gradient, this.borderColor
   }) : super(key: key);
 
   @override
@@ -20,6 +21,7 @@ class FloatingButton extends StatelessWidget {
         height: 80,
         decoration: BoxDecoration(
           color: Colors.white,
+          border: Border.all(color: borderColor),
           borderRadius: BorderRadius.circular(15),
           boxShadow: [
             BoxShadow(

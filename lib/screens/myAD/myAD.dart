@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:swipe_app/basicThings/AdDataKeeper.dart';
+import 'package:swipe_app/screens/myAD/confirmation/AdDataKeeper.dart';
 import 'package:swipe_app/basicThings/CustomAppBars.dart';
 import 'package:swipe_app/basicThings/User.dart';
 import 'package:swipe_app/basicThings/basic.dart';
@@ -35,7 +35,7 @@ class _MyNewADState extends State<MyNewAD> {
   Widget build(BuildContext context) {
     final ConcreteUser user = Provider.of<ConcreteUser>(context);
     return Scaffold(
-      appBar: MyCustomAppBar(title: "Новое объявление", height: 82,/*104,*/ backScreen: MaterialPageRoute(builder: (context) => LandingPage()),),
+      appBar: MyCustomAppBar(title: "Новое объявление", height:82,/*104,*/ backScreen: MaterialPageRoute(builder: (context) => LandingPage()),),
       body: Container(
         color: Colors.white,
         child: ListView(

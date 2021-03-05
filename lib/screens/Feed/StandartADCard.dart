@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:swipe_app/basicThings/AdDataKeeper.dart';
+import 'package:swipe_app/screens/myAD/confirmation/AdDataKeeper.dart';
 import 'package:swipe_app/basicThings/basic.dart';
 
 class SAdCard extends StatelessWidget{
