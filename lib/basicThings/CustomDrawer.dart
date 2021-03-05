@@ -4,7 +4,7 @@ import 'package:swipe_app/screens/profile/ProfileScreen.dart';
 import 'package:swipe_app/screens/myAD/myAD.dart';
 
 // ignore: non_constant_identifier_names
-Widget CustomDrawer(context, _userData, ){
+Widget CustomDrawer(context, _userData){
   bool _isImageExist;
   if(_userData['profilePic'] == "null")
     _isImageExist = false;

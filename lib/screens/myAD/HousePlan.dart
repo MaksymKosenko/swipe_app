@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:swipe_app/basicThings/AdDataKeeper.dart';
 import 'package:swipe_app/basicThings/basic.dart';
 
 class HousePlan extends StatefulWidget {
+  final ConcreteAd _concreteAd;
+  HousePlan(this._concreteAd);
   @override
   _HousePlanState createState() => _HousePlanState();
 }
@@ -26,6 +29,7 @@ class _HousePlanState extends State<HousePlan> {
   setNewChoise(String newSelected) {
     setState(() {
       selectedVar = newSelected;
+      widget._concreteAd.setHousePlan(selectedVar);
       switch (newSelected) {
         case "Студия, санузел":
           active1 = true;
@@ -68,6 +72,7 @@ class _HousePlanState extends State<HousePlan> {
 
   @override
   Widget build(BuildContext context) {
+    widget._concreteAd.setHousePlan(selectedVar);
     return _isExpand
         ? Container(
             padding: EdgeInsets.symmetric(horizontal: 10),

@@ -47,6 +47,9 @@ flutter:
   assets:
     - lib/assets/images/Group1.png
     - lib/assets/images/Group30.png
+    - lib/assets/images/icon_arrow.png
+    - lib/assets/images/icon_arrows.png
+    - lib/assets/images/icon_fire.png
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

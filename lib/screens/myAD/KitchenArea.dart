@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:swipe_app/basicThings/AdDataKeeper.dart';
 import 'package:swipe_app/basicThings/basic.dart';
 import 'package:swipe_app/screens/myAD/inputField.dart';
 
 class KitchenArea extends StatefulWidget {
+  final ConcreteAd _concreteAd;
+  KitchenArea(this._concreteAd);
   @override
   _KitchenAreaState createState() => _KitchenAreaState();
 }
@@ -25,7 +28,7 @@ class _KitchenAreaState extends State<KitchenArea> {
                 borderRadius: BorderRadius.circular(10)
             ),
             //child: Text("current adress",style: RegularText(14, Color(0xff737373)),),
-            child: InputField(_inputController, "М\u{00B2}",1),
+            child: InputField(widget._concreteAd, "setKitchenArea", _inputController, "М\u{00B2}",1),
           ),
         ],
       ),

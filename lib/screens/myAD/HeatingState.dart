@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:swipe_app/basicThings/AdDataKeeper.dart';
 import 'package:swipe_app/basicThings/basic.dart';
 
 class HeatingState extends StatefulWidget {
+  final ConcreteAd _concreteAd;
+  HeatingState(this._concreteAd);
   @override
   _HeatingStateState createState() => _HeatingStateState();
 }
@@ -24,6 +27,7 @@ class _HeatingStateState extends State<HeatingState> {
   setNewChoise(String newSelected) {
     setState(() {
       selectedVar = newSelected;
+      widget._concreteAd.setHeatingType(selectedVar);
       switch (newSelected) {
         case "Водяное":
           active1 = true;
@@ -46,6 +50,7 @@ class _HeatingStateState extends State<HeatingState> {
 
   @override
   Widget build(BuildContext context) {
+    widget._concreteAd.setHeatingType(selectedVar);
     return _isExpand
         ? Container(
             padding: EdgeInsets.symmetric(horizontal: 10),

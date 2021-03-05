@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:swipe_app/basicThings/AdDataKeeper.dart';
 import 'package:swipe_app/basicThings/basic.dart';
 
 class BalconyState extends StatefulWidget {
+  final ConcreteAd _concreteAd;
+  BalconyState(this._concreteAd);
   @override
   _BalconyStateState createState() => _BalconyStateState();
 }
@@ -23,6 +26,7 @@ class _BalconyStateState extends State<BalconyState> {
   setNewChoise(String newSelected) {
     setState(() {
       selectedVar = newSelected;
+      widget._concreteAd.setBalconyState(selectedVar);
       switch (newSelected) {
         case "Да":
           active1 = true;
@@ -36,6 +40,7 @@ class _BalconyStateState extends State<BalconyState> {
       
   @override
   Widget build(BuildContext context) {
+    widget._concreteAd.setBalconyState(selectedVar);
     return _isExpand
         ? Container(
       padding: EdgeInsets.symmetric(horizontal: 10),

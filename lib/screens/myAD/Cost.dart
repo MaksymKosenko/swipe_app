@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:swipe_app/basicThings/AdDataKeeper.dart';
 import 'package:swipe_app/basicThings/basic.dart';
 import 'package:swipe_app/screens/myAD/inputField.dart';
 
 class Cost extends StatefulWidget {
+  final ConcreteAd _concreteAd;
+  Cost(this._concreteAd);
   @override
   _CostState createState() => _CostState();
 }
@@ -27,7 +30,7 @@ class _CostState extends State<Cost> {
                 borderRadius: BorderRadius.circular(10)
             ),
             //child: Text("current adress",style: RegularText(14, Color(0xff737373)),),
-            child: InputField(_inputController, "Цена ₽",1),
+            child: InputField(widget._concreteAd, "setCost", _inputController, "Цена ₽",1),
           ),
         ],
       ),

@@ -1,16 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:swipe_app/basicThings/AdDataKeeper.dart';
 import 'package:swipe_app/basicThings/basic.dart';
 
 class InputField extends StatefulWidget {
+  final ConcreteAd _concreteAd;
+  final String _dataForSet;
   final TextEditingController _controller;
   final String _hint;
   final int _maxLines;
-  InputField(this._controller, this._hint, this._maxLines);
+  InputField(this._concreteAd, this._dataForSet, this._controller, this._hint, this._maxLines);
   @override
   _InputFieldState createState() => _InputFieldState();
 }
 
 class _InputFieldState extends State<InputField> {
+  setData(String data){
+    setState(() {
+      switch(data){
+        case "setOverallArea": widget._concreteAd.setOverallArea(widget._controller.text); break;
+        case "setKitchenArea": widget._concreteAd.setKitchenArea(widget._controller.text); break;
+        case "setDescription": widget._concreteAd.setDescription(widget._controller.text); break;
+        case "setCost": widget._concreteAd.setCost(widget._controller.text); break;
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -18,6 +31,10 @@ class _InputFieldState extends State<InputField> {
       //height: double.minPositive,
       alignment: Alignment.centerLeft,
       child: TextField(
+        onEditingComplete:()=> setData(widget._dataForSet),
+        onChanged: setData(widget._dataForSet),
+        onSubmitted: setData(widget._dataForSet),
+
         maxLines: widget._maxLines,
         controller: widget._controller,
         obscureText: false,

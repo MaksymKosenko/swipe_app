@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:swipe_app/basicThings/AdDataKeeper.dart';
 import 'package:swipe_app/basicThings/basic.dart';
 import 'package:swipe_app/screens/myAD/inputField.dart';
 
 class Description extends StatefulWidget {
+  final ConcreteAd _concreteAd;
+  Description(this._concreteAd);
   @override
   _DescriptionState createState() => _DescriptionState();
 }
@@ -27,7 +30,7 @@ class _DescriptionState extends State<Description> {
                 borderRadius: BorderRadius.circular(10)
             ),
             //child: Text("current adress",style: RegularText(14, Color(0xff737373)),),
-            child: InputField(_inputController, "Описание вашей недвижимости",10),
+            child: InputField(widget._concreteAd, "setDescription", _inputController, "Описание вашей недвижимости",10),
           ),
         ],
       ),

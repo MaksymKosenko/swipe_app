@@ -17,7 +17,7 @@ class MyCustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       height: height,
       child: Column(
         children: [
-          Container(height: 44),
+          Container(height: 22, color: Colors.white,), //for ios - 44
           Container(
             height: 60,
             color: Color(0xffF5F5F5),

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:swipe_app/basicThings/AdDataKeeper.dart';
 import 'package:swipe_app/basicThings/basic.dart';
 import 'package:swipe_app/screens/myAD/inputField.dart';
 
 class OverallArea extends StatefulWidget {
+  final ConcreteAd _concreteAd;
+  OverallArea(this._concreteAd);
   @override
   _OverallAreaState createState() => _OverallAreaState();
 }
@@ -26,7 +29,7 @@ class _OverallAreaState extends State<OverallArea> {
                 borderRadius: BorderRadius.circular(10)
             ),
             //child: Text("current adress",style: RegularText(14, Color(0xff737373)),),
-            child: InputField(_inputController, "М\u{00B2}",1),
+            child: InputField(widget._concreteAd, "setOverallArea", _inputController, "М\u{00B2}",1),
           ),
         ],
       ),

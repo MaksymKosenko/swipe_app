@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:swipe_app/basicThings/AdDataKeeper.dart';
 import 'package:swipe_app/basicThings/basic.dart';
 
 class OurDaysState extends StatefulWidget {
+  final ConcreteAd _concreteAd;
+  OurDaysState(this._concreteAd);
   @override
   _OurDaysStateState createState() => _OurDaysStateState();
 }
@@ -26,6 +29,7 @@ class _OurDaysStateState extends State<OurDaysState> {
   setNewChoise(String newSelected) {
     setState(() {
       selectedVar = newSelected;
+      widget._concreteAd.setHouseState(selectedVar);
       switch (newSelected) {
         case "Косметичный ремонт":
           active1 = true;
@@ -68,6 +72,7 @@ class _OurDaysStateState extends State<OurDaysState> {
 
   @override
   Widget build(BuildContext context) {
+    widget._concreteAd.setHouseState(selectedVar);
     return _isExpand
         ? Container(
             padding: EdgeInsets.symmetric(horizontal: 10),

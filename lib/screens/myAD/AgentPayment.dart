@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:swipe_app/basicThings/AdDataKeeper.dart';
 import 'package:swipe_app/basicThings/basic.dart';
 
 class AgentPayment extends StatefulWidget {
+  final ConcreteAd _concreteAd;
+  AgentPayment(this._concreteAd);
   @override
   _AgentPaymentState createState() => _AgentPaymentState();
 }
@@ -24,6 +27,7 @@ class _AgentPaymentState extends State<AgentPayment> {
   setNewChoise(String newSelected) {
     setState(() {
       selectedVar = newSelected;
+      widget._concreteAd.setAgentPayment(selectedVar);
       switch (newSelected) {
         case "5% от суммы":
           active1 = true;
@@ -56,6 +60,7 @@ class _AgentPaymentState extends State<AgentPayment> {
 
   @override
   Widget build(BuildContext context) {
+    widget._concreteAd.setAgentPayment(selectedVar);
     return _isExpand
         ? Container(
       padding: EdgeInsets.symmetric(horizontal: 10),

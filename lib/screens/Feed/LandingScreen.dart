@@ -38,7 +38,7 @@ class LandingPage extends StatelessWidget {
                             padding: EdgeInsets.symmetric(horizontal: 10),
                             child: SAdCard(),
                              ),*/
-                         SAdCard(),
+                        // SAdCard(),
                          SizedBox(height: 20),
                          UpAdCard(),
                         ],

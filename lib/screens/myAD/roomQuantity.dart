@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:swipe_app/basicThings/AdDataKeeper.dart';
 import 'package:swipe_app/basicThings/basic.dart';
 
 class RoomQuantity extends StatefulWidget {
+  final ConcreteAd _concreteAd;
+  RoomQuantity(this._concreteAd);
   @override
   _RoomQuantityState createState() => _RoomQuantityState();
 }
@@ -24,6 +27,7 @@ class _RoomQuantityState extends State<RoomQuantity> {
   setNewChoise(String newSelected) {
     setState(() {
       selectedVar = newSelected;
+      widget._concreteAd.setRoomsQuantity(selectedVar);
       switch (newSelected) {
         case "1 комнатная":
           active1 = true;
@@ -65,6 +69,7 @@ class _RoomQuantityState extends State<RoomQuantity> {
   }
   @override
   Widget build(BuildContext context) {
+    widget._concreteAd.setRoomsQuantity(selectedVar);
     return _isExpand
         ? Container(
       padding: EdgeInsets.symmetric(horizontal: 10),

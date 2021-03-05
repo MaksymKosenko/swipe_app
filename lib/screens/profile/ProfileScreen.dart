@@ -24,6 +24,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+
   CollectionReference _users = FirebaseFirestore.instance.collection('users');
   firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
   File _image;
@@ -32,6 +33,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future getImage(source) async {
     final pickedFile = await picker.getImage(source: source);//ImageSource.gallery);//ImageSource.camera);
     setState(() {
+      _isNewImage = true;
       if (pickedFile != null) {
         _image = File(pickedFile.path);
         storage
@@ -83,6 +85,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
     });}
 
+    bool _isNewImage = false;
   Widget build(BuildContext context) {
     bool _isImageExist;
     if(widget._userData['profilePic'] == "null")
@@ -93,7 +96,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       backgroundColor: Colors.white,
       appBar: MyCustomAppBar(
         title: "Личный кабинет",
-        height: 104,//64
+        height: 82,//104,//64
         backScreen: MaterialPageRoute(builder: (context) => LandingPage()),
       ),
       body: ListView(
@@ -108,13 +111,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   width: 80,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    image: _isImageExist ? DecorationImage(image: NetworkImage(widget._userData['profilePic']), fit: BoxFit.fill) : null,
+                    image: _isImageExist ? DecorationImage(image: _isNewImage ? FileImage(_image) : NetworkImage(widget._userData['profilePic']), fit: BoxFit.fill) : null,
                       borderRadius: BorderRadius.circular(40),
                       border: Border.all(color: Color(0xff969696))),
                   child: _isImageExist ? null : Icon(CupertinoIcons.plus,size: 32,)),
               onTap: (){choosePicker();},
             ),//Text("no")),
-            //TODO сделать вместо надписей картинку/+
             SizedBox(width: 20),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,

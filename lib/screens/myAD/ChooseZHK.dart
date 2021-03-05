@@ -1,9 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:swipe_app/basicThings/AdDataKeeper.dart';
 import 'package:swipe_app/basicThings/basic.dart';
 import 'package:swipe_app/screens/myAD/SearchField.dart';
 
 class ZhK extends StatefulWidget {
+  final ConcreteAd _concreteAd;
+  ZhK(this._concreteAd);
+
   @override
   _ZhKState createState() => _ZhKState();
 }
@@ -25,12 +29,14 @@ class _ZhKState extends State<ZhK> {
   setNewCurrentZhK(String newCurrent){
     setState(() {
       currentZhK = newCurrent;
+      widget._concreteAd.setChosenZhK(currentZhK);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     TextEditingController _zhkNameController = TextEditingController();
+    widget._concreteAd.setChosenZhK(currentZhK);
     return _isExpand
         ? Container(
             padding: EdgeInsets.symmetric(horizontal: 10),

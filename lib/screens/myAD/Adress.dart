@@ -1,14 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:swipe_app/basicThings/AdDataKeeper.dart';
 import 'package:swipe_app/basicThings/basic.dart';
 
 class Adress extends StatefulWidget {
+  final ConcreteAd _concreteAd;
+  Adress(this._concreteAd);
+
   @override
   _AdressState createState() => _AdressState();
 }
 
 class _AdressState extends State<Adress> {
+  String _currentAdress = "Улица х дом у";
+  setAdress(){
+    setState(() {
+      print("map screen...");
+      widget._concreteAd.setLocation(_currentAdress);
+    });
+  }
   @override
   Widget build(BuildContext context) {
+    widget._concreteAd.setLocation(_currentAdress);
     return   Container(
       padding: EdgeInsets.symmetric(horizontal: 10),
       child: Column(
@@ -17,13 +29,16 @@ class _AdressState extends State<Adress> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text("Адрес", style: SemiBoldText(14, Color(0xff2E2E2E))),
-              Container(
-                child: Row(
-                  children: [
-                    Text("Указать на карте", style: SemiBoldText(14, Color(0xff4BC19D))),
-                    SizedBox(width: 10),
-                    Icon(Icons.map_outlined,color: Color(0xff4BC19D)),
-                  ],
+              GestureDetector(
+                onTap: ()=> setAdress(),
+                child: Container(
+                  child: Row(
+                    children: [
+                      Text("Указать на карте", style: SemiBoldText(14, Color(0xff4BC19D))),
+                      SizedBox(width: 10),
+                      Icon(Icons.map_outlined,color: Color(0xff4BC19D)),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -36,7 +51,7 @@ class _AdressState extends State<Adress> {
                 color: Color(0x20DADADA),
                 borderRadius: BorderRadius.circular(10)
             ),
-            child: Text("current adress",style: RegularText(14, Color(0xff737373)),),
+            child: Text(_currentAdress,style: RegularText(14, Color(0xff737373)),),
           ),
         ],
       ),
