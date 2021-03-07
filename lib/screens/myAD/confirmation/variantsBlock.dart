@@ -1,7 +1,15 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:swipe_app/basicThings/basic.dart';
+import 'package:swipe_app/screens/Feed/StandartADCard.dart';
+import 'package:swipe_app/screens/myAD/confirmation/AdDataKeeper.dart';
+import 'package:swipe_app/screens/myAD/confirmation/ConfirmingAD.dart';
 import 'package:swipe_app/screens/myAD/confirmation/DecorationVariants.dart';
 
 class VariantsBlock extends StatefulWidget {
+  final ConcreteAd _concreteAd;
+
+  VariantsBlock(this._concreteAd);
   @override
   _VariantsBlockState createState() => _VariantsBlockState();
 }
@@ -16,6 +24,7 @@ class _VariantsBlockState extends State<VariantsBlock> {
   bool phrase7 = false;
   bool phrase8 = false;
 
+
   void setActivePhrase(String phrase) {
     switch (phrase) {
       case "phrase1":
@@ -27,6 +36,8 @@ class _VariantsBlockState extends State<VariantsBlock> {
         phrase6 = false;
         phrase7 = false;
         phrase8 = false;
+        widget._concreteAd.setActivePhrase("phrase1");
+       // SAdCard(widget._concreteAd).createState();
         break;
       case "phrase2":
         phrase1 = false;
@@ -37,6 +48,8 @@ class _VariantsBlockState extends State<VariantsBlock> {
         phrase6 = false;
         phrase7 = false;
         phrase8 = false;
+        widget._concreteAd.setActivePhrase("phrase2");
+      //  SAdCard(widget._concreteAd).createState();
         break;
       case "phrase3":
         phrase1 = false;
@@ -47,6 +60,8 @@ class _VariantsBlockState extends State<VariantsBlock> {
         phrase6 = false;
         phrase7 = false;
         phrase8 = false;
+        widget._concreteAd.setActivePhrase("phrase3");
+       // SAdCard(widget._concreteAd).createState();
         break;
       case "phrase4":
         phrase1 = false;
@@ -57,6 +72,8 @@ class _VariantsBlockState extends State<VariantsBlock> {
         phrase6 = false;
         phrase7 = false;
         phrase8 = false;
+        widget._concreteAd.setActivePhrase("phrase4");
+      //  SAdCard(widget._concreteAd).createState();
         break;
       case "phrase5":
         phrase1 = false;
@@ -67,6 +84,8 @@ class _VariantsBlockState extends State<VariantsBlock> {
         phrase6 = false;
         phrase7 = false;
         phrase8 = false;
+        widget._concreteAd.setActivePhrase("phrase5");
+      //  SAdCard(widget._concreteAd).createState();
         break;
       case "phrase6":
         phrase1 = false;
@@ -77,6 +96,8 @@ class _VariantsBlockState extends State<VariantsBlock> {
         phrase6 = true;
         phrase7 = false;
         phrase8 = false;
+        widget._concreteAd.setActivePhrase("phrase6");
+      //  SAdCard(widget._concreteAd).createState();
         break;
       case "phrase7":
         phrase1 = false;
@@ -87,6 +108,8 @@ class _VariantsBlockState extends State<VariantsBlock> {
         phrase6 = false;
         phrase7 = true;
         phrase8 = false;
+        widget._concreteAd.setActivePhrase("phrase7");
+      //  SAdCard(widget._concreteAd).createState();
         break;
       case "phrase8":
         phrase1 = false;
@@ -97,10 +120,23 @@ class _VariantsBlockState extends State<VariantsBlock> {
         phrase6 = false;
         phrase7 = false;
         phrase8 = true;
+        widget._concreteAd.setActivePhrase("phrase8");
+      //  SAdCard(widget._concreteAd).createState();
         break;
+
+      case "null":
+        phrase1 = false;
+        phrase2 = false;
+        phrase3 = false;
+        phrase4 = false;
+        phrase5 = false;
+        phrase6 = false;
+        phrase7 = false;
+        phrase8 = false;
+        widget._concreteAd.setActivePhrase("null");
     }
-    print(
-        "$phrase1, $phrase2, $phrase3, $phrase4, $phrase5, $phrase6, $phrase7, $phrase8");
+   // print("$phrase1, $phrase2, $phrase3, $phrase4, $phrase5, $phrase6, $phrase7, $phrase8");
+    //print("chosen phrase in Variants ${widget._concreteAd.chosenPhrase}");
   }
 
   @override
@@ -210,5 +246,146 @@ class _VariantsBlockState extends State<VariantsBlock> {
                     text: "Отдельная парковка", color: Color(0xffE8E8E8))),
       ],
     );
+  }
+
+}
+
+class AddPhrase extends StatefulWidget {
+  final ConcreteAd _concreteAd;
+  dynamic _confirmADState;
+  AddPhrase(this._concreteAd, this._confirmADState);
+  @override
+  _AddPhraseState createState() => _AddPhraseState();
+}
+
+class _AddPhraseState extends State<AddPhrase> {
+  bool activeOption1 = false;
+  changeView(){
+    setState(() {
+      if (widget._concreteAd.chosenPhrase == "null"){
+        activeOption1 = false;
+        widget._confirmADState.setState((){
+          print("state updated to false");
+        });
+      }
+      else{
+        activeOption1 = true;
+        widget._confirmADState.setState((){
+          print("state updated to true");
+        });
+        //widget.createState();
+      }
+      //print("activeOption1 $activeOption1");
+    });
+  }
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+        onTap: () {
+          if(activeOption1 == false){
+            widget._concreteAd.setNullPhrases();
+            showPhrases();
+          }
+          if(activeOption1 == true)
+            setState(() {
+              activeOption1 = false;
+              widget._concreteAd.setNullPhrases();
+              widget._confirmADState.setState((){});
+            });
+
+         // widget._concreteAd.setNullPhrases();
+          //showPhrases();
+
+        },
+        child: Row(
+          children: [
+            Container(
+              height: 15,
+              width: 15,
+              decoration: BoxDecoration(
+                color: activeOption1
+                    ? Color(0xff41BFB5)
+                    : Color(0xffE8E8E8),
+                borderRadius: BorderRadius.circular(7.5),
+              ),
+            ),
+            SizedBox(width: 8),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Добавить фразу",
+                  style: MediumText(14, Color(0xff374252)),
+                ),
+                SizedBox(height: 5),
+                Text(
+                  "199₴/мес",
+                  style: MediumText(14, Color(0xff8F969F)),
+                ),
+              ],
+            ),
+          ],
+        ));
+  }
+  Future<void> showPhrases() {
+    return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return Dialog(
+            insetPadding:
+            EdgeInsets.only(left: 10, right: 10, top: 56, bottom: 36),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0)),
+            //elevation: 0,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: 28,
+                      height: 20,
+                    ),
+                    Text(
+                      "Выбор фразы",
+                      style: MediumText(16, Colors.black),
+                      textAlign: TextAlign.center,
+                    ),
+                    IconButton(
+                      icon: Icon(CupertinoIcons.clear_thick),
+                      iconSize: 20,
+                      onPressed: (){widget._concreteAd.setNullPhrases();//SAdCard(widget._concreteAd).createState();
+                      widget._concreteAd.setActivePhrase("null");
+                      SAdCard(widget._concreteAd).createState();
+                     // SAdCard(widget._concreteAd).createState();
+                        changeView(); Navigator.of(context).pop();} ,
+                    ),
+                  ],
+                ),
+                // SizedBox(height: 40),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15),
+                  child: GestureDetector(
+                      child: VariantsBlock(widget._concreteAd)),
+                ),
+                GestureDetector(
+                  child: Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: CustomButton(330, 45, 10, Color(0xff56C486), Color(0xff42C0B5),
+                        Alignment.centerLeft, Alignment.centerRight, "Подтвердить", SemiBoldText(14, Colors.white), Colors.transparent),
+                  ),
+                  onTap: () {
+                    changeView();
+                    SAdCard(widget._concreteAd).createState();
+                    Navigator.of(context).pop();
+                    //SAdCard(widget._concreteAd).createState();
+                  },
+                )
+              ],
+            ),
+          );
+        });
   }
 }

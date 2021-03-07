@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:swipe_app/screens/myAD/confirmation/FloatingButton.dart';
 
 class IconsVariant extends StatefulWidget {
+  dynamic _confirmADState;
+  IconsVariant(this._confirmADState);
   @override
   _IconsVariantState createState() => _IconsVariantState();
 }
@@ -10,10 +12,18 @@ class _IconsVariantState extends State<IconsVariant> {
   changeChosen(String activeIcon){
     setState(() {
       switch(activeIcon){
-        case "active1": active1 = !active1; active3 =false; break;//true; active3 = false; break;
-        case "active2": active2 = !active2; active3 =false; break;//true; active3 = false; break;
-        case "active3": active3 = !active3; if(active3 == true){active2 = false; active1 = false;}break;//false; active2 = false; active3 = true; break;
+        case "active1":
+          active1 = !active1; active3 =false ;break;
+        case "active2":
+          active2 = !active2; active3 =false ;break;//true; active3 = false; break;
+        case "active3":
+          active3 = !active3; if(active3 == true){active2 = false; active1 = false; } break;
       }
+      widget._confirmADState.setState((){
+        widget._confirmADState.icon1 = active1;
+        widget._confirmADState.icon2 = active2;
+        widget._confirmADState.icon3 = active3;
+      });
     });
   }
   bool active1 = false;
