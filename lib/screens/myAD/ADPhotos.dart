@@ -35,6 +35,7 @@ class _ADPhotosState extends State<ADPhotos> {
             ImageSource.gallery); //ImageSource.gallery);//ImageSource.camera);
       if (pickedFile != null) {
           _image = File(pickedFile.path);
+          widget._concreteAd.setOnDevice(_image);
           storage.ref().child(widget._user.phone).child(type).putFile(_image);
             downloadURL(type);
           setState(() {

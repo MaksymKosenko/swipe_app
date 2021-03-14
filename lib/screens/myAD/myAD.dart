@@ -75,7 +75,7 @@ class _MyNewADState extends State<MyNewAD> {
             SizedBox(height: 40),
             Container(padding: EdgeInsets.symmetric(horizontal: 10),
                 child: GestureDetector(
-                  onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context) => ConfirmAD(_concreteAd))),
+                  onTap: ()=> Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> ConfirmAD(_concreteAd))),//Navigator.push(context, MaterialPageRoute(builder: (context) => ConfirmAD(_concreteAd))),
                   child: CustomButton(double.maxFinite, 45, 10, Color(0xff56C486), Color(0xff42C0B5),
                   Alignment.centerLeft, Alignment.centerRight, "Продолжить", SemiBoldText(14, Colors.white), Colors.transparent),
                 )),

@@ -1,6 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-class ConcreteAd {
+import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+class ConcreteAd {
+  File onDevicePhoto;
+  setOnDevice(file){
+    this.onDevicePhoto = file;
+  }
   String _location;
   String _chosenZhK;
   String _apartmentsType;
@@ -37,6 +43,20 @@ class ConcreteAd {
   bool icon2 = false;
   bool icon3 = false;
 
+  int minutes;
+  int hours;
+  String day;
+  String month;
+
+  Timestamp _dateTime;
+
+  setHoursMinsDay(int hours,int min, String day, String month, Timestamp dateTime){
+    this.hours =hours;
+    this.minutes = min;
+    this.day = day;
+    this.month = month;
+    this._dateTime = dateTime;
+  }
 
   void setTextColor(String option){
     switch(option){
@@ -288,6 +308,47 @@ class ConcreteAd {
 
   CollectionReference _ads = FirebaseFirestore.instance.collection('ads');
   CollectionReference _users = FirebaseFirestore.instance.collection('users');
+
+  firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
+
+  Future<void> addAdPhoto(String phone, String id) async{
+try{
+  await firebase_storage.FirebaseStorage.instance
+      .ref('$phone/ads/houseImage/$id.jpg')
+      .putFile(onDevicePhoto);
+  getDownloadUrl(phone, id);
+}catch (e) {
+  print(e);
+  // e.g, e.code == 'canceled'
+}
+   //storage.ref("$phone/ads/houseImage/$id.jpg").putFile(onDevicePhoto);
+    /*
+    if(downloadMainURL != null){
+      print("yep");
+      setMainPhotoPath(downloadMainURL);
+      updPhoto(id);
+    }
+*/
+  }
+  Future<void> getDownloadUrl(String phone, String id) async{
+    String downloadMainURL =await firebase_storage
+        .FirebaseStorage.instance
+        .ref('$phone/ads/houseImage/')//ads/houseImage/$id.jpg')
+        .child('$id.jpg')
+        .getDownloadURL();
+
+    if(downloadMainURL != null){
+      setMainPhotoPath(downloadMainURL);
+      updPhoto(id);
+    }
+  }
+
+  Future<void> updPhoto(String id){
+    return _ads.doc(id).update({
+      'mainPhotoPath': _mainPhotoPath
+    }).then((value) {print("photo updated");})
+        .catchError((error) => print("Failed toud photo: $error"));
+  }
   Future<void> addMyAD(String phone){
     return _ads
     .add({
@@ -316,8 +377,14 @@ class ConcreteAd {
       'icon1': icon1,
       'icon2': icon2,
       'icon3': icon3,
+
+      'hours' : hours,
+      'minutes': minutes,
+      'day': day,
+      'month': month,
+      'dateTime': _dateTime,
     })
-    .then((value) {print("ads added"); addToMyCollection(value.id, phone);})
+    .then((value) {print("ads added"); addToMyCollection(value.id, phone);addAdPhoto(phone, value.id);})
     .catchError((error) => print("Failed to add asd: $error"));
   }
 
@@ -336,5 +403,40 @@ class ConcreteAd {
    // })
         .then((value) => print("toUser add added"))
         .catchError((error) => print("Failed to add Agent: $error"));
+  }
+
+  ConcreteAd();
+  ConcreteAd.fromFirestore(data){
+    _location = data['location'];
+    _chosenZhK = data['chosenZhK'];
+    _apartmentsType = data['apartmentsType'];
+    _roomsQuantity = data['roomsQuantity'];
+    _housePlan = data['housePlan'];
+    _houseState = data['houseState'];
+    _overallArea = data['overallArea'];
+    _kitchenArea = data['kitchenArea'];
+    _balconyState = data['balconyState'];
+    _heatingType = data['heatingType'];
+    _paymentType = data['paymentType'];
+
+    _connectionType = data['connectionType'];
+    _description = data['description'];
+    _cost = data['cost'];
+    _agentPayment = data['agentPayment'];
+    _mainPhotoPath = data['mainPhotoPath'];
+    _additionalPhotosPath = data['additionalPhotosPath'];
+    chosenPhrase = data['chosenPhrase'];
+    textColor1 = data['textColor1'];
+    textColor2 = data['textColor2'];
+
+    icon1 = data['icon1'];
+    icon2 = data['icon2'];
+    icon3 = data['icon3'];
+
+    hours = data['hours'];
+    minutes = data['minutes'];
+    day = data['day'];
+    month = data['month'];
+    _dateTime = data['dateTime'];
   }
 }

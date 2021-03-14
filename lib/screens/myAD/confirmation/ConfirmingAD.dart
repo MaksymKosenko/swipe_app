@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -32,8 +33,8 @@ class _ConfirmADState extends State<ConfirmAD> {
 
   void setIcon(){
     widget._concreteAd.icon1 = icon1;
-    widget._concreteAd.icon1 = icon2;
-    widget._concreteAd.icon1 = icon3;
+    widget._concreteAd.icon2 = icon2;
+    widget._concreteAd.icon3 = icon3;
   }
   int cashToPay = 0;
   changeView(String option) {
@@ -83,6 +84,21 @@ class _ConfirmADState extends State<ConfirmAD> {
       cashToPay = cashToPay + 599;
 
     setIcon();
+
+    var hours = TimeOfDay.now().hour +2;
+    var min = TimeOfDay.now().minute;
+    String day = "";
+    String month = "";
+    if(DateTime.now().day < 10){
+      day = day + "0${DateTime.now().day}";
+    }else
+      day = day + "${DateTime.now().day}";
+
+    if(DateTime.now().month < 10){
+      month = month + " 0${DateTime.now().month}";
+    }else
+      month = month + " ${DateTime.now().month}";
+    //day = day + " ${DateTime.now().year}";
 
     return Scaffold(
       appBar: MyCustomAppBar(
@@ -177,8 +193,10 @@ class _ConfirmADState extends State<ConfirmAD> {
                     padding: const EdgeInsets.symmetric(horizontal: 40),
                     child: GestureDetector(
                       onTap: ()=> {
+                        widget._concreteAd.setHoursMinsDay(hours, min, day, month, Timestamp.now()),
                         widget._concreteAd.addMyAD(user.phone),
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=> LandingPage())),
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> LandingPage())),
+                        //Navigator.push(context, MaterialPageRoute(builder: (context)=> LandingPage())),
                       },
                       child: CustomButton(280, 60, 35,
                           Color(0xff56C385), Color(0xff41BFB5),
@@ -190,7 +208,9 @@ class _ConfirmADState extends State<ConfirmAD> {
                   TextButton(
                     onPressed: (){
                       widget._concreteAd.addMyAD(user.phone);
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> LandingPage()));},
+                      widget._concreteAd.setHoursMinsDay(hours, min, day, month,Timestamp.now());
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> LandingPage()));},
+                      //Navigator.push(context, MaterialPageRoute(builder: (context)=> LandingPage()));},
                     child: Text("Разместить без оплаты",
                         style: MediumText(14, Color(0xff636363)),
                         textAlign: TextAlign.center),

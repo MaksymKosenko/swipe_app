@@ -3,12 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:swipe_app/basicThings/User.dart';
 import 'package:swipe_app/basicThings/CustomDrawer.dart';
+import 'package:swipe_app/screens/Feed/AdsList.dart';
 import 'package:swipe_app/screens/Feed/FeedAppBar.dart';
 import 'package:swipe_app/screens/Feed/CustomFilters.dart';
-import 'package:swipe_app/screens/Feed/StandartADCard.dart';
 import 'package:swipe_app/screens/Feed/UpgradedADCard.dart';
 
-class LandingPage extends StatelessWidget {
+class LandingPage extends StatefulWidget {
+  @override
+  _LandingPageState createState() => _LandingPageState();
+}
+
+class _LandingPageState extends State<LandingPage> {
   var _userFromFirestoreData;
 
   @override
@@ -16,8 +21,6 @@ class LandingPage extends StatelessWidget {
     final ConcreteUser user = Provider.of<ConcreteUser>(context);
     final String _documentId = user.phone;
     CollectionReference _users = FirebaseFirestore.instance.collection('users');
-   // DocumentReference _agent = _users.doc(_documentId).collection("user_collections").doc("Agent");
-   // var test = _agent.get();
     return FutureBuilder<DocumentSnapshot>(
         future: _users.doc(_documentId).get(),
         builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
@@ -27,22 +30,23 @@ class LandingPage extends StatelessWidget {
                 return Scaffold(
                     drawer: CustomDrawer(context, _userFromFirestoreData),
                     appBar: CustomFeedAppBar(),
-                    body: Container(
-                      color: Colors.white,
-                      child: Column(
-                        children: [
-                          SizedBox(height: 12),
-                          CustomFilters(),
-                          SizedBox(height: 20),
-                         /* Container(
-                            padding: EdgeInsets.symmetric(horizontal: 10),
-                            child: SAdCard(),
-                             ),*/
-                        // SAdCard(),
-                         SizedBox(height: 20),
-                         UpAdCard(),
-                        ],
-                      ),
+                    backgroundColor: Colors.white,
+                    body: Column(
+                      children: [
+                        SizedBox(height: 12),
+                        CustomFilters(),
+                        SizedBox(height: 20),
+                        AdsList(),
+
+                       //ListView.builder(itemBuilder: itemBuilder)
+                       /* Container(
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          child: SAdCard(),
+                           ),
+                      // SAdCard(),
+                       SizedBox(height: 20),
+                       UpAdCard(),*/
+                      ],
                     ),
                 );
               }
