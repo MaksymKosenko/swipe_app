@@ -36,6 +36,16 @@ class _UpAdCardState extends State<UpAdCard> {
         isPhrase = true;
       });
     }
+
+    var hours = widget._concreteAd.hours.toString();
+    var minutes = widget._concreteAd.minutes.toString();
+
+    if(widget._concreteAd.hours < 10)
+      hours = "0$hours";
+
+    if(widget._concreteAd.minutes < 10)
+      minutes = "0$minutes";
+
     //String url = "https://images.unsplash.com/photo-1527030280862-64139fba04ca?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=906&q=80";
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 5),
@@ -100,12 +110,13 @@ class _UpAdCardState extends State<UpAdCard> {
 
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
+
                     children: [
-                      SizedBox(height: 6),
+                      //SizedBox(height: 6),
                       Text("${widget._concreteAd.roomsQuantity}, ${widget._concreteAd.overallArea}, 1/8 эт.", style:  SemiBoldText(14, Colors.black),),
 
-                      SizedBox(height: 7),
-                      Text("${widget._concreteAd.day} ${widget._concreteAd.month} в ${widget._concreteAd.hours} : ${widget._concreteAd.minutes}",style: MediumText(11, Color(0xff27AEA4))),
+                      SizedBox(height: 22),
+                      Text("${widget._concreteAd.day} ${widget._concreteAd.month} в $hours : $minutes",style: MediumText(11, Color(0xff27AEA4))),
                     ],
                   ),
                 ],

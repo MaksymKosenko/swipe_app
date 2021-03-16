@@ -32,7 +32,8 @@ class _CustomFiltersState extends State<CustomFilters> {
   }
 
   Widget choosedFilter(String text, String currentState){
-    return Container(padding: EdgeInsets.symmetric(horizontal: 15),
+    return Container(
+        padding: EdgeInsets.symmetric(horizontal: 15),
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.centerLeft,
@@ -41,7 +42,7 @@ class _CustomFiltersState extends State<CustomFilters> {
           ),
           borderRadius: BorderRadius.circular(10),
         ),
-        child: TextButton(onPressed:()=> setActive(currentState), child: Text(text, style: RegularText(14, Colors.white),)));
+        child: TextButton(onPressed:()=> setActive(currentState), child: Text(text, style: RegularText(14, Colors.white),overflow: TextOverflow.visible))/*Text(text, style: RegularText(14, Colors.white),))  */);
   }
 
   Widget unChoosedFilter(String text, String currentState){
@@ -51,7 +52,7 @@ class _CustomFiltersState extends State<CustomFilters> {
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: Color(0xff27AEA4)),
         ),
-        child: TextButton(onPressed:()=>setActive(currentState), child: Text(text, style: RegularText(14, Color(0xff27AEA4)),)));
+        child: TextButton(onPressed:()=>setActive(currentState), child: Text(text, style: RegularText(14, Color(0xff27AEA4)),overflow: TextOverflow.visible)));
   }
 
   void setActive(String currentState){

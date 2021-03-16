@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:swipe_app/basicThings/Cropper.dart';
 import 'package:swipe_app/basicThings/User.dart';
 import 'package:swipe_app/basicThings/CustomAppBars.dart';
 import 'package:swipe_app/basicThings/basic.dart';
@@ -36,6 +37,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
       _isNewImage = true;
       if (pickedFile != null) {
         _image = File(pickedFile.path);
+
+        print("before croper");
+        Navigator.push(context, MaterialPageRoute(builder: (context) => Cropper("testing",_image)));
+       //return Cropper("testing",_image);
+        print("after croper");
         storage
             .ref()
             .child(widget._userData['phone'])
@@ -115,7 +121,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       borderRadius: BorderRadius.circular(40),
                       border: Border.all(color: Color(0xff969696))),
                   child: _isImageExist ? null : Icon(CupertinoIcons.plus,size: 32,)),
-              onTap: (){choosePicker();},
+              onTap: (){ choosePicker();},
             ),//Text("no")),
             SizedBox(width: 20),
             Column(

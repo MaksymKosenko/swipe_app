@@ -11,7 +11,7 @@ Widget CustomDrawer(context, _userData){
   else  _isImageExist = true;
   return Container(
     width: 280,
-    height: 812,
+    height: 1000,//812,
     padding: EdgeInsets.symmetric(horizontal: 20),
     decoration: BoxDecoration(
       gradient: LinearGradient(

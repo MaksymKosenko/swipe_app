@@ -85,12 +85,13 @@ class _AdsListState extends State<AdsList> {
                     counter0++;
 
                     if(counter0 <= data0.docs.length-1){
+                      //return Text(snapshot.data[0].docs[counter0].id);
                       return Container(alignment: Alignment.center,child: UpAdCard(ConcreteAd.fromFirestore(snapshot.data[0].docs[counter0])));
                     }
                     else if(counter1 <= data1.docs.length){
                       //print("else goes on");
                       counter1++;
-                      //return Text(snapshot.data[1].docs[counter1].id);
+                     // return Text(snapshot.data[1].docs[counter1].id);
                       return Container(alignment: Alignment.center,child: AdCard(ConcreteAd.fromFirestore(snapshot.data[1].docs[counter1])));
                     }
 
