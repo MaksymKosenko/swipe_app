@@ -1,17 +1,18 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:swipe_app/global/user.dart';
+import 'package:swipe_app/screens/sing_in_up/verification_screen.dart';
 import 'package:swipe_app/services/auth.dart';
-import 'package:swipe_app/basicThings/User.dart';
-import 'package:swipe_app/screens/singInUp/verificationScreen.dart';
+
 
 class UserActions {
   final String _name;
   final String _surName;
   final String _email;
   final String _phone;
-  final BuildContext context;
-  UserActions(this._name, this._surName, this._email, this._phone, this.context);
+  final BuildContext _context;
+  UserActions(this._name, this._surName, this._email, this._phone, this._context);
 
   String status;
   CollectionReference _users = FirebaseFirestore.instance.collection('users');
@@ -77,7 +78,7 @@ class UserActions {
         print(value.exists);
         if(value.exists == true){
           print("user already exist");
-          showError("user already exist", context);
+          showError("user already exist", _context);
         }
         if(value.exists == false){
           verifyPhone();
@@ -98,7 +99,7 @@ class UserActions {
       verificationFailed: (FirebaseAuthException e) {
         if (e.code == 'invalid-phone-number') {
           print('The provided phone number is not valid.');
-          showError("invalid phone number", context);
+          showError("invalid phone number", _context);
         }
       },
       codeSent: (String verificationId, int resendToken) async{
@@ -107,8 +108,8 @@ class UserActions {
         addAgentData();
         addNotificationsData();
         addSubscribeData();
-        Navigator.push(context, MaterialPageRoute(
-            builder: (context) => VerificationScreen(_phone)));
+        Navigator.push(_context, MaterialPageRoute(
+            builder: (context) => VerificationScreen()));
       },
       codeAutoRetrievalTimeout: (String verificationId) {
         currentCode = verificationId;

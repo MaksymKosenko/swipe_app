@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:swipe_app/basicThings/User.dart';
-import 'package:swipe_app/screens/singInUp/verificationScreen.dart';
+import 'package:swipe_app/global/user.dart';
+import 'package:swipe_app/screens/sing_in_up/verification_screen.dart';
 
 String currentCode;
 
@@ -14,7 +14,6 @@ class AuthService {
   isExist(String phone, context){
     return _users.doc(phone).get()
         .then((value){
-      //print(value.exists);
       if(value.exists == true){
         checkPhone(phone, context);
       }
@@ -43,31 +42,13 @@ class AuthService {
       codeSent: (String verificationId, int resendToken) async{
         currentCode = verificationId;
         Navigator.push(context, MaterialPageRoute(
-            builder: (context) => VerificationScreen(phone)));
+            builder: (context) => VerificationScreen()));
       },
       codeAutoRetrievalTimeout: (String verificationId) {
         currentCode = verificationId;
       },
     );
   }
-/*
-  Future codeCompare(String smsCode) async{
-    try {
-      await _firebaseAuth.signInWithCredential(PhoneAuthProvider.credential(
-          verificationId: currentCode,
-          smsCode: smsCode))
-          .then((value) async{
-        if(value.user!=null){
-          print(value.user.uid);
-          return ConcreteUser.fromFirebase(value.user);
-        }
-      });
-    }catch (e){
-      print("We got some troubles!");
-      print(e);
-    }
-  }
-*/
 
   Stream<ConcreteUser> get currentUser{
     return _firebaseAuth.authStateChanges()

@@ -1,10 +1,13 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:swipe_app/basicThings/User.dart';
-import 'package:swipe_app/basicThings/basic.dart';
-import 'package:swipe_app/screens/singInUp/registrationScreen.dart';
-import 'package:swipe_app/screens/singInUp/logInScreen.dart';
+import 'package:swipe_app/global/custom_widgets/custom_button.dart';
+import 'package:swipe_app/global/custom_widgets/logo.dart';
+import 'package:swipe_app/global/style/gradients.dart';
+import 'package:swipe_app/global/style/text_styles.dart';
+import 'package:swipe_app/global/user.dart';
+import 'package:swipe_app/screens/sing_in_up/logIn_screen.dart';
+import 'package:swipe_app/screens/sing_in_up/registration_screen.dart';
 import 'package:swipe_app/services/auth.dart';
 
 void main() async{
@@ -32,25 +35,20 @@ class HomePage extends StatelessWidget {
       child: Column(
         children: [
           SizedBox(height: 166),
-          //Image.asset('lib/assets/images/Group1.png', width: 220, height: 53),
           Logo(41.62, 62, 42, 15),
           SizedBox(height: 40),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 85),
             child: Column(
               children: [
-                //Regular_Text(14, Colors.white, "Открой доступ к самой", TextAlign.center),
                 Text("Открой доступ к самой", style: RegularText(14, Colors.white)),
-                //Regular_Text(14, Colors.white, "полной базе рынка", TextAlign.center),
                 Text("полной базе рынка", style: RegularText(14, Colors.white)),
-                //Regular_Text(14, Colors.white, "квартир в Сочи!", TextAlign.center),
                 Text("квартир в Сочи!", style: RegularText(14, Colors.white)),
               ],
             ),
           ),
           SizedBox(height: 50.5),
           GestureDetector(
-            //Color(0xff41BFB5)
             child: CustomButton(253, 50, 10, Color(0xff56C385), Color(0xff41BFB5), Alignment.topCenter, Alignment.bottomCenter, "Войти", SemiBoldText(16, Colors.white), Colors.transparent),
             onTap: () => Navigator.push(context,
                 MaterialPageRoute(builder: (context) => LoginScreen())),
@@ -62,7 +60,6 @@ class HomePage extends StatelessWidget {
             child: Row(
               children: [
                 Text("Впервые у нас?", style: RegularText(13, Colors.white60)),
-                //Regular_Text(13, Colors.white60, "Впервые у нас?", TextAlign.center),
                 SizedBox(width: 10),
                 GestureDetector(
                   child: Text("Регистрация", style: SemiBoldText(13, Colors.white)),
