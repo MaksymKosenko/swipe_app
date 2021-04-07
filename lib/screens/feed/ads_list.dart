@@ -7,8 +7,9 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:rxdart/streams.dart';
 import 'package:swipe_app/models/repository/api_add.dart';
-import 'package:swipe_app/screens/feed/promoted_ad_card.dart';
-import 'package:swipe_app/screens/feed/standart_ad_card.dart';
+import 'file:///C:/flutter_projects/flutterlearning/flutter_Dart_courses/swipe_app/lib/screens/add_cards/promoted_ad_card.dart';
+import 'file:///C:/flutter_projects/flutterlearning/flutter_Dart_courses/swipe_app/lib/screens/add_cards/standart_ad_card.dart';
+import 'package:swipe_app/screens/add_cards/preview_ad_card.dart';
 
 class AdsList extends StatefulWidget {
   @override
@@ -95,25 +96,27 @@ class _AdsListState extends State<AdsList> {
               crossAxisCount: 4,
               itemCount: list.length,
               itemBuilder: (context, index) {
-                print("listLen - ${list.length}");
-                print(snapshot.data[0].docs.length);
-                print(snapshot.data[1].docs.length);
-                print(snapshot.data[2].docs.length);
-                print(snapshot.data[3].docs.length);
-
                 if(counter3 <= data3.docs.length-1){
                   counter3++;
-                  return Container(alignment: Alignment.center,child: UpAdCard(ApiAdd.fromApi(list[counter3])));
+                  return GestureDetector(
+                    onLongPress: () => showPreview(list[index], context),
+                      child: Container(alignment: Alignment.center,child: UpAdCard(ApiAdd.fromApi(list[index]))));
                 }
                 else if(counter2 <= data2.docs.length - 1){
                   counter2++;
-                  return Container(alignment: Alignment.center,child: SAdCard.fromApi(ApiAdd.fromApi(list[counter2])));//(ApiAdd.fromApi(snapshot.data[1].docs[counter1])));
+                  return GestureDetector(
+                      onLongPress: () => showPreview(list[index], context),
+                      child: Container(alignment: Alignment.center,child: SAdCard.fromApi(ApiAdd.fromApi(list[index]))));//(ApiAdd.fromApi(snapshot.data[1].docs[counter1])));
                 }else if(counter1 <= data1.docs.length - 1){
                   counter1++;
-                  return Container(alignment: Alignment.center,child: UpAdCard(ApiAdd.fromApi(list[counter1])));//(ApiAdd.fromApi(snapshot.data[1].docs[counter1])));
+                  return GestureDetector(
+                      onLongPress: ()=> showPreview(list[index], context),
+                      child: Container(alignment: Alignment.center,child: UpAdCard(ApiAdd.fromApi(list[index]))));//(ApiAdd.fromApi(snapshot.data[1].docs[counter1])));
                 }else if(counter0 <= data0.docs.length - 1){
                   counter0++;
-                  return Container(alignment: Alignment.center,child:  SAdCard.fromApi(ApiAdd.fromApi(list[counter0])));//(ApiAdd.fromApi(snapshot.data[1].docs[counter1])));
+                  return GestureDetector(
+                      onLongPress: ()=> showPreview(list[index], context),
+                      child: Container(alignment: Alignment.center,child:  SAdCard.fromApi(ApiAdd.fromApi(list[index]))));//(ApiAdd.fromApi(snapshot.data[1].docs[counter1])));
                 }
 
                 return Text("Wait a bit...");
@@ -128,4 +131,46 @@ class _AdsListState extends State<AdsList> {
       },
     );
   }
+
+
+  Future <void> showPreview(QueryDocumentSnapshot _add, context) async{
+    return showDialog<void>(
+        context: context,
+        barrierDismissible:true,// false, // user must tap button!
+        builder: (BuildContext context) {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+                borderRadius:
+                BorderRadius.circular(10.0)),
+            child: PreviewAdCard(ApiAdd.fromApi(_add)),
+          );
+          /*
+          return AlertDialog(
+            title: Text('Login error'),
+            content: SingleChildScrollView(
+              child: SAdCard.fromApi(ApiAdd.fromApi(_add)),
+              /* ListBody(
+                children: <Widget>[
+                  Text(_add.cost),
+                  Text(_add.roomsQuantity),
+                  Text(_add.roomsQuantity),
+                  Text(_add.address),
+                ],
+              ),*/
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text('Try again'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+
+          */
+        }
+    );
+  }
+
 }

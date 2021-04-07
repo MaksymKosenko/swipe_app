@@ -9,7 +9,7 @@ import 'package:swipe_app/global/user.dart';
 import 'package:swipe_app/models/add_model.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:swipe_app/screens/feed/landing_page.dart';
-import 'package:swipe_app/screens/feed/standart_ad_card.dart';
+import 'file:///C:/flutter_projects/flutterlearning/flutter_Dart_courses/swipe_app/lib/screens/add_cards/standart_ad_card.dart';
 import 'package:swipe_app/screens/my_add/confirmation/decoration_text_variant.dart';
 import 'package:swipe_app/screens/my_add/confirmation/icons_block.dart';
 import 'package:swipe_app/screens/my_add/whole_ad_container.dart';
