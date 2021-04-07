@@ -100,7 +100,7 @@ class _AdsListState extends State<AdsList> {
                   counter3++;
                   return GestureDetector(
                     onLongPress: () => showPreview(list[index], context),
-                      child: Container(alignment: Alignment.center,child: UpAdCard(ApiAdd.fromApi(list[index]))));
+                      child: Container(alignment: Alignment.center, child: UpAdCard(ApiAdd.fromApi(list[index]))));
                 }
                 else if(counter2 <= data2.docs.length - 1){
                   counter2++;
@@ -139,9 +139,11 @@ class _AdsListState extends State<AdsList> {
         barrierDismissible:true,// false, // user must tap button!
         builder: (BuildContext context) {
           return Dialog(
+            insetPadding: EdgeInsets.symmetric(horizontal: 15),
             shape: RoundedRectangleBorder(
                 borderRadius:
                 BorderRadius.circular(10.0)),
+
             child: PreviewAdCard(ApiAdd.fromApi(_add)),
           );
           /*

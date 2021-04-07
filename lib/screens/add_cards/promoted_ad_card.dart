@@ -59,16 +59,19 @@ class _UpAdCardState extends State<UpAdCard> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 5),
       //height: 215,
-      //width: 355,
+      //width: 365,
+
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
+
               child: Stack(
                 children: [
                   Container(
+                    alignment: Alignment.center,
                     height: 140,
-                    width: 355,
+                   // width: 365,
                     decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),
                         image: DecorationImage(fit: BoxFit.cover,
                             image: NetworkImage(widget._add.photos[0]))),

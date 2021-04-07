@@ -33,8 +33,8 @@ class _PreviewAdCardState extends State<PreviewAdCard> {
 
     String selectedImage = widget._add.photos[0];
     return Container(
-      height: 275, //205
-      width: 355,
+      height: 283, //205 //275
+      //width: 355,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: Colors.white,
@@ -42,7 +42,7 @@ class _PreviewAdCardState extends State<PreviewAdCard> {
       child: Column(
         children: [
           Container(
-            height: 205, width: 355,
+            height: 205, //width: 355,
             decoration: BoxDecoration(
               image: DecorationImage(image: NetworkImage(selectedImage), fit: BoxFit.cover),
               borderRadius: BorderRadius.circular(10),
@@ -50,17 +50,17 @@ class _PreviewAdCardState extends State<PreviewAdCard> {
           ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
               children: [
                 Column(
-                 // mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text("${widget._add.roomsQuantity}, ${widget._add.overallArea}М\u{00B2}",
                       style:  MediumText(12, Colors.black),),
-                   // SizedBox(height: 9),
+                     SizedBox(height: 9),
                     //Text("р-н Центральный", style: MediumText(12, Color(0xff414141))),
                     Container( width: 140,//160
                         child: Text(widget._add.address, style: MediumText(12, Color(0xff414141)), overflow:TextOverflow.clip,)),
@@ -68,14 +68,12 @@ class _PreviewAdCardState extends State<PreviewAdCard> {
                 ),
 
                 Column(
-                  //crossAxisAlignment: CrossAxisAlignment.end,
-                 // mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text("${widget._add.cost} ₴", style: SemiBoldText(18, Colors.black),),
                     //SizedBox(height: 6),
-
-
-                    //SizedBox(height: 4),
+                    SizedBox(height: 4),
                     Text("Смотреть объявление",style: SemiBoldText(12, Color(0xff27AEA4)))
                     //Text("$day.$month в $hours : $minutes",style: MediumText(11, Color(0xff27AEA4))),
                   ],
