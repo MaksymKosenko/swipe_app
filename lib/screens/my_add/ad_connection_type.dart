@@ -2,11 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:swipe_app/global/style/text_styles.dart';
-import 'package:swipe_app/screens/my_add/confirmation/ad_model.dart';
+import 'package:swipe_app/models/add_model.dart';
+
 
 class ConnectionType extends StatefulWidget {
-  final ConcreteAd _concreteAd;
-  ConnectionType(this._concreteAd);
+  final Add _add;
+  ConnectionType(this._add);
   @override
   _ConnectionTypeState createState() => _ConnectionTypeState();
 }
@@ -28,7 +29,7 @@ class _ConnectionTypeState extends State<ConnectionType> {
   setNewChoise(String newSelected) {
     setState(() {
       selectedVar = newSelected;
-      widget._concreteAd.setConnectionType(selectedVar);
+      widget._add.connectionType = selectedVar;
       switch (newSelected) {
         case "Звонок + сообщение":
           active1 = true;
@@ -60,7 +61,10 @@ class _ConnectionTypeState extends State<ConnectionType> {
 
   @override
   Widget build(BuildContext context) {
-    widget._concreteAd.setConnectionType(selectedVar);
+    if(widget._add.connectionType == null)
+      widget._add.connectionType = selectedVar;
+    else setNewChoise(widget._add.connectionType);
+    //widget._add.connectionType = selectedVar;
     return _isExpand
         ? Container(
       padding: EdgeInsets.symmetric(horizontal: 10),

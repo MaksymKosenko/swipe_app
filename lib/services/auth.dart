@@ -41,8 +41,9 @@ class AuthService {
       },
       codeSent: (String verificationId, int resendToken) async{
         currentCode = verificationId;
+        print(verificationId);
         Navigator.push(context, MaterialPageRoute(
-            builder: (context) => VerificationScreen()));
+            builder: (context) => VerificationScreen(verificationId)));
       },
       codeAutoRetrievalTimeout: (String verificationId) {
         currentCode = verificationId;

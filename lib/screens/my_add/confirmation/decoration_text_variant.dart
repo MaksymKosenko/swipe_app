@@ -2,15 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:swipe_app/global/custom_widgets/custom_button.dart';
 import 'package:swipe_app/global/style/text_styles.dart';
+import 'package:swipe_app/models/add_model.dart';
 import 'package:swipe_app/screens/Feed/standart_ad_card.dart';
-import 'package:swipe_app/screens/my_add/confirmation/ad_model.dart';
+
 
 import 'package:swipe_app/screens/my_add/confirmation/ad_decoration.dart';
 
 class VariantsBlock extends StatefulWidget {
-  final ConcreteAd _concreteAd;
+  final Add _add;
 
-  VariantsBlock(this._concreteAd);
+  VariantsBlock(this._add);
   @override
   _VariantsBlockState createState() => _VariantsBlockState();
 }
@@ -37,7 +38,7 @@ class _VariantsBlockState extends State<VariantsBlock> {
         phrase6 = false;
         phrase7 = false;
         phrase8 = false;
-        widget._concreteAd.setActivePhrase("phrase1");
+        widget._add.chosenPhrase = "Подарок при покупке";
        // SAdCard(widget._concreteAd).createState();
         break;
       case "phrase2":
@@ -49,7 +50,7 @@ class _VariantsBlockState extends State<VariantsBlock> {
         phrase6 = false;
         phrase7 = false;
         phrase8 = false;
-        widget._concreteAd.setActivePhrase("phrase2");
+        widget._add.chosenPhrase = "Возможен торг";
       //  SAdCard(widget._concreteAd).createState();
         break;
       case "phrase3":
@@ -61,7 +62,7 @@ class _VariantsBlockState extends State<VariantsBlock> {
         phrase6 = false;
         phrase7 = false;
         phrase8 = false;
-        widget._concreteAd.setActivePhrase("phrase3");
+        widget._add.chosenPhrase = "Квартира у моря";
        // SAdCard(widget._concreteAd).createState();
         break;
       case "phrase4":
@@ -73,7 +74,7 @@ class _VariantsBlockState extends State<VariantsBlock> {
         phrase6 = false;
         phrase7 = false;
         phrase8 = false;
-        widget._concreteAd.setActivePhrase("phrase4");
+        widget._add.chosenPhrase = "В спальном районе";
       //  SAdCard(widget._concreteAd).createState();
         break;
       case "phrase5":
@@ -85,7 +86,7 @@ class _VariantsBlockState extends State<VariantsBlock> {
         phrase6 = false;
         phrase7 = false;
         phrase8 = false;
-        widget._concreteAd.setActivePhrase("phrase5");
+        widget._add.chosenPhrase = "Вам повезло с ценой!";
       //  SAdCard(widget._concreteAd).createState();
         break;
       case "phrase6":
@@ -97,7 +98,7 @@ class _VariantsBlockState extends State<VariantsBlock> {
         phrase6 = true;
         phrase7 = false;
         phrase8 = false;
-        widget._concreteAd.setActivePhrase("phrase6");
+        widget._add.chosenPhrase = "Для большой семьи";
       //  SAdCard(widget._concreteAd).createState();
         break;
       case "phrase7":
@@ -109,7 +110,7 @@ class _VariantsBlockState extends State<VariantsBlock> {
         phrase6 = false;
         phrase7 = true;
         phrase8 = false;
-        widget._concreteAd.setActivePhrase("phrase7");
+        widget._add.chosenPhrase = "Отдельная парковка";
       //  SAdCard(widget._concreteAd).createState();
         break;
       case "phrase8":
@@ -121,7 +122,7 @@ class _VariantsBlockState extends State<VariantsBlock> {
         phrase6 = false;
         phrase7 = false;
         phrase8 = true;
-        widget._concreteAd.setActivePhrase("phrase8");
+        widget._add.chosenPhrase = "Подарок при покупке";
       //  SAdCard(widget._concreteAd).createState();
         break;
 
@@ -134,7 +135,7 @@ class _VariantsBlockState extends State<VariantsBlock> {
         phrase6 = false;
         phrase7 = false;
         phrase8 = false;
-        widget._concreteAd.setActivePhrase("null");
+        widget._add.chosenPhrase = null;
     }
    // print("$phrase1, $phrase2, $phrase3, $phrase4, $phrase5, $phrase6, $phrase7, $phrase8");
     //print("chosen phrase in Variants ${widget._concreteAd.chosenPhrase}");
@@ -180,7 +181,6 @@ class _VariantsBlockState extends State<VariantsBlock> {
                     text: "Квартира у моря", color: Color(0xff41BFB5))
                 : DecorationVariant(
                     text: "Квартира у моря", color: Color(0xffE8E8E8))),
-        //TODO попробовать это
         SizedBox(height: 10),
         GestureDetector(
             onTap: () {
@@ -252,9 +252,9 @@ class _VariantsBlockState extends State<VariantsBlock> {
 }
 
 class AddPhrase extends StatefulWidget {
-  final ConcreteAd _concreteAd;
+  final Add _add;
   dynamic _confirmADState;
-  AddPhrase(this._concreteAd, this._confirmADState);
+  AddPhrase(this._add, this._confirmADState);
   @override
   _AddPhraseState createState() => _AddPhraseState();
 }
@@ -263,7 +263,7 @@ class _AddPhraseState extends State<AddPhrase> {
   bool activeOption1 = false;
   changeView(){
     setState(() {
-      if (widget._concreteAd.chosenPhrase == "null"){
+      if (widget._add.chosenPhrase == null){
         activeOption1 = false;
         widget._confirmADState.setState((){
           print("state updated to false");
@@ -284,13 +284,13 @@ class _AddPhraseState extends State<AddPhrase> {
     return GestureDetector(
         onTap: () {
           if(activeOption1 == false){
-            widget._concreteAd.setNullPhrases();
+            widget._add.chosenPhrase = null;
             showPhrases();
           }
           if(activeOption1 == true)
             setState(() {
               activeOption1 = false;
-              widget._concreteAd.setNullPhrases();
+              widget._add.chosenPhrase = null;
               widget._confirmADState.setState((){});
             });
 
@@ -357,9 +357,8 @@ class _AddPhraseState extends State<AddPhrase> {
                     IconButton(
                       icon: Icon(CupertinoIcons.clear_thick),
                       iconSize: 20,
-                      onPressed: (){widget._concreteAd.setNullPhrases();//SAdCard(widget._concreteAd).createState();
-                      widget._concreteAd.setActivePhrase("null");
-                      SAdCard(widget._concreteAd).createState();
+                      onPressed: (){widget._add.chosenPhrase = null;//SAdCard(widget._concreteAd).createState();
+                      SAdCard(widget._add).createState();
                      // SAdCard(widget._concreteAd).createState();
                         changeView(); Navigator.of(context).pop();} ,
                     ),
@@ -369,7 +368,7 @@ class _AddPhraseState extends State<AddPhrase> {
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 15),
                   child: GestureDetector(
-                      child: VariantsBlock(widget._concreteAd)),
+                      child: VariantsBlock(widget._add)),
                 ),
                 GestureDetector(
                   child: Padding(
@@ -379,7 +378,7 @@ class _AddPhraseState extends State<AddPhrase> {
                   ),
                   onTap: () {
                     changeView();
-                    SAdCard(widget._concreteAd).createState();
+                    SAdCard(widget._add).createState();
                     Navigator.of(context).pop();
                     //SAdCard(widget._concreteAd).createState();
                   },

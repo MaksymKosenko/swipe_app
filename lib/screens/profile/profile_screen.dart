@@ -198,18 +198,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
       if(downloadUrl != null) {
         print(downloadUrl);
         FirebaseFirestore.instance.collection('users').doc(
-            widget._userData['phone']).update({'profilePic': downloadUrl});
+            widget._userData['phone']).update({'profilePic': downloadUrl})
+            .whenComplete(() => setState((){
+          _isImageExist = true;
+          widget._userData['profilePic'] = downloadUrl;
+        }));
       }
     }catch (e) {
       print(e);
       // e.g, e.code == 'canceled'
-    }}
+    }
+  }
 
 
-
+  bool _isImageExist;
   Widget build(BuildContext context) {
-    //print(_user.profilePhoto);
-    bool _isImageExist;
+    print("isImageExist - $_isImageExist");
+    print("last cropped - $_lastCropped");
+
     if (widget._userData['profilePic'] == "null")
       _isImageExist = false;
     else

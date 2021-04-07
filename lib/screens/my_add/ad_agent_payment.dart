@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:swipe_app/global/style/text_styles.dart';
-import 'package:swipe_app/screens/my_add/confirmation/ad_model.dart';
+import 'package:swipe_app/models/add_model.dart';
+
 
 class AgentPayment extends StatefulWidget {
-  final ConcreteAd _concreteAd;
-  AgentPayment(this._concreteAd);
+  final Add _add;
+  AgentPayment(this._add);
   @override
   _AgentPaymentState createState() => _AgentPaymentState();
 }
@@ -27,7 +28,7 @@ class _AgentPaymentState extends State<AgentPayment> {
   setNewChoise(String newSelected) {
     setState(() {
       selectedVar = newSelected;
-      widget._concreteAd.setAgentPayment(selectedVar);
+      widget._add.agentPayment = selectedVar;
       switch (newSelected) {
         case "5% от суммы":
           active1 = true;
@@ -60,7 +61,10 @@ class _AgentPaymentState extends State<AgentPayment> {
 
   @override
   Widget build(BuildContext context) {
-    widget._concreteAd.setAgentPayment(selectedVar);
+    if(widget._add.agentPayment == null)
+      widget._add.agentPayment = selectedVar;
+    else setNewChoise(widget._add.agentPayment);
+   // widget._add.agentPayment = selectedVar;
     return _isExpand
         ? Container(
       padding: EdgeInsets.symmetric(horizontal: 10),

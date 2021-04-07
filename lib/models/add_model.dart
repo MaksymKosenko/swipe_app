@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -18,13 +20,14 @@ class Add{
   String description;
   String cost;
   String agentPayment;
-  String mainPhotoPath;
-  String additionalPhotosPath;
+  List<String> photos = List<String>.empty(growable: true);
+  List<File> photoFiles = [null, null, null, null, null, null];
+
 
   String chosenPhrase;
 
-  bool textColorRose;
-  bool textColorGreen;
+  bool textColorRose = false;
+  bool textColorGreen = false;
 
   bool bigAd;
   bool promotedAd;
@@ -49,8 +52,7 @@ class Add{
     this.description,
     this.cost,
     this.agentPayment,
-    this.mainPhotoPath,
-    this.additionalPhotosPath,
+    this.photos,
     this.chosenPhrase,
     this.textColorRose,
     this.textColorGreen,
@@ -58,5 +60,6 @@ class Add{
     this.promotedAd,
     this.promotedBig,
     this.dateTime,
+    this.photoFiles,
   });
 }

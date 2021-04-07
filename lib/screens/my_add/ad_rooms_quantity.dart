@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:swipe_app/global/style/text_styles.dart';
-import 'package:swipe_app/screens/my_add/confirmation/ad_model.dart';
+import 'package:swipe_app/models/add_model.dart';
 
 class RoomQuantity extends StatefulWidget {
-  final ConcreteAd _concreteAd;
-  RoomQuantity(this._concreteAd);
+  final Add _add;
+  RoomQuantity(this._add);
   @override
   _RoomQuantityState createState() => _RoomQuantityState();
 }
@@ -27,7 +27,7 @@ class _RoomQuantityState extends State<RoomQuantity> {
   setNewChoise(String newSelected) {
     setState(() {
       selectedVar = newSelected;
-      widget._concreteAd.setRoomsQuantity(selectedVar);
+      widget._add.roomsQuantity = selectedVar;
       switch (newSelected) {
         case "1 комнатная":
           active1 = true;
@@ -69,7 +69,10 @@ class _RoomQuantityState extends State<RoomQuantity> {
   }
   @override
   Widget build(BuildContext context) {
-    widget._concreteAd.setRoomsQuantity(selectedVar);
+    if(widget._add.roomsQuantity == null)
+      widget._add.roomsQuantity = selectedVar;
+    else setNewChoise(widget._add.roomsQuantity);
+    //widget._add.roomsQuantity = selectedVar;
     return _isExpand
         ? Container(
       padding: EdgeInsets.symmetric(horizontal: 10),

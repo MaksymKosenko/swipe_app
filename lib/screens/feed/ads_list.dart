@@ -6,9 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:rxdart/streams.dart';
-import 'package:swipe_app/screens/Feed/promoted_ad_card.dart';
-import 'package:swipe_app/screens/Feed/standart_ad_card.dart';
-import 'package:swipe_app/screens/my_add/confirmation/ad_model.dart';
+import 'package:swipe_app/models/repository/api_add.dart';
+import 'package:swipe_app/screens/feed/promoted_ad_card.dart';
+import 'package:swipe_app/screens/feed/standart_ad_card.dart';
+
 class AdsList extends StatefulWidget {
   @override
   _AdsListState createState() => _AdsListState();
@@ -21,7 +22,6 @@ class _AdsListState extends State<AdsList> {
    // Future<QuerySnapshot> _adsStream = FirebaseFirestore.instance.collection('ads').orderBy("dateTime", descending: true).get();//.snapshots();
 
     Stream _turbo = FirebaseFirestore.instance.collection('ads').where('icon3', isEqualTo: true).snapshots();
-    Stream _promotedBig = FirebaseFirestore.instance.collection('ads').where('icon1', isEqualTo: true).where('icon2',isEqualTo: true).snapshots();
     Stream _promoted = FirebaseFirestore.instance.collection('ads').where('icon1', isEqualTo: false).where('icon2',isEqualTo: true).snapshots();
 
 
@@ -42,10 +42,12 @@ class _AdsListState extends State<AdsList> {
     }
 
     return  StreamBuilder(
-        stream: CombineLatestStream.list([_bigAds, _defaultADs]),
+        stream: CombineLatestStream.list([_bigAds, _defaultADs, _promoted, _turbo]),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           var data0;
           var data1;
+          var data2;
+          var data3;
          // if(snapshot.data[0] != null)
            // data0 = snapshot.data[0];
          // if(snapshot.data[1]!= null)
@@ -60,11 +62,14 @@ class _AdsListState extends State<AdsList> {
           }
 
           if(snapshot.connectionState == ConnectionState.active){
+            data3 = snapshot.data[3];
+            data2 = snapshot.data[2];
             data1 = snapshot.data[1];
             data0 = snapshot.data[0];
           }
 
-
+          var counter3 = -1;
+          var counter2 = -1;
           var counter0 = -1;
           var counter1 = -1;
           return Expanded(
@@ -75,19 +80,18 @@ class _AdsListState extends State<AdsList> {
                   itemCount: data0.docs.length + data1.docs.length,
                   itemBuilder: (context, index){
 
-                    //print("data0.d0cs.len - ${data0.docs.length}");
-                   // print("data1.d0cs.len - ${data1.docs.length}");
                     counter0++;
 
                     if(counter0 <= data0.docs.length-1){
                       //return Text(snapshot.data[0].docs[counter0].id);
-                      return Container(alignment: Alignment.center,child: UpAdCard(ConcreteAd.fromFirestore(snapshot.data[0].docs[counter0])));
+                      return Container(alignment: Alignment.center,child: UpAdCard(ApiAdd.fromApi(snapshot.data[0].docs[counter0])));
                     }
                     else if(counter1 <= data1.docs.length){
                       //print("else goes on");
                       counter1++;
                      // return Text(snapshot.data[1].docs[counter1].id);
-                      return Container(alignment: Alignment.center,child: AdCard(ConcreteAd.fromFirestore(snapshot.data[1].docs[counter1])));
+                      print(snapshot.data[1].docs[counter1]);
+                      return Container(alignment: Alignment.center,child: SAdCard.fromApi(ApiAdd.fromApi(snapshot.data[1].docs[counter1])));//(ApiAdd.fromApi(snapshot.data[1].docs[counter1])));
                     }
 
                     return Text("Wait a bit...");

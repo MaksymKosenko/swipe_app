@@ -94,6 +94,11 @@ class UserActions {
       phoneNumber: _phone,
       verificationCompleted: (PhoneAuthCredential credential) async{
         print("verification complete called ");
+        print(credential.smsCode);
+        print(credential.verificationId);
+        print(credential.token);
+        print(credential.providerId);
+        print(credential..signInMethod);
         await _firebaseAuth.signInWithCredential(credential);
       },
       verificationFailed: (FirebaseAuthException e) {
@@ -104,12 +109,13 @@ class UserActions {
       },
       codeSent: (String verificationId, int resendToken) async{
         currentCode = verificationId;
+        //currentCode = currentCode;
         addUser();
         addAgentData();
         addNotificationsData();
         addSubscribeData();
         Navigator.push(_context, MaterialPageRoute(
-            builder: (context) => VerificationScreen()));
+            builder: (context) => VerificationScreen(verificationId)));
       },
       codeAutoRetrievalTimeout: (String verificationId) {
         currentCode = verificationId;

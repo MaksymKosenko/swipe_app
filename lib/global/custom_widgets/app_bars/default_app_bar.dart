@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:swipe_app/global/style/text_styles.dart';
+import 'package:swipe_app/screens/feed/landing_page.dart';
 
 class MyCustomAppBar extends StatelessWidget implements PreferredSizeWidget {
  /*final double height;
@@ -33,7 +34,7 @@ class MyCustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   ],
                 ),
                 IconButton(icon: Icon(CupertinoIcons.xmark_circle, size: 30, color: Color(0xffEB5757),), padding: EdgeInsets.only(right: 20),
-                    onPressed: ()=> Navigator.push(context, _backScreen))
+                    onPressed: ()=> Navigator.push(context, MaterialPageRoute(builder: (context) => LandingPage())))
               ],
             ),
           ),

@@ -2,12 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:swipe_app/global/style/text_styles.dart';
-import 'package:swipe_app/screens/my_add/confirmation/ad_model.dart';
+import 'package:swipe_app/models/add_model.dart';
+
 import 'package:swipe_app/screens/my_add/input_field.dart';
 
 class Description extends StatefulWidget {
-  final ConcreteAd _concreteAd;
-  Description(this._concreteAd);
+  final Add _add;
+  Description(this._add);
   @override
   _DescriptionState createState() => _DescriptionState();
 }
@@ -16,6 +17,9 @@ class _DescriptionState extends State<Description> {
   TextEditingController _inputController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    String hint = "Описание вашей недвижимости";
+    if(widget._add.description != null )
+      hint = widget._add.description;
     return   Container(
       padding: EdgeInsets.symmetric(horizontal: 10),
       child: Column(
@@ -31,7 +35,7 @@ class _DescriptionState extends State<Description> {
                 borderRadius: BorderRadius.circular(10)
             ),
             //child: Text("current adress",style: RegularText(14, Color(0xff737373)),),
-            child: InputField(widget._concreteAd, "setDescription", _inputController, "Описание вашей недвижимости",10),
+            child: InputField(widget._add, "setDescription", _inputController, hint ,10),
           ),
         ],
       ),

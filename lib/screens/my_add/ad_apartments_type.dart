@@ -2,11 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:swipe_app/global/style/text_styles.dart';
-import 'package:swipe_app/screens/my_add/confirmation/ad_model.dart';
+import 'package:swipe_app/models/add_model.dart';
+
 
 class ApartmentType extends StatefulWidget {
-  final ConcreteAd _concreteAd;
-  ApartmentType(this._concreteAd);
+  final Add _add;
+  ApartmentType(this._add);
   @override
   _ApartmentTypeState createState() => _ApartmentTypeState();
 }
@@ -29,7 +30,7 @@ class _ApartmentTypeState extends State<ApartmentType> {
   setNewChoise(String newSelected) {
     setState(() {
       selectedVar = newSelected;
-      widget._concreteAd.setApartmentsType(selectedVar);
+      widget._add.apartmentsType = selectedVar;
       switch (newSelected) {
         case "Апарт-отель":
           active1 = true;
@@ -62,7 +63,9 @@ class _ApartmentTypeState extends State<ApartmentType> {
   @override
 
   Widget build(BuildContext context) {
-    widget._concreteAd.setApartmentsType(selectedVar);
+    if(widget._add.apartmentsType == null)
+    widget._add.apartmentsType = selectedVar;
+    else setNewChoise(widget._add.apartmentsType);
     return _isExpand
         ? Container(
             padding: EdgeInsets.symmetric(horizontal: 10),

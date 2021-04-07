@@ -2,11 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:swipe_app/global/style/text_styles.dart';
-import 'package:swipe_app/screens/my_add/confirmation/ad_model.dart';
+import 'package:swipe_app/models/add_model.dart';
+
 
 class BalconyState extends StatefulWidget {
-  final ConcreteAd _concreteAd;
-  BalconyState(this._concreteAd);
+ final Add _add;
+  BalconyState(this._add);
   @override
   _BalconyStateState createState() => _BalconyStateState();
 }
@@ -27,7 +28,7 @@ class _BalconyStateState extends State<BalconyState> {
   setNewChoise(String newSelected) {
     setState(() {
       selectedVar = newSelected;
-      widget._concreteAd.setBalconyState(selectedVar);
+      widget._add.balconyState = selectedVar;
       switch (newSelected) {
         case "Да":
           active1 = true;
@@ -41,7 +42,10 @@ class _BalconyStateState extends State<BalconyState> {
       
   @override
   Widget build(BuildContext context) {
-    widget._concreteAd.setBalconyState(selectedVar);
+    if(widget._add.balconyState == null)
+      widget._add.balconyState = selectedVar;
+    else setNewChoise(widget._add.balconyState);
+    //widget._add.balconyState = selectedVar;
     return _isExpand
         ? Container(
       padding: EdgeInsets.symmetric(horizontal: 10),

@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
 class ApiAdd {
-  final String location;
+  final GeoPoint location;
+  final String address;
   final String chosenZhK;
   final String apartmentsType;
   final String roomsQuantity;
@@ -16,8 +20,7 @@ class ApiAdd {
   final String description;
   final String cost;
   final String agentPayment;
-  final String mainPhotoPath;
-  final String additionalPhotosPath;
+  final List<dynamic> photos;
 
   final String chosenPhrase;
 
@@ -30,32 +33,43 @@ class ApiAdd {
 
   final Timestamp dateTime;
 
-  ApiAdd.fromApi(Map<String, dynamic> map)
-      :  location = map['location'],
-        chosenZhK = map['chosenZhK'],
-        apartmentsType = map['apartmentsType'],
-        roomsQuantity = map['roomsQuantity'],
-        housePlan = map['housePlan'],
-        houseState = map['houseState'],
-        overallArea = map['overallArea'],
-        kitchenArea = map['kitchenArea'],
-        balconyState = map['balconyState'],
-        heatingType = map['heatingType'],
-        paymentType = map['paymentType'],
+  final String day;
+  final String month;
+  final int hours;
+  final int minutes;
 
-        connectionType = map['connectionType'],
-        description = map['description'],
-        cost = map['cost'],
-        agentPayment = map['agentPayment'],
-        mainPhotoPath = map['mainPhotoPath'],
-        additionalPhotosPath = map['additionalPhotosPath'],
-        chosenPhrase = map['chosenPhrase'],
-        textColorRose = map['textColor1'],
-        textColorGreen = map['textColor2'],
+  ApiAdd.fromApi(QueryDocumentSnapshot snapshot)
+      :  location = snapshot.data()['location'],
+        address = snapshot.data()['address'],
+        chosenZhK = snapshot.data()['chosenZhK'],
+        apartmentsType = snapshot.data()['apartmentsType'],
+        roomsQuantity = snapshot.data()['roomsQuantity'],
+        housePlan = snapshot.data()['housePlan'],
+        houseState = snapshot.data()['houseState'],
+        overallArea = snapshot.data()['overallArea'],
+        kitchenArea = snapshot.data()['kitchenArea'],
+        balconyState = snapshot.data()['balconyState'],
+        heatingType = snapshot.data()['heatingType'],
+        paymentType = snapshot.data()['paymentType'],
 
-        bigAd = map['icon1'],
-        promotedAd = map['icon2'],
-        promotedBig = map['icon3'],
+        connectionType = snapshot.data()['connectionType'],
+        description = snapshot.data()['description'],
+        cost = snapshot.data()['cost'],
+        agentPayment = snapshot.data()['agentPayment'],
+        photos = snapshot.data()['photos'],
 
-        dateTime = map['dateTime'];
+        chosenPhrase = snapshot.data()['chosenPhrase'],
+        textColorRose = snapshot.data()['textColor1'],
+        textColorGreen = snapshot.data()['textColor2'],
+
+        bigAd = snapshot.data()['icon1'],
+        promotedAd = snapshot.data()['icon2'],
+        promotedBig = snapshot.data()['icon3'],
+
+        dateTime = snapshot.data()['dateTime'],
+
+        day = snapshot.data()['day'],
+        month= snapshot.data()['month'],
+        hours= snapshot.data()['hours'],
+        minutes= snapshot.data()['minutes'];
 }

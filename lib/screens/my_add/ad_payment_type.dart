@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:swipe_app/global/style/text_styles.dart';
-import 'package:swipe_app/screens/my_add/confirmation/ad_model.dart';
+import 'package:swipe_app/models/add_model.dart';
 class PaymentType extends StatefulWidget {
-  final ConcreteAd _concreteAd;
-  PaymentType(this._concreteAd);
+  final Add _add;
+  PaymentType(this._add);
   @override
   _PaymentTypeState createState() => _PaymentTypeState();
 }
@@ -27,7 +27,7 @@ class _PaymentTypeState extends State<PaymentType> {
   setNewChoise(String newSelected) {
     setState(() {
       selectedVar = newSelected;
-      widget._concreteAd.setPaymentType(selectedVar);
+      widget._add.paymentType = selectedVar;
       switch (newSelected) {
         case "Наличными из рук в руки":
           active1 = true;
@@ -59,7 +59,10 @@ class _PaymentTypeState extends State<PaymentType> {
 
   @override
   Widget build(BuildContext context) {
-    widget._concreteAd.setPaymentType(selectedVar);
+    if(widget._add.paymentType == null)
+      widget._add.paymentType = selectedVar;
+    else setNewChoise(widget._add.paymentType);
+    //widget._add.paymentType = selectedVar;
     return _isExpand
         ? Container(
       padding: EdgeInsets.symmetric(horizontal: 10),

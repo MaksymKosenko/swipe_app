@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:swipe_app/global/style/text_styles.dart';
-import 'package:swipe_app/screens/my_add/confirmation/ad_model.dart';
+import 'package:swipe_app/models/add_model.dart';
+
 
 class HeatingState extends StatefulWidget {
-  final ConcreteAd _concreteAd;
-  HeatingState(this._concreteAd);
+  final Add _add;
+  HeatingState(this._add);
   @override
   _HeatingStateState createState() => _HeatingStateState();
 }
@@ -27,7 +28,7 @@ class _HeatingStateState extends State<HeatingState> {
   setNewChoise(String newSelected) {
     setState(() {
       selectedVar = newSelected;
-      widget._concreteAd.setHeatingType(selectedVar);
+      widget._add.heatingType = selectedVar;
       switch (newSelected) {
         case "Водяное":
           active1 = true;
@@ -50,7 +51,10 @@ class _HeatingStateState extends State<HeatingState> {
 
   @override
   Widget build(BuildContext context) {
-    widget._concreteAd.setHeatingType(selectedVar);
+    if(widget._add.heatingType == null)
+      widget._add.heatingType = selectedVar;
+    else setNewChoise(widget._add.heatingType);
+    //widget._add.heatingType = selectedVar;
     return _isExpand
         ? Container(
             padding: EdgeInsets.symmetric(horizontal: 10),

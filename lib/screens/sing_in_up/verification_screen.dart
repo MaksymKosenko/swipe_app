@@ -8,6 +8,9 @@ import 'package:swipe_app/screens/Feed/landing_page.dart';
 import 'package:swipe_app/services/auth.dart';
 
 class VerificationScreen extends StatefulWidget {
+  final String verificationId;
+  VerificationScreen(this.verificationId);
+
 
   @override
   _VerificationScreenState createState() => _VerificationScreenState();
@@ -101,9 +104,10 @@ class _VerificationScreenState extends State<VerificationScreen> {
   Future codeCompare(String smsCode) async{
     try {
       await _firebaseAuth.signInWithCredential(PhoneAuthProvider.credential(
-          verificationId: currentCode,
+          verificationId: widget.verificationId,
           smsCode: smsCode))
           .then((value) async{
+            print(currentCode);
         if(value.user!=null){
          // print(value.user.uid);
           Navigator.push(context, MaterialPageRoute(

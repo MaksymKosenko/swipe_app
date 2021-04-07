@@ -6,24 +6,26 @@ import 'package:swipe_app/global/custom_widgets/app_bars/default_app_bar.dart';
 import 'package:swipe_app/global/custom_widgets/custom_button.dart';
 import 'package:swipe_app/global/style/text_styles.dart';
 import 'package:swipe_app/global/user.dart';
-import 'package:swipe_app/screens/Feed/landing_page.dart';
-import 'package:swipe_app/screens/Feed/standart_ad_card.dart';
-import 'package:swipe_app/screens/my_add/confirmation/ad_model.dart';
+import 'package:swipe_app/models/add_model.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:swipe_app/screens/feed/landing_page.dart';
+import 'package:swipe_app/screens/feed/standart_ad_card.dart';
 import 'package:swipe_app/screens/my_add/confirmation/decoration_text_variant.dart';
-import 'package:swipe_app/screens/my_add/confirmation/iconsBlock.dart';
+import 'package:swipe_app/screens/my_add/confirmation/icons_block.dart';
 import 'package:swipe_app/screens/my_add/whole_ad_container.dart';
 
 class ConfirmAD extends StatefulWidget {
-  final ConcreteAd _concreteAd;
 
-  ConfirmAD(this._concreteAd);
+  final Add _add;
+
+  ConfirmAD(this._add);
 
   @override
   _ConfirmADState createState() => _ConfirmADState();
 }
 
 class _ConfirmADState extends State<ConfirmAD> {
-  //bool activeOption1 = false;
+
   bool activeOption2 = false;
   bool option2sub1 = false;
   bool option2sub2 = false;
@@ -32,36 +34,35 @@ class _ConfirmADState extends State<ConfirmAD> {
   bool icon2 = false;
   bool icon3 = false;
 
-  void setIcon(){
-    widget._concreteAd.icon1 = icon1;
-    widget._concreteAd.icon2 = icon2;
-    widget._concreteAd.icon3 = icon3;
-  }
+
   int cashToPay = 0;
   changeView(String option) {
     setState(() {
       switch (option) {
-        case "activeOption1": SAdCard(widget._concreteAd).createState(); break;
+        case "activeOption1": SAdCard(widget._add).createState(); break;
         case "activeOption2":
           activeOption2 = !activeOption2;
           option2sub1 = false;
           option2sub2 = false;
-          widget._concreteAd.setTextColor("null");
+          widget._add.textColorGreen = false;
+          widget._add.textColorRose = false;
           if(activeOption2 == true)
             changeView("option2sub1");
-          SAdCard(widget._concreteAd).createState();
+          SAdCard(widget._add).createState();
           break;
         case "option2sub1":
           option2sub1 = true;
           option2sub2 = false;
-          widget._concreteAd.setTextColor("option2sub1");
-          SAdCard(widget._concreteAd).createState();
+          widget._add.textColorGreen = false;
+          widget._add.textColorRose = true;
+          SAdCard(widget._add).createState();
           break;
         case "option2sub2":
           option2sub2 = true;
           option2sub1 = false;
-          widget._concreteAd.setTextColor("option2sub2");
-          SAdCard(widget._concreteAd).createState();
+          widget._add.textColorRose = false;
+          widget._add.textColorGreen = true;
+          SAdCard(widget._add).createState();
           break;
       }
     });
@@ -69,11 +70,14 @@ class _ConfirmADState extends State<ConfirmAD> {
 
   @override
   Widget build(BuildContext context) {
+   widget._add.textColorRose = option2sub1;
+   widget._add.textColorGreen = option2sub2;
+
     final ConcreteUser user = Provider.of<ConcreteUser>(context);
     cashToPay = 0;
-    if(widget._concreteAd.chosenPhrase != "null")
+    if(widget._add.chosenPhrase != null)
       cashToPay = cashToPay + 199;
-    if(widget._concreteAd.textColor1 == true || widget._concreteAd.textColor2 == true || activeOption2 == true){
+    if(widget._add.textColorGreen  == true || widget._add.textColorRose == true || activeOption2 == true){
       cashToPay = cashToPay + 199;
     }
 
@@ -84,10 +88,6 @@ class _ConfirmADState extends State<ConfirmAD> {
     if(icon3 == true)
       cashToPay = cashToPay + 599;
 
-    setIcon();
-
-    var hours = TimeOfDay.now().hour +2;
-    var min = TimeOfDay.now().minute;
     String day = "";
     String month = "";
     if(DateTime.now().day < 10){
@@ -102,7 +102,7 @@ class _ConfirmADState extends State<ConfirmAD> {
     //day = day + " ${DateTime.now().year}";
 
     return Scaffold(
-      appBar: MyCustomAppBar("Продвижение", 82, MaterialPageRoute(builder: (context) => MyNewAD())),
+      appBar: MyCustomAppBar("Продвижение", 82, MaterialPageRoute(builder: (context) => MyNewAD(widget._add))),
       body: Container(
         color: Colors.white,
         padding: EdgeInsets.symmetric(horizontal: 15),
@@ -114,14 +114,14 @@ class _ConfirmADState extends State<ConfirmAD> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                SAdCard(widget._concreteAd),
+                SAdCard(widget._add),
                 Container(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       GestureDetector(
                         onTap: () => changeView("activeOption1"),
-                          child: AddPhrase(widget._concreteAd, this)),
+                          child: AddPhrase(widget._add, this)),
                       GestureDetector(
                           onTap: () => {changeView("activeOption2"),}, //changeView("option2sub1"), setState((){})},
                           child: Row(
@@ -191,10 +191,19 @@ class _ConfirmADState extends State<ConfirmAD> {
                     padding: const EdgeInsets.symmetric(horizontal: 40),
                     child: GestureDetector(
                       onTap: ()=> {
-                        widget._concreteAd.setHoursMinsDay(hours, min, day, month, Timestamp.now()),
-                        widget._concreteAd.addMyAD(user.phone),
+                        widget._add.dateTime = Timestamp.now(),
+                        //widget._add.cost = cashToPay.toString(),
+                        if(widget._add.promotedAd == true && widget._add.bigAd == true){
+                          widget._add.promotedAd =false,
+                          widget._add.bigAd = false,
+                          widget._add.promotedBig = true,
+                        },
+                        if( widget._add.promotedBig == true){
+                          widget._add.promotedAd = false,
+                          widget._add.bigAd = false,
+                        },
+                        addMyAD(user.phone),
                         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> LandingPage())),
-                        //Navigator.push(context, MaterialPageRoute(builder: (context)=> LandingPage())),
                       },
                       child: CustomButton(280, 60, 35,
                           Color(0xff56C385), Color(0xff41BFB5),
@@ -205,10 +214,17 @@ class _ConfirmADState extends State<ConfirmAD> {
                   SizedBox(height: 16),
                   TextButton(
                     onPressed: (){
-                      widget._concreteAd.addMyAD(user.phone);
-                      widget._concreteAd.setHoursMinsDay(hours, min, day, month,Timestamp.now());
+                      widget._add.dateTime = Timestamp.now();
+                      widget._add.textColorGreen = false;
+                      widget._add.textColorRose = false;
+                      widget._add.chosenPhrase = null;
+                      widget._add.bigAd = false;
+                      widget._add.promotedAd = false;
+                      widget._add.promotedBig = false;
+                      //widget._add.cost = cashToPay.toString();
+                      addMyAD(user.phone);
                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> LandingPage()));},
-                      //Navigator.push(context, MaterialPageRoute(builder: (context)=> LandingPage()));},
+
                     child: Text("Разместить без оплаты",
                         style: MediumText(14, Color(0xff636363)),
                         textAlign: TextAlign.center),
@@ -220,5 +236,117 @@ class _ConfirmADState extends State<ConfirmAD> {
         ),
       ),
     );
+  }
+
+  firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
+  CollectionReference _ads = FirebaseFirestore.instance.collection('ads');
+  CollectionReference _users = FirebaseFirestore.instance.collection('users');
+  List<String> photos = List<String>.empty(growable: true);
+
+  Future<void> addAdPhoto(String phone, String id) async{
+       try{
+         movePhotos(phone, id,0);
+         movePhotos(phone, id,1);
+         movePhotos(phone, id,2);
+         movePhotos(phone, id,3);
+         movePhotos(phone, id,4);
+         movePhotos(phone, id,5);
+      }catch (e) {
+        print("error code - $e");
+      }
+      print("photos - $photos");
+      //updPhoto(id);
+  }
+
+  Future<void> movePhotos(String phone, String id, int index) async{
+    try{
+      var data = await firebase_storage
+          .FirebaseStorage.instance
+          .ref('$phone/ads/houseImage/tmp/photo$index')//ads/houseImage/$id.jpg')
+          .getData();
+
+      await firebase_storage
+          .FirebaseStorage.instance
+          .ref('$phone/ads/houseImage/$id/photo$index')//ads/houseImage/$id.jpg')
+          .putData(data);
+
+      await firebase_storage
+          .FirebaseStorage.instance
+          .ref('$phone/ads/houseImage/tmp/photo$index')
+          .delete();
+
+      String downloadUrl = await firebase_storage
+          .FirebaseStorage.instance
+          .ref('$phone/ads/houseImage/$id/photo$index')//ads/houseImage/$id.jpg')
+          .getDownloadURL();
+
+      if(downloadUrl != null){
+        photos.add(downloadUrl);
+        print("index - $index, link - $downloadUrl");
+        updPhoto(id);
+      }
+    }catch(e){
+      print(e);
+      if(photos[index] != null)
+      movePhotos(phone, id, index);
+    }
+  }
+
+
+  Future<void> updPhoto(String id){
+    return _ads.doc(id).update({
+      'photos': photos
+    }).then((value) {print("photo updated");})
+        .catchError((error) =>  updPhoto(id));
+  }
+
+
+
+  Future<void> addMyAD(String phone){
+    return _ads
+        .add({
+      'address': widget._add.address,
+      'chosenZhK': widget._add.chosenZhK,
+      'apartmentsType': widget._add.apartmentsType,
+      'roomsQuantity': widget._add.roomsQuantity,
+      'housePlan': widget._add.housePlan,
+      'houseState': widget._add.houseState,
+      'overallArea': widget._add.overallArea,
+      'kitchenArea': widget._add.kitchenArea,
+      'balconyState': widget._add.balconyState,
+      'heatingType': widget._add.heatingType,
+      'paymentType': widget._add.paymentType,
+      'connectionType': widget._add.connectionType,
+      'description': widget._add.description,
+      'cost': widget._add.cost,
+      'agentPayment': widget._add.agentPayment,
+      'photos': widget._add.photos,
+
+      'chosenPhrase': widget._add.chosenPhrase,
+
+      'textColorRose': widget._add.textColorRose,
+      'textColorGreen': widget._add.textColorGreen,
+      'icon1': icon1,
+      'icon2': icon2,
+      'icon3': icon3,
+
+      'dateTime': widget._add.dateTime,
+    })
+        .then((value) {print("ads added"); addToMyCollection(value.id, phone);addAdPhoto(phone, value.id); })
+        .catchError((error) => print("Failed to add asd: $error"));
+  }
+
+  Future<void>addToMyCollection(String addID, String phone){
+    return _users
+        .doc(phone)
+        .collection("user_collections")
+        .doc("myAd")
+        .collection("myAds")
+        .doc(addID)
+        .set({
+      'addID': addID,
+    })
+        .then((value) => print("toUser add added"))
+        .catchError((error) => print("Failed to add Agent: $error"));
   }
 }

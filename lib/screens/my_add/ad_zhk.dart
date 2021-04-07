@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:swipe_app/global/style/text_styles.dart';
 import 'package:swipe_app/models/add_model.dart';
-import 'package:swipe_app/screens/my_add/confirmation/ad_model.dart';
 import 'package:swipe_app/screens/my_add/search_field.dart';
 import 'package:swipe_app/screens/my_add/whole_ad_container.dart';
 
