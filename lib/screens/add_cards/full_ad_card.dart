@@ -20,9 +20,11 @@ class _FullAdCardState extends State<FullAdCard> {
   Widget build(BuildContext context) {
     print("fullAd id - ${widget._id}");
     bool isFewImages = false;
+    bool connection = false;
     String selectedImage = widget._add.photos[photoIndex];
     if (widget._add.photos.length > 1) isFewImages = true;
-
+    if(widget._add.connectionType == "Звонок + сообщение" || widget._add.connectionType =="Звонок + сообщение агенту")
+      connection = true;
     void changeView(String way, int currentIndex){
       switch(way){
         case "left": print("left");if(currentIndex > 0) setState(() {
@@ -260,7 +262,7 @@ class _FullAdCardState extends State<FullAdCard> {
                       decoration: BoxDecoration(borderRadius: BorderRadius.circular(23), color: Colors.black),
                     ),
                     SizedBox(width: 18),
-                    Column(//TODO - юзер с бд
+                    Column(//TODO - юзер с бд + zvonki/4at
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -296,6 +298,41 @@ class _FullAdCardState extends State<FullAdCard> {
                     colors: [Color(0xff56C385), Color(0xff41BFB5)],//[Color(0xff56C385), Color(0xff41BFB5)],
                     ),
                   ),
+                child: !connection
+                    ? Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        height: 52,
+                        width: 52,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(26),
+                          color: Color(0xE6FFFFFF)
+                        ),
+                        child: Icon(Icons.phone_in_talk_outlined, color: Color(0xff4CC19A), size: 24,),// CupertinoIcons.phone_arrow_up_right
+                      ),
+                      Container(
+                        height: 52,
+                        width: 52,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(26),
+                            color: Color(0x1AFFFFFF)
+                        ),
+                        child: Icon(CupertinoIcons.chat_bubble, color: Colors.white, size: 24,),
+                      )
+                    ],
+                  ),
+                )
+                    : Container(
+                  height: 52,
+                  width: 52,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(26),
+                      //color: Color(0xE6FFFFFF)
+                  ),
+                  child: Icon(Icons.phone_in_talk_outlined, color: Colors.white, size: 24,),
+                ),
                 ),
               ),
 
