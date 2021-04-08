@@ -24,11 +24,15 @@ class _AdsListState extends State<AdsList> {
     Stream _turbo = FirebaseFirestore.instance
         .collection('ads')
         .where('icon3', isEqualTo: true)
+        .where('icon2', isEqualTo: false)
+        .where('icon1', isEqualTo: false)
         .snapshots();
+
     Stream _promoted = FirebaseFirestore.instance
         .collection('ads')
         .where('icon1', isEqualTo: false)
         .where('icon2', isEqualTo: true)
+        .where('icon3', isEqualTo: false)
         .snapshots();
 
     Stream _bigAds = FirebaseFirestore.instance
@@ -36,6 +40,7 @@ class _AdsListState extends State<AdsList> {
         //.orderBy("dateTime", descending: true).get()
         .where('icon1', isEqualTo: true)
         .where('icon2', isEqualTo: false)
+        .where('icon3', isEqualTo: false)
         .snapshots();
     Stream _defaultADs = FirebaseFirestore.instance
         .collection('ads')
@@ -78,10 +83,12 @@ class _AdsListState extends State<AdsList> {
           data2 = snapshot.data[2];
           data1 = snapshot.data[1];
           data0 = snapshot.data[0];
-          list.addAll(snapshot.data[0].docs);
-          list.addAll(snapshot.data[1].docs);
-          list.addAll(snapshot.data[2].docs);
           list.addAll(snapshot.data[3].docs);
+          list.addAll(snapshot.data[2].docs);
+          list.addAll(snapshot.data[1].docs);
+          list.addAll(snapshot.data[0].docs);
+          print(list.length);
+          print(data3.docs.length);
         }
 
         var counter3 = 0;
