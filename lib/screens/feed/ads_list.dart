@@ -7,6 +7,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:rxdart/streams.dart';
 import 'package:swipe_app/models/repository/api_add.dart';
+import 'package:swipe_app/screens/add_cards/full_ad_card.dart';
 import 'file:///C:/flutter_projects/flutterlearning/flutter_Dart_courses/swipe_app/lib/screens/add_cards/promoted_ad_card.dart';
 import 'file:///C:/flutter_projects/flutterlearning/flutter_Dart_courses/swipe_app/lib/screens/add_cards/standart_ad_card.dart';
 import 'package:swipe_app/screens/add_cards/preview_ad_card.dart';
@@ -107,22 +108,26 @@ class _AdsListState extends State<AdsList> {
                   counter3++;
                   return GestureDetector(
                     onLongPress: () => showPreview(list[index], context),
+                      onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=> FullAdCard(ApiAdd.fromApi(list[index])))),
                       child: Container(alignment: Alignment.center, child: UpAdCard(ApiAdd.fromApi(list[index]))));
                 }
                 else if(counter2 <= data2.docs.length - 1){
                   counter2++;
                   return GestureDetector(
                       onLongPress: () => showPreview(list[index], context),
+                      onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=> FullAdCard(ApiAdd.fromApi(list[index])))),
                       child: Container(alignment: Alignment.center,child: SAdCard.fromApi(ApiAdd.fromApi(list[index]))));//(ApiAdd.fromApi(snapshot.data[1].docs[counter1])));
                 }else if(counter1 <= data1.docs.length - 1){
                   counter1++;
                   return GestureDetector(
                       onLongPress: ()=> showPreview(list[index], context),
+                      onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=> FullAdCard(ApiAdd.fromApi(list[index])))),
                       child: Container(alignment: Alignment.center,child: UpAdCard(ApiAdd.fromApi(list[index]))));//(ApiAdd.fromApi(snapshot.data[1].docs[counter1])));
                 }else if(counter0 <= data0.docs.length - 1){
                   counter0++;
                   return GestureDetector(
                       onLongPress: ()=> showPreview(list[index], context),
+                      onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=> FullAdCard(ApiAdd.fromApi(list[index])))),
                       child: Container(alignment: Alignment.center,child:  SAdCard.fromApi(ApiAdd.fromApi(list[index]))));//(ApiAdd.fromApi(snapshot.data[1].docs[counter1])));
                 }
 
