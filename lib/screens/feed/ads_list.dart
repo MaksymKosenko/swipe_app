@@ -90,6 +90,7 @@ class _AdsListState extends State<AdsList> {
           list.addAll(snapshot.data[0].docs);
           print(list.length);
           print(data3.docs.length);
+          print(list[0].id);
         }
 
         var counter3 = 0;
@@ -108,26 +109,30 @@ class _AdsListState extends State<AdsList> {
                   counter3++;
                   return GestureDetector(
                     onLongPress: () => showPreview(list[index], context),
-                      onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=> FullAdCard(ApiAdd.fromApi(list[index])))),
+                      onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=>
+                          FullAdCard(ApiAdd.fromApi(list[index]),list[index].id))),
                       child: Container(alignment: Alignment.center, child: UpAdCard(ApiAdd.fromApi(list[index]))));
                 }
                 else if(counter2 <= data2.docs.length - 1){
                   counter2++;
                   return GestureDetector(
                       onLongPress: () => showPreview(list[index], context),
-                      onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=> FullAdCard(ApiAdd.fromApi(list[index])))),
+                      onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=>
+                          FullAdCard(ApiAdd.fromApi(list[index]), list[index].id))),
                       child: Container(alignment: Alignment.center,child: SAdCard.fromApi(ApiAdd.fromApi(list[index]))));//(ApiAdd.fromApi(snapshot.data[1].docs[counter1])));
                 }else if(counter1 <= data1.docs.length - 1){
                   counter1++;
                   return GestureDetector(
                       onLongPress: ()=> showPreview(list[index], context),
-                      onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=> FullAdCard(ApiAdd.fromApi(list[index])))),
+                      onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=>
+                          FullAdCard(ApiAdd.fromApi(list[index]), list[index].id))),
                       child: Container(alignment: Alignment.center,child: UpAdCard(ApiAdd.fromApi(list[index]))));//(ApiAdd.fromApi(snapshot.data[1].docs[counter1])));
                 }else if(counter0 <= data0.docs.length - 1){
                   counter0++;
                   return GestureDetector(
                       onLongPress: ()=> showPreview(list[index], context),
-                      onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=> FullAdCard(ApiAdd.fromApi(list[index])))),
+                      onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=>
+                          FullAdCard(ApiAdd.fromApi(list[index]), list[index].id))),
                       child: Container(alignment: Alignment.center,child:  SAdCard.fromApi(ApiAdd.fromApi(list[index]))));//(ApiAdd.fromApi(snapshot.data[1].docs[counter1])));
                 }
 

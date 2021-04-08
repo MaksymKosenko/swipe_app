@@ -4,7 +4,8 @@ import 'package:swipe_app/models/repository/api_add.dart';
 
 class FullAdCard extends StatefulWidget {
   ApiAdd _add;
-  FullAdCard(this._add);
+  String _id;
+  FullAdCard(this._add, this._id);
   @override
   _FullAdCardState createState() => _FullAdCardState();
 }
@@ -12,8 +13,12 @@ class FullAdCard extends StatefulWidget {
 class _FullAdCardState extends State<FullAdCard> {
   @override
   Widget build(BuildContext context) {
+    print("fullAd id - ${widget._id}");
     return Scaffold(
-      appBar: AdAppBar(),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: AdAppBar(widget._id),
+      ),
       body:  Container(color: Colors.white60),
     );
   }
