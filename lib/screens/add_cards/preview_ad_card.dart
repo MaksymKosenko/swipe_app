@@ -2,11 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:swipe_app/global/style/text_styles.dart';
 import 'package:swipe_app/models/repository/api_add.dart';
+import 'package:swipe_app/screens/add_cards/full_ad_card.dart';
 
 class PreviewAdCard extends StatefulWidget {
   final ApiAdd _add;
-
-  PreviewAdCard(this._add);
+  final String _id;
+  PreviewAdCard(this._add, this._id);
 
   @override
   _PreviewAdCardState createState() => _PreviewAdCardState();
@@ -146,8 +147,11 @@ class _PreviewAdCardState extends State<PreviewAdCard> {
                       style: SemiBoldText(18, Colors.black),
                     ),
                     SizedBox(height: 4),
-                    Text("Смотреть объявление",
-                        style: SemiBoldText(12, Color(0xff27AEA4)))
+                    GestureDetector(
+                      onTap: ()=> Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> FullAdCard(widget._add, widget._id))),
+                      child: Text("Смотреть объявление",
+                          style: SemiBoldText(12, Color(0xff27AEA4))),
+                    )
                   ],
                 ),
               ],
@@ -241,11 +245,5 @@ class _PreviewAdCardState extends State<PreviewAdCard> {
           ],
         ); break;
     }
-    /*return Container(
-      child: Row(
-        children: [
-        ],
-      ),
-    );*/
   }
 }
