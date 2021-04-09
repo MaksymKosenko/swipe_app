@@ -10,6 +10,7 @@ import 'package:swipe_app/models/repository/api_add.dart';
 import 'package:swipe_app/screens/chat_screens/user_to_user.dart';
 import 'package:swipe_app/screens/feed/landing_page.dart';
 import 'package:swipe_app/models/repository/api_user.dart';
+import 'package:swipe_app/screens/maps/add_on_map.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class FullAdCard extends StatefulWidget {
@@ -29,12 +30,7 @@ class _FullAdCardState extends State<FullAdCard> {
   getData() async{
     await FirebaseFirestore.instance.collection('users').doc(widget._add.ownerID).get()
         .then((DocumentSnapshot documentSnapshot) {
-
           _user = ApiUser.fromApi(documentSnapshot.data());
-      // Get value of field date from document dashboard/totalVisitors
-     // firestoreDate = documentSnapshot.data()['date'];
-      // Get value of field weekOfYear from document dashboard/totalVisitors
-      //firestoreWeek = documentSnapshot.data()['weekOfYear'];
       if(_user !=null){
         setState(() {
           print(_user.phone);
@@ -210,7 +206,11 @@ class _FullAdCardState extends State<FullAdCard> {
                   ),
 
                   GestureDetector(
-                    onTap: ()=> null,//Navigator.push(context, MaterialPageRoute(builder: (context) => MapScreen(this, widget._add))),
+                    onTap: (){
+                      if(widget._add != null)
+                        Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                            AddMapScreen(widget._add, widget._id, widget._add.location.latitude, widget._add.location.longitude)));
+                    } ,
                     child: Container(
                       child: Row(
                         children: [
