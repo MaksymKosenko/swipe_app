@@ -1,12 +1,19 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:swipe_app/global/custom_widgets/app_bars/ad_appbar.dart';
+import 'package:swipe_app/global/custom_widgets/report_add.dart';
 import 'package:swipe_app/global/style/text_styles.dart';
+import 'package:swipe_app/global/user.dart';
 import 'package:swipe_app/models/repository/api_add.dart';
+import 'package:swipe_app/screens/feed/landing_page.dart';
+import 'package:swipe_app/models/repository/api_user.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class FullAdCard extends StatefulWidget {
-  ApiAdd _add;
-  String _id;
+  final ApiAdd _add;
+  final String _id;
 
   FullAdCard(this._add, this._id);
 
@@ -16,8 +23,34 @@ class FullAdCard extends StatefulWidget {
 
 int photoIndex = 0;
 class _FullAdCardState extends State<FullAdCard> {
+  ApiUser _user;
+
+  getData() async{
+    await FirebaseFirestore.instance.collection('users').doc(widget._add.ownerID).get()
+        .then((DocumentSnapshot documentSnapshot) {
+
+          _user = ApiUser.fromApi(documentSnapshot.data());
+      // Get value of field date from document dashboard/totalVisitors
+     // firestoreDate = documentSnapshot.data()['date'];
+      // Get value of field weekOfYear from document dashboard/totalVisitors
+      //firestoreWeek = documentSnapshot.data()['weekOfYear'];
+      if(_user !=null){
+        setState(() {
+          print(_user.phone);
+          print(_user.photoPath);
+        });
+      }
+    }
+    );
+  }
   @override
   Widget build(BuildContext context) {
+    final ConcreteUser user = Provider.of<ConcreteUser>(context);
+
+  if(_user == null)
+    getData();
+
+
     print("fullAd id - ${widget._id}");
     bool isFewImages = false;
     bool connection = false;
@@ -39,10 +72,24 @@ class _FullAdCardState extends State<FullAdCard> {
       }
     }
 
+    Future <void> showReport(String name,context) async{
+      return showDialog<void>(
+          context: context,
+          barrierDismissible: false, // user must tap button!
+          builder: (BuildContext context) {
+            return Dialog(
+              insetPadding: EdgeInsets.symmetric(horizontal: 15),
+              shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(10.0)),
+              child: ReportAdd(name, widget._id, widget._add.ownerID, user.phone),
+
+            );
+          });
+    }
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
-        child: AdAppBar(widget._id),
+        child: AdAppBar(widget._id, MaterialPageRoute(builder: (context)=> LandingPage())),
       ),
       body: Container(color: Colors.white,
         child: ListView(
@@ -259,16 +306,21 @@ class _FullAdCardState extends State<FullAdCard> {
                   children: [
                     Container(
                       height: 46, width: 46,
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(23), color: Colors.black),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(23),
+                          image: DecorationImage(image: _user == null
+                              ? AssetImage('assets/images/plus.png')
+                              : NetworkImage(_user.photoPath)),
+                          color: Colors.black),
                     ),
                     SizedBox(width: 18),
-                    Column(//TODO - юзер с бд + zvonki/4at
+                    Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Name", style: RegularText(14, Colors.black)),
+                        Text(_user == null ? "Name" : _user.userName, style: RegularText(14, Colors.black)),
                         SizedBox(height: 3),
-                        Text("type", style: RegularText(10, Color(0xff949494))),
+                        Text("частное лицо", style: RegularText(10, Color(0xff949494))),
                       ],
                     )
                   ],
@@ -278,11 +330,14 @@ class _FullAdCardState extends State<FullAdCard> {
             ),
             SizedBox(height: 30),
             Padding(padding: EdgeInsets.symmetric(horizontal: 10),
-              child: Container(
-                alignment: Alignment.center,
-                height: 50,
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Color(0x26EB5757)),
-                child: Text("Пожаловаться на объявление", style: MediumText(14, Colors.red),),
+              child: GestureDetector(
+                onTap: ()=> showReport("Пожаловаться на объявление", context),
+                child: Container(
+                  alignment: Alignment.center,
+                  height: 50,
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Color(0x26EB5757)),
+                  child: Text("Пожаловаться на объявление", style: MediumText(14, Colors.red),),
+                ),
               ),
             ),
             SizedBox(height: 90),
@@ -297,20 +352,32 @@ class _FullAdCardState extends State<FullAdCard> {
                     end: Alignment.bottomCenter,
                     colors: [Color(0xff56C385), Color(0xff41BFB5)],//[Color(0xff56C385), Color(0xff41BFB5)],
                     ),
+                    boxShadow: [BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 12.0, // soften the shadow
+                      spreadRadius: 1.0, //extend the shadow
+                      offset: Offset(
+                        7.0, // Move to right 10  horizontally
+                        7.0, // Move to bottom 5 Vertically
+                      ),
+                    )]
                   ),
-                child: !connection
+                child: connection
                     ? Container(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        height: 52,
-                        width: 52,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(26),
-                          color: Color(0xE6FFFFFF)
+                      GestureDetector(
+                        onTap: ()=> launch('tel:${_user.phone}'),
+                        child: Container(
+                          height: 52,
+                          width: 52,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(26),
+                            color: Color(0xE6FFFFFF)
+                          ),
+                          child: Icon(Icons.phone_in_talk_outlined, color: Color(0xff4CC19A), size: 24,),// CupertinoIcons.phone_arrow_up_right
                         ),
-                        child: Icon(Icons.phone_in_talk_outlined, color: Color(0xff4CC19A), size: 24,),// CupertinoIcons.phone_arrow_up_right
                       ),
                       Container(
                         height: 52,
@@ -324,15 +391,18 @@ class _FullAdCardState extends State<FullAdCard> {
                     ],
                   ),
                 )
-                    : Container(
+                    : GestureDetector(
+                  onTap: ()=> launch('tel:${_user.phone}'),
+                      child: Container(
                   height: 52,
                   width: 52,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(26),
-                      //color: Color(0xE6FFFFFF)
+                        borderRadius: BorderRadius.circular(26),
+                        //color: Color(0xE6FFFFFF)
                   ),
                   child: Icon(Icons.phone_in_talk_outlined, color: Colors.white, size: 24,),
                 ),
+                    ),
                 ),
               ),
 

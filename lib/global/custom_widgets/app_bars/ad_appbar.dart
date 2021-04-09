@@ -7,7 +7,8 @@ import 'package:swipe_app/global/user.dart';
 
 class AdAppBar extends StatefulWidget {
   String _addId;
-  AdAppBar(this._addId);
+  MaterialPageRoute _previousScreen;
+  AdAppBar(this._addId, this._previousScreen);
   @override
   _AdAppBarState createState() => _AdAppBarState();
 }
@@ -67,6 +68,8 @@ class _AdAppBarState extends State<AdAppBar> {
     }
 
     return AppBar(
+      leading: IconButton(icon: Icon(Icons.arrow_back,color: Color(0xff9E9E9E),),
+        onPressed: ()=> Navigator.push(context, widget._previousScreen)),
       elevation: 0.0,
       backgroundColor: Colors.white,
       iconTheme: IconThemeData(color: Color(0xff27AEA4)),

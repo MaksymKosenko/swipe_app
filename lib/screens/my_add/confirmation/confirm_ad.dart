@@ -8,8 +8,10 @@ import 'package:swipe_app/global/style/text_styles.dart';
 import 'package:swipe_app/global/user.dart';
 import 'package:swipe_app/models/add_model.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:swipe_app/models/repository/api_add.dart';
+import 'package:swipe_app/screens/add_cards/own_add.dart';
+import 'package:swipe_app/screens/add_cards/standart_ad_card.dart';
 import 'package:swipe_app/screens/feed/landing_page.dart';
-import 'file:///C:/flutter_projects/flutterlearning/flutter_Dart_courses/swipe_app/lib/screens/add_cards/standart_ad_card.dart';
 import 'package:swipe_app/screens/my_add/confirmation/decoration_text_variant.dart';
 import 'package:swipe_app/screens/my_add/confirmation/icons_block.dart';
 import 'package:swipe_app/screens/my_add/whole_ad_container.dart';
@@ -68,12 +70,16 @@ class _ConfirmADState extends State<ConfirmAD> {
     });
   }
 
+  String _addId;
+  String _userId;
   @override
   Widget build(BuildContext context) {
    widget._add.textColorRose = option2sub1;
    widget._add.textColorGreen = option2sub2;
 
     final ConcreteUser user = Provider.of<ConcreteUser>(context);
+    if(user != null)
+      _userId = user.phone;
     cashToPay = 0;
     if(widget._add.chosenPhrase != null)
       cashToPay = cashToPay + 199;
@@ -100,6 +106,7 @@ class _ConfirmADState extends State<ConfirmAD> {
     }else
       month = month + " ${DateTime.now().month}";
     //day = day + " ${DateTime.now().year}";
+
 
     return Scaffold(
       appBar: MyCustomAppBar("Продвижение", 82, MaterialPageRoute(builder: (context) => MyNewAD(widget._add))),
@@ -203,7 +210,8 @@ class _ConfirmADState extends State<ConfirmAD> {
                           widget._add.bigAd = false,
                         },
                         addMyAD(user.phone),
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> LandingPage())),
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder:
+                            (context)=> LandingPage())),
                       },
                       child: CustomButton(280, 60, 35,
                           Color(0xff56C385), Color(0xff41BFB5),
@@ -223,7 +231,8 @@ class _ConfirmADState extends State<ConfirmAD> {
                       widget._add.promotedBig = false;
                       //widget._add.cost = cashToPay.toString();
                       addMyAD(user.phone);
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> LandingPage()));},
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder:
+                          (context)=> LandingPage()));},
 
                     child: Text("Разместить без оплаты",
                         style: MediumText(14, Color(0xff636363)),
@@ -331,8 +340,11 @@ class _ConfirmADState extends State<ConfirmAD> {
       'icon3': icon3,
 
       'dateTime': widget._add.dateTime,
+      'ownerID' : _userId,
+      'watches' : 0,
+      'saves' : 0,
     })
-        .then((value) {print("ads added"); addToMyCollection(value.id, phone);addAdPhoto(phone, value.id); })
+        .then((value) {print("ads added"); addToMyCollection(value.id, phone);addAdPhoto(phone, value.id); _addId = value.id;})
         .catchError((error) => print("Failed to add asd: $error"));
   }
 

@@ -38,6 +38,10 @@ class ApiAdd {
   final int hours;
   final int minutes;
 
+  final String id;
+  final int watches;
+  final int saves;
+  final String ownerID;
   ApiAdd.fromApi(QueryDocumentSnapshot snapshot)
       :  location = snapshot.data()['location'],
         address = snapshot.data()['address'],
@@ -71,5 +75,51 @@ class ApiAdd {
         day = snapshot.data()['day'],
         month= snapshot.data()['month'],
         hours= snapshot.data()['hours'],
-        minutes= snapshot.data()['minutes'];
+        minutes= snapshot.data()['minutes'],
+
+        id= snapshot.data()['id'],
+        watches = snapshot.data()['watches'],
+        saves = snapshot.data()['saves'],
+        ownerID = snapshot.data()['ownerID'];
+
+  ApiAdd.fromApiToDoc(Map<String, dynamic> data)
+      :  location = data['location'],
+        address = data['address'],
+        chosenZhK = data['chosenZhK'],
+        apartmentsType = data['apartmentsType'],
+        roomsQuantity = data['roomsQuantity'],
+        housePlan = data['housePlan'],
+        houseState = data['houseState'],
+        overallArea = data['overallArea'],
+        kitchenArea = data['kitchenArea'],
+        balconyState = data['balconyState'],
+        heatingType = data['heatingType'],
+        paymentType = data['paymentType'],
+
+        connectionType = data['connectionType'],
+        description = data['description'],
+        cost = data['cost'],
+        agentPayment = data['agentPayment'],
+        photos = data['photos'],
+
+        chosenPhrase = data['chosenPhrase'],
+        textColorRose = data['textColor1'],
+        textColorGreen = data['textColor2'],
+
+        bigAd = data['icon1'],
+        promotedAd = data['icon2'],
+        promotedBig = data['icon3'],
+
+        dateTime = data['dateTime'],
+
+        day = data['day'],
+        month= data['month'],
+        hours= data['hours'],
+        minutes= data['minutes'],
+
+        id= data['id'],
+        watches = data['watches'],
+        saves = data['saves'],
+        ownerID = data['ownerID'];
 }
+

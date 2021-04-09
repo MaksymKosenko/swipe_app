@@ -9,7 +9,7 @@ import 'package:swipe_app/global/custom_widgets/app_bars/default_app_bar.dart';
 import 'package:swipe_app/global/custom_widgets/custom_button.dart';
 import 'package:swipe_app/global/style/text_styles.dart';
 import 'package:swipe_app/models/add_model.dart';
-import 'package:swipe_app/screens/my_add/ad_address.dart';
+import 'package:swipe_app/screens/my_add/build_add/ad_address.dart';
 import 'package:swipe_app/screens/my_add/whole_ad_container.dart';
 
 class MapScreen extends StatefulWidget {
@@ -84,16 +84,20 @@ class _MapScreenState extends State<MapScreen> {
 
     void getLoc(double lat, double long) async{
       final coordinates = new Coordinates(lat, long);
-      var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
-      var first = addresses.first;
-      if(first.addressLine != null){
-        setState(() {
-          _address = "${first.thoroughfare} ${first.subThoroughfare}, ${first.locality}";
-          print(first.thoroughfare);
-          print(first.subThoroughfare);
-          print(first.locality);
-          setCustomMarker(lat, long, _address);
-        });
+      try{
+        var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
+        var first = addresses.first;
+        if(first.addressLine != null){
+          setState(() {
+            _address = "${first.thoroughfare} ${first.subThoroughfare}, ${first.locality}";
+            print(first.thoroughfare);
+            print(first.subThoroughfare);
+            print(first.locality);
+            setCustomMarker(lat, long, _address);
+          });
+        }
+      }catch(e){
+        print(e);
       }
     }
 

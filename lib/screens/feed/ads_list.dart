@@ -8,9 +8,9 @@ import 'package:rxdart/rxdart.dart';
 import 'package:rxdart/streams.dart';
 import 'package:swipe_app/models/repository/api_add.dart';
 import 'package:swipe_app/screens/add_cards/full_ad_card.dart';
-import 'file:///C:/flutter_projects/flutterlearning/flutter_Dart_courses/swipe_app/lib/screens/add_cards/promoted_ad_card.dart';
-import 'file:///C:/flutter_projects/flutterlearning/flutter_Dart_courses/swipe_app/lib/screens/add_cards/standart_ad_card.dart';
 import 'package:swipe_app/screens/add_cards/preview_ad_card.dart';
+import 'package:swipe_app/screens/add_cards/promoted_ad_card.dart';
+import 'package:swipe_app/screens/add_cards/standart_ad_card.dart';
 
 class AdsList extends StatefulWidget {
   @override
