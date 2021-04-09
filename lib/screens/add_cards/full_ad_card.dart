@@ -7,6 +7,7 @@ import 'package:swipe_app/global/custom_widgets/report_add.dart';
 import 'package:swipe_app/global/style/text_styles.dart';
 import 'package:swipe_app/global/user.dart';
 import 'package:swipe_app/models/repository/api_add.dart';
+import 'package:swipe_app/screens/chat_screens/user_to_user.dart';
 import 'package:swipe_app/screens/feed/landing_page.dart';
 import 'package:swipe_app/models/repository/api_user.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -379,14 +380,22 @@ class _FullAdCardState extends State<FullAdCard> {
                           child: Icon(Icons.phone_in_talk_outlined, color: Color(0xff4CC19A), size: 24,),// CupertinoIcons.phone_arrow_up_right
                         ),
                       ),
-                      Container(
-                        height: 52,
-                        width: 52,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(26),
-                            color: Color(0x1AFFFFFF)
+                      GestureDetector(
+                        onTap: (){
+                          if(_user != null){
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>
+                                UserToUserChat(_user.userName, _user.userSurName, widget._add, widget._id)));
+                          }
+                        },
+                        child: Container(
+                          height: 52,
+                          width: 52,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(26),
+                              color: Color(0x1AFFFFFF)
+                          ),
+                          child: Icon(CupertinoIcons.chat_bubble, color: Colors.white, size: 24,),
                         ),
-                        child: Icon(CupertinoIcons.chat_bubble, color: Colors.white, size: 24,),
                       )
                     ],
                   ),
