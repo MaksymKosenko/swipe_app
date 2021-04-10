@@ -384,7 +384,7 @@ class _FullAdCardState extends State<FullAdCard> {
                         onTap: (){
                           if(_user != null){
                             Navigator.push(context, MaterialPageRoute(builder: (context)=>
-                                UserToUserChat(_user.userName, _user.userSurName, widget._add, widget._id)));
+                                UserToUserChat(_user.userName, _user.userSurName, user.phone, widget._add, widget._id)));
                           }
                         },
                         child: Container(
