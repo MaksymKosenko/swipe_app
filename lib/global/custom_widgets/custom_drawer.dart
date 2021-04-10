@@ -5,6 +5,7 @@ import 'package:swipe_app/global/custom_widgets/logo.dart';
 import 'package:swipe_app/global/style/text_styles.dart';
 import 'package:swipe_app/global/user.dart';
 import 'package:swipe_app/screens/feed/landing_page.dart';
+import 'package:swipe_app/screens/maps/mfc_screen.dart';
 import 'package:swipe_app/screens/my_add/whole_ad_container.dart';
 import 'package:swipe_app/screens/notary/notary_page.dart';
 import 'package:swipe_app/screens/profile/profile_screen.dart';
@@ -89,7 +90,9 @@ Widget CustomDrawer(context, _userData){
                   onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=>NotaryScreen())),
                   child: Container(height: 20, child: Text("Нотариусы",style: MediumText(16, Colors.white),),)),
               SizedBox(height: 20),
-              Container(height: 20, child: Text("МФЦ",style: MediumText(16, Colors.white),),),
+              GestureDetector(
+                  onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=>MfcMapScreen())),
+                  child: Container(height: 20, child: Text("МФЦ",style: MediumText(16, Colors.white),),)),
               SizedBox(height: 20),
               Container(height: 20, child: Text("Обратная связь",style: MediumText(16, Colors.white),),),
             ],
