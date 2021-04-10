@@ -4,7 +4,9 @@ import 'package:swipe_app/global/custom_widgets/custom_button.dart';
 import 'package:swipe_app/global/custom_widgets/logo.dart';
 import 'package:swipe_app/global/style/text_styles.dart';
 import 'package:swipe_app/global/user.dart';
+import 'package:swipe_app/screens/feed/landing_page.dart';
 import 'package:swipe_app/screens/my_add/whole_ad_container.dart';
+import 'package:swipe_app/screens/notary/notary_page.dart';
 import 'package:swipe_app/screens/profile/profile_screen.dart';
 
 Widget CustomDrawer(context, _userData){
@@ -66,7 +68,9 @@ Widget CustomDrawer(context, _userData){
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(height: 20, child: Text("Лента объявлений",style: MediumText(16, Colors.white),),),
+              GestureDetector(
+                onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=>LandingPage())),
+                  child: Container(height: 20, child: Text("Лента объявлений",style: MediumText(16, Colors.white),),)),
               SizedBox(height: 20),
               GestureDetector(
                   child: Container(height: 20, child: Text("Личный кабинет",style: MediumText(16, Colors.white),),),
@@ -81,7 +85,9 @@ Widget CustomDrawer(context, _userData){
               SizedBox(height: 20),
               Container(height: 20, child: Text("Сохраненные фильтры",style: MediumText(16, Colors.white),),),
               SizedBox(height: 20),
-              Container(height: 20, child: Text("Нотариусы",style: MediumText(16, Colors.white),),),
+              GestureDetector(
+                  onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=>NotaryScreen())),
+                  child: Container(height: 20, child: Text("Нотариусы",style: MediumText(16, Colors.white),),)),
               SizedBox(height: 20),
               Container(height: 20, child: Text("МФЦ",style: MediumText(16, Colors.white),),),
               SizedBox(height: 20),

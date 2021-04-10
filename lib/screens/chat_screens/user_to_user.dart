@@ -112,6 +112,7 @@ class _UserToUserChatState extends State<UserToUserChat> {
     }
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: MyCustomAppBar("${widget._userName} ${widget._userSurName}", 82,
         MaterialPageRoute(builder: (context) => FullAdCard(widget._add, widget._id)),),
       body: Container(

@@ -127,6 +127,7 @@ class _MapScreenState extends State<MapScreen> {
                       position: LatLng(_geoPoint.latitude, _geoPoint.longitude),
                       icon: zhkMarker,
                       onTap: (){
+                        _address = snapshot.data.docs[i]['address'];
                         changeView();
                         setupSaveButton(_geoPoint.latitude, _geoPoint.longitude, snapshot.data.docs[i]['name']);} ,//isSaveEnabled = true,
                       infoWindow: InfoWindow(title: "${snapshot.data.docs[i]['name']}")));
@@ -247,56 +248,6 @@ class _MapScreenState extends State<MapScreen> {
             ),
           );
         });
-   /*
-    return Scaffold(
-      appBar: MyCustomAppBar("Адресс", 82, MaterialPageRoute(builder: (context)=> MyNewAD(widget._add))),
-
-      body:  Stack(
-        children: [
-        GoogleMap(
-          mapType: MapType.normal,
-          initialCameraPosition: _kSochi,
-          zoomControlsEnabled: false,
-          markers: _markers,
-          circles: _circles,
-          //myLocationEnabled: true,
-          onTap:(latLng) => setCustomMarker(latLng) ,
-          onMapCreated: (GoogleMapController controller) {
-            _controller.complete(controller);
-          },
-        ),
-          isSaveEnabled ? Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 24),
-              child: Container(
-                width:200, height: 40,
-                decoration: BoxDecoration(
-                  boxShadow: [BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 12.0, // soften the shadow
-                    spreadRadius: 1.0, //extend the shadow
-                    offset: Offset(
-                      7.0, // Move to right 10  horizontally
-                      7.0, // Move to bottom 5 Vertically
-                    ),
-                  )]
-                ),
-                child: CustomButton(200, 40, 12, Colors.white, Colors.white,
-                    Alignment.centerRight, Alignment.centerLeft, "Сохранить",
-                    MediumText(14, Color(0xff27AEA4)), Color(0xff27AEA4)),
-              ),
-            ),
-          )
-              : Container(),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.white,
-        onPressed: _goToSochi,
-        child: Icon(CupertinoIcons.location_fill, size: 30, color: Color(0xff27AEA4)),
-      ),
-    );*/
   }
   Future<void> _goToSochi() async {
     final GoogleMapController controller = await _controller.future;
