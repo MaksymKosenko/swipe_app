@@ -35,7 +35,7 @@ class _UserToSupportChatState extends State<UserToSupportChat> {
         .set({
       'owner': userId,
     })
-        .then((value) => createMessage(userId, text, 0))
+        .then((value) {createMessage(userId, text, 0); isChatExist = true;})
         .catchError((error) => print("Failed to add chat: $error"));
   }
 
@@ -43,8 +43,8 @@ class _UserToSupportChatState extends State<UserToSupportChat> {
     return _chats
         .doc("${userId}toSupport")
         .collection('messages')
-        .doc('message$index')
-        .set({'message$index' : text, 'author' : userId})
+        .doc('$index message')
+        .set({'$index message' : text, 'author' : userId, 'time' : Timestamp.now(),})
         .then((value) {
       print("$index message added"); _chatController.clear();
     })
@@ -53,7 +53,7 @@ class _UserToSupportChatState extends State<UserToSupportChat> {
 
   Future<void> pushMessageToDB(String userId, String text) async{
     try{
-      var docs = await  FirebaseFirestore.instance.collection('chats')
+      await  FirebaseFirestore.instance.collection('chats')
           .doc('${userId}toSupport').collection('messages')
           .get()
           .then((value) => createMessage(userId, text, value.size));
@@ -124,7 +124,11 @@ class _UserToSupportChatState extends State<UserToSupportChat> {
             Icon(CupertinoIcons.paperclip, color: Color(0xff8C8C8C),),
             InputChat(_chatController, "Ок, супер!"),
             GestureDetector(
-              onTap: ()=> isChatExist ? sendMessage(_chatController.text) : startChat(_chatController.text),
+              onTap: () {
+                print("ischatexist - $isChatExist");
+                isChatExist ? sendMessage(_chatController.text) : startChat(
+                    _chatController.text);
+              },
               child: Container(
                   height: 50, width: 50,
                   alignment: Alignment.center,
@@ -148,39 +152,29 @@ class _UserToSupportChatState extends State<UserToSupportChat> {
 
 
   Widget getMessages(String userId){
-    String author;
-    String msg;
+    Stream _messages = FirebaseFirestore.instance.collection('chats').doc('${userId}toSupport')
+        .collection("messages").orderBy("time", descending: false).snapshots();
     return StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('chats')
-            .doc('${userId}toSupport').collection('messages').snapshots(),
+        stream: _messages,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           var data;
-          if (snapshot.hasError) {
-            return Text('Something went wrong');
-          }
-
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Text("Loading");
-          }
-
           if (snapshot.connectionState == ConnectionState.active) {
+            snapshot.data.toString();
             data = snapshot.data;
-            print("datadocslength - ${data.docs.length}");
-            // print("datata in index 10  - ${data.docs[10]['message10']}");
+            print("data docs length - ${data.docs.length}");
+
             return ListView.builder(
               itemCount: data.docs.length,
               shrinkWrap: true,
               itemBuilder: (context, index){
                 print("index - $index");
-                print("drawing  - ${data.docs[index]['message$index']}");//TODO аботает до 10 сообщений, доделать
                 if(data.docs[index]['author'] == userId)
-                  return sendedMessage("${data.docs[index]['message$index']}");
-                else return recivedMessage("${data.docs[index]['message$index']}");
+                  return sendedMessage("${data.docs[index]['$index message']}");
+                else return recivedMessage("${data.docs[index]['$index message']}");
               },
             );
           }
-          print("length for use - ${data.docs.length}");
-          return Container();
+          return Container(color: Colors.white,);
         });
 
   }
