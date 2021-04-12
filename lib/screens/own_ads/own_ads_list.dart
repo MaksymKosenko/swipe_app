@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:swipe_app/global/custom_widgets/app_bars/favourites_appbar.dart';
+import 'package:swipe_app/global/custom_widgets/app_bars/my_ads_screen_appbar.dart';
 import 'package:swipe_app/models/repository/api_add.dart';
 import 'package:swipe_app/screens/add_cards/owner_full_ad_card.dart';
 import 'package:swipe_app/screens/add_cards/preview_ad_card.dart';
@@ -40,7 +40,7 @@ class _OwnAdsScreenState extends State<OwnAdsScreen> {
     print("phone is - ${widget._phone}");
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: MyFavouritesAppBar(
+      appBar: MyAdsAppBar(
         "Мои обьявления",
         82,
         MaterialPageRoute(builder: (context) => LandingPage()),

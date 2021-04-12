@@ -3,15 +3,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:swipe_app/global/custom_widgets/app_bars/own_ad_appbar.dart';
+import 'package:swipe_app/global/custom_widgets/custom_button.dart';
 import 'package:swipe_app/global/custom_widgets/report_add.dart';
 import 'package:swipe_app/global/style/text_styles.dart';
 import 'package:swipe_app/global/user.dart';
 import 'package:swipe_app/models/repository/api_add.dart';
-import 'package:swipe_app/screens/chat_screens/user_to_user.dart';
 import 'package:swipe_app/models/repository/api_user.dart';
 import 'package:swipe_app/screens/maps/add_on_map.dart';
 import 'package:swipe_app/screens/own_ads/own_ads_list.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class OwnerFullAdCard extends StatefulWidget {
   final ApiAdd _add;
@@ -40,6 +39,14 @@ class _OwnerFullAdCardState extends State<OwnerFullAdCard> {
     }
     );
   }
+
+  Future<void> updateActuality() async{
+    return FirebaseFirestore.instance.collection('ads').doc(widget._id)
+        .update({'dateTime': DateTime.now()})
+        .then((value) => print("user added"))
+        .catchError((error) => print("Failed to add user: $error"));
+
+  }
   @override
   Widget build(BuildContext context) {
     final ConcreteUser user = Provider.of<ConcreteUser>(context);
@@ -47,14 +54,12 @@ class _OwnerFullAdCardState extends State<OwnerFullAdCard> {
     if(_user == null)
       getData();
 
-
-    print("fullAd id - ${widget._id}");
     bool isFewImages = false;
-    bool connection = false;
+    //bool connection = false;
     String selectedImage = widget._add.photos[photoIndex];
     if (widget._add.photos.length > 1) isFewImages = true;
-    if(widget._add.connectionType == "Звонок + сообщение" || widget._add.connectionType =="Звонок + сообщение агенту")
-      connection = true;
+   // if(widget._add.connectionType == "Звонок + сообщение" || widget._add.connectionType =="Звонок + сообщение агенту")
+     // connection = true;
     void changeView(String way, int currentIndex){
       switch(way){
         case "left": print("left");if(currentIndex > 0) setState(() {
@@ -69,7 +74,7 @@ class _OwnerFullAdCardState extends State<OwnerFullAdCard> {
       }
     }
 
-    Future <void> showReport(String name,context) async{
+   /* Future <void> showReport(String name,context) async{
       return showDialog<void>(
           context: context,
           barrierDismissible: false, // user must tap button!
@@ -81,7 +86,7 @@ class _OwnerFullAdCardState extends State<OwnerFullAdCard> {
 
             );
           });
-    }
+    }*/
 
     return Scaffold(
       appBar: PreferredSize(
@@ -228,6 +233,15 @@ class _OwnerFullAdCardState extends State<OwnerFullAdCard> {
             SizedBox(height: 40),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 10),
+              child: GestureDetector(
+                onTap: ()=> updateActuality(),
+                child: CustomButton(355, 45, 10, Color(0xff56C486), Color(0xff42C0B5), Alignment.centerLeft, Alignment.centerRight,
+                    "Подтвердить актуальость", SemiBoldText(14, Colors.white), Colors.transparent),
+              ),
+            ),
+            SizedBox(height: 40),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -332,12 +346,13 @@ class _OwnerFullAdCardState extends State<OwnerFullAdCard> {
             SizedBox(height: 30),
             Padding(padding: EdgeInsets.symmetric(horizontal: 10),
               child: GestureDetector(
-                onTap: ()=> showReport("Пожаловаться на объявление", context),
+                onTap: ()=> null,
                 child: Container(
                   alignment: Alignment.center,
                   height: 50,
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Color(0x26EB5757)),
-                  child: Text("Пожаловаться на объявление", style: MediumText(14, Colors.red),),
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: Color(0xff42C0B5)),color: Colors.white),
+                  child: Text("Продвижение объявления", style: MediumText(14, Color(0xff42C0B5)),),
                 ),
               ),
             ),
@@ -363,53 +378,17 @@ class _OwnerFullAdCardState extends State<OwnerFullAdCard> {
                       ),
                     )]
                 ),
-                child: connection
-                    ? Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                        onTap: ()=> launch('tel:${_user.phone}'),
-                        child: Container(
-                          height: 52,
-                          width: 52,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(26),
-                              color: Color(0xE6FFFFFF)
-                          ),
-                          child: Icon(Icons.phone_in_talk_outlined, color: Color(0xff4CC19A), size: 24,),// CupertinoIcons.phone_arrow_up_right
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: (){
-                          if(_user != null){
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>
-                                UserToUserChat(_user.userName, _user.userSurName, user.phone, widget._add, widget._id)));
-                          }
-                        },
-                        child: Container(
-                          height: 52,
-                          width: 52,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(26),
-                              color: Color(0x1AFFFFFF)
-                          ),
-                          child: Icon(CupertinoIcons.chat_bubble, color: Colors.white, size: 24,),
-                        ),
-                      )
-                    ],
-                  ),
-                )
-                    : GestureDetector(
-                  onTap: ()=> launch('tel:${_user.phone}'),
+                child: GestureDetector(
+                  onTap: ()=> null,
                   child: Container(
+                    alignment: Alignment.center,
                     height: 52,
                     width: 52,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(26),
                       //color: Color(0xE6FFFFFF)
                     ),
-                    child: Icon(Icons.phone_in_talk_outlined, color: Colors.white, size: 24,),
+                    child: Text("Редактировать", style: MediumText(16, Colors.white),),
                   ),
                 ),
               ),

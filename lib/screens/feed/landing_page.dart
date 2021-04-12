@@ -23,15 +23,11 @@ class _LandingPageState extends State<LandingPage> {
     return StreamBuilder<DocumentSnapshot>(
         stream: _users.doc(_documentId).get().asStream(),
         builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-   /*return FutureBuilder<DocumentSnapshot>(
-        future: _users.doc(_documentId).get(),
-        builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {*/
               if (snapshot.connectionState == ConnectionState.done) {
                 Map<String, dynamic> data =  snapshot.data.data();
-                //data.remove('profilePic');
 
-                //data.update('profilePic', (value) => "https://firebasestorage.googleapis.com/v0/b/my-swipe.appspot.com/o/%2B11122233344%2FprofilePic?alt=media&token=02674fab-9486-4255-95ab-94f1cfeddec5");
                 _userFromFirestoreData = data;
+                print("landing page data = $data");
                 return Scaffold(
                     drawer: CustomDrawer(context, _userFromFirestoreData),
                     appBar: CustomFeedAppBar(),
