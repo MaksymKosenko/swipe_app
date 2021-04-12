@@ -29,7 +29,7 @@ class _AdAppBarState extends State<AdAppBar> {
           .collection("myFavourites")
           .doc("${widget._addId}")
           .set({
-        'addID': "${widget._addId}",
+        'addID': "${widget._addId}", 'time' : DateTime.now(),
       })
           .then((value) => print("Favourite added"))
           .catchError((error) => print("Failed to add Favourite: $error"));

@@ -158,6 +158,7 @@ class _UserToSupportChatState extends State<UserToSupportChat> {
         stream: _messages,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           var data;
+          if (snapshot.connectionState == ConnectionState.waiting) {return Container();}
           if (snapshot.connectionState == ConnectionState.active) {
             snapshot.data.toString();
             data = snapshot.data;

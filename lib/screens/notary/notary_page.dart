@@ -5,12 +5,14 @@ import 'package:swipe_app/global/style/text_styles.dart';
 import 'package:swipe_app/screens/feed/landing_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+
 class NotaryScreen extends StatefulWidget {
   @override
   _NotaryScreenState createState() => _NotaryScreenState();
 }
 
 class _NotaryScreenState extends State<NotaryScreen> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,18 +22,10 @@ class _NotaryScreenState extends State<NotaryScreen> {
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
         child: StreamBuilder(
-
             stream: FirebaseFirestore.instance.collection('notary').snapshots(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               var data;
-              if (snapshot.hasError) {
-                return Text('Something went wrong');
-              }
-
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Text("Loading");
-              }
-
+              if (snapshot.connectionState == ConnectionState.waiting) {return Container();}
               if (snapshot.connectionState == ConnectionState.active) {
                 data = snapshot.data;
                 print("datadocslength - ${data.docs.length}");
@@ -39,6 +33,7 @@ class _NotaryScreenState extends State<NotaryScreen> {
                   itemCount: data.docs.length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
+
                    return Container(
                      height: 80,
                      child: Align(
@@ -53,7 +48,7 @@ class _NotaryScreenState extends State<NotaryScreen> {
                                  Container(
                                    height: 60,
                                    width: 60,
-                                   decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),
+                                   decoration: BoxDecoration(borderRadius: BorderRadius.circular(30), color: Color(0xffECECEC), border: Border.all(color: Color(0xff41BFB5),width: 2),
                                        image: DecorationImage(image: NetworkImage(data.docs[index]['photoPath']),fit: BoxFit.fill)),
                                  ),
                                  SizedBox(width: 20),
@@ -63,7 +58,7 @@ class _NotaryScreenState extends State<NotaryScreen> {
                                    children: [
                                      Text("${data.docs[index]['name']} ${data.docs[index]['surName']}",style: MediumText(16, Colors.black),),
                                      Text("${data.docs[index]['phone']}",style: RegularText(12, Color(0xff494949)),),
-                                     Text("${data.docs[index]['email']} ${data.docs[index]['surName']}",style: RegularText(12, Color(0xff494949)),)
+                                     Text("${data.docs[index]['email']}",style: RegularText(12, Color(0xff494949)),)
                                    ],
                                  ),
                                ],

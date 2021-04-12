@@ -164,7 +164,7 @@ class _UserToUserChatState extends State<UserToUserChat> {
         stream: _messages,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           var data;
-
+          if (snapshot.connectionState == ConnectionState.waiting) {return Container();}
           if (snapshot.connectionState == ConnectionState.active) {
             data = snapshot.data;
             print("datadocslength - ${data.docs.length}");

@@ -24,6 +24,7 @@ class _AdsListState extends State<AdsList> {
 
     Stream _turbo = FirebaseFirestore.instance
         .collection('ads')
+        //.orderBy("dateTime", descending: true)
         .where('icon3', isEqualTo: true)
         .where('icon2', isEqualTo: false)
         .where('icon1', isEqualTo: false)
@@ -31,6 +32,7 @@ class _AdsListState extends State<AdsList> {
 
     Stream _promoted = FirebaseFirestore.instance
         .collection('ads')
+        //.orderBy("dateTime", descending: true)
         .where('icon1', isEqualTo: false)
         .where('icon2', isEqualTo: true)
         .where('icon3', isEqualTo: false)
@@ -38,13 +40,14 @@ class _AdsListState extends State<AdsList> {
 
     Stream _bigAds = FirebaseFirestore.instance
         .collection('ads')
-        //.orderBy("dateTime", descending: true).get()
+        //.orderBy("dateTime", descending: true)
         .where('icon1', isEqualTo: true)
         .where('icon2', isEqualTo: false)
         .where('icon3', isEqualTo: false)
         .snapshots();
     Stream _defaultADs = FirebaseFirestore.instance
         .collection('ads')
+        //.orderBy("dateTime", descending: true)
         .where('icon1', isEqualTo: false)
         .where('icon2', isEqualTo: false)
         .where('icon3', isEqualTo: false)
@@ -167,31 +170,6 @@ class _AdsListState extends State<AdsList> {
 
             child: PreviewAdCard(ApiAdd.fromApi(_add), id),
           );
-          /*
-          return AlertDialog(
-            title: Text('Login error'),
-            content: SingleChildScrollView(
-              child: SAdCard.fromApi(ApiAdd.fromApi(_add)),
-              /* ListBody(
-                children: <Widget>[
-                  Text(_add.cost),
-                  Text(_add.roomsQuantity),
-                  Text(_add.roomsQuantity),
-                  Text(_add.address),
-                ],
-              ),*/
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: Text('Try again'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-
-          */
         }
     );
   }
