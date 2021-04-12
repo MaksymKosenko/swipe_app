@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:swipe_app/global/custom_widgets/custom_button.dart';
 import 'package:swipe_app/global/custom_widgets/logo.dart';
 import 'package:swipe_app/global/style/text_styles.dart';
+import 'package:swipe_app/screens/chat_screens/chat_screen.dart';
 import 'package:swipe_app/screens/chat_screens/user_to_support.dart';
 import 'package:swipe_app/screens/favourites/favourites_screen.dart';
 import 'package:swipe_app/screens/feed/landing_page.dart';
 import 'package:swipe_app/screens/maps/mfc_screen.dart';
 import 'package:swipe_app/screens/my_add/whole_ad_container.dart';
 import 'package:swipe_app/screens/notary/notary_page.dart';
+import 'package:swipe_app/screens/own_ads/own_ads_list.dart';
 import 'package:swipe_app/screens/profile/profile_screen.dart';
 
 Widget CustomDrawer(context, _userData){
@@ -78,7 +80,7 @@ Widget CustomDrawer(context, _userData){
                   onTap: ()=> Navigator.push(context, MaterialPageRoute(
                       builder: (context) => ProfileScreen(_userData)))),
               SizedBox(height: 20),
-              GestureDetector(child: Container(height: 20, child: Text("Мое объявление",style: MediumText(16, Colors.white),),),
+              GestureDetector(child: Container(height: 20, child: Text("Новое объявление",style: MediumText(16, Colors.white),),),
                 onTap:()=>Navigator.push(context, MaterialPageRoute(
                     builder: (context) => MyNewAD()))),
               SizedBox(height: 20),
@@ -86,7 +88,9 @@ Widget CustomDrawer(context, _userData){
                   onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=>FavouriteScreen(_userData['phone']))),
                   child: Container(height: 20, child: Text("Избранные",style: MediumText(16, Colors.white),),)),
               SizedBox(height: 20),
-              Container(height: 20, child: Text("Сохраненные фильтры",style: MediumText(16, Colors.white),),),
+              GestureDetector(
+                onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=>OwnAdsScreen(_userData['phone']))),
+                  child: Container(height: 20, child: Text("Мои объявления",style: MediumText(16, Colors.white),),)),//"Сохраненные фильтры"
               SizedBox(height: 20),
               GestureDetector(
                   onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=>NotaryScreen())),
@@ -97,8 +101,9 @@ Widget CustomDrawer(context, _userData){
                   child: Container(height: 20, child: Text("МФЦ",style: MediumText(16, Colors.white),),)),
               SizedBox(height: 20),
               GestureDetector(
-                  onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=>UserToSupportChat())),
-                  child: Container(height: 20, child: Text("Обратная связь",style: MediumText(16, Colors.white),),)),
+                  onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=>ChatScreen())),
+                  //onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=>UserToSupportChat())), //"Обратная связь"
+                  child: Container(height: 20, child: Text("Чаты",style: MediumText(16, Colors.white),),)),
             ],
           ),
         ),

@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:swipe_app/global/custom_widgets/app_bars/default_app_bar.dart';
 import 'package:swipe_app/global/style/text_styles.dart';
 import 'package:swipe_app/global/user.dart';
+import 'package:swipe_app/screens/chat_screens/chat_screen.dart';
 import 'package:swipe_app/screens/chat_screens/input.dart';
 import 'package:swipe_app/screens/feed/landing_page.dart';
 
@@ -109,7 +110,7 @@ class _UserToSupportChatState extends State<UserToSupportChat> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: MyCustomAppBar("Обратная связь", 82,
-        MaterialPageRoute(builder: (context) => LandingPage()),),
+        MaterialPageRoute(builder: (context) => ChatScreen()),),//MaterialPageRoute(builder: (context) => LandingPage()),),
       body: Container(
         padding: EdgeInsets.only(top: 20),
         color: Colors.white,
