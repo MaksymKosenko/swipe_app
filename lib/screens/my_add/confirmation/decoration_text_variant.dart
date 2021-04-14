@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:swipe_app/global/custom_widgets/custom_button.dart';
 import 'package:swipe_app/global/style/text_styles.dart';
 import 'package:swipe_app/models/add_model.dart';
+import 'package:swipe_app/models/repository/api_add.dart';
 import 'package:swipe_app/screens/add_cards/standart_ad_card.dart';
 
 
@@ -254,7 +255,8 @@ class _VariantsBlockState extends State<VariantsBlock> {
 class AddPhrase extends StatefulWidget {
   final Add _add;
   dynamic _confirmADState;
-  AddPhrase(this._add, this._confirmADState);
+  final ApiAdd _apiAdd;
+  AddPhrase(this._add, this._confirmADState, [this._apiAdd]);
   @override
   _AddPhraseState createState() => _AddPhraseState();
 }
@@ -266,12 +268,14 @@ class _AddPhraseState extends State<AddPhrase> {
       if (widget._add.chosenPhrase == null){
         activeOption1 = false;
         widget._confirmADState.setState((){
+          //widget._confirmADState.activeOption1 = false;
           print("state updated to false");
         });
       }
       else{
         activeOption1 = true;
         widget._confirmADState.setState((){
+          //widget._confirmADState.activeOption1 = true;
           print("state updated to true");
         });
         //widget.createState();
@@ -291,7 +295,10 @@ class _AddPhraseState extends State<AddPhrase> {
             setState(() {
               activeOption1 = false;
               widget._add.chosenPhrase = null;
-              widget._confirmADState.setState((){});
+              widget._confirmADState.setState((){
+              //  widget._confirmADState.chosenPhrase = null;
+               // widget._confirmADState.activeOption1 = false;
+              });
             });
 
          // widget._concreteAd.setNullPhrases();
@@ -359,7 +366,7 @@ class _AddPhraseState extends State<AddPhrase> {
                       iconSize: 20,
                       onPressed: (){widget._add.chosenPhrase = null;//SAdCard(widget._concreteAd).createState();
                       SAdCard(widget._add).createState();
-                     // SAdCard(widget._concreteAd).createState();
+                      SAdCard.fromApi(widget._apiAdd).createState();
                         changeView(); Navigator.of(context).pop();} ,
                     ),
                   ],
@@ -379,6 +386,7 @@ class _AddPhraseState extends State<AddPhrase> {
                   onTap: () {
                     changeView();
                     SAdCard(widget._add).createState();
+                    SAdCard.fromApi(widget._apiAdd).createState();
                     Navigator.of(context).pop();
                     //SAdCard(widget._concreteAd).createState();
                   },

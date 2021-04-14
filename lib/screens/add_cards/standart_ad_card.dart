@@ -9,6 +9,7 @@ import 'package:swipe_app/models/repository/api_add.dart';
 class SAdCard extends StatefulWidget{
   final Add _add;
   final ApiAdd _apiAdd;
+
   SAdCard(this._add, [this._apiAdd]);
   SAdCard.fromApi(this._apiAdd, [this._add]);
   @override
@@ -18,10 +19,19 @@ class SAdCard extends StatefulWidget{
 class _SAdCardState extends State<SAdCard> {
   Widget build(BuildContext context) {
     dynamic _add;
-    if (widget._apiAdd != null)
+    if (widget._apiAdd != null){
       _add = widget._apiAdd;
-    if (widget._add != null)
+     // _add.textColorGreen = widget._apiAdd.textColorGreen;
+     // _add.textColorRose = widget._apiAdd.textColorRose;
+     // print(widget._apiAdd.id);
+     // print("add textColor green = ${widget._apiAdd.textColorGreen}");
+     // print("add textColor rose = ${widget._apiAdd.textColorRose}");
+    }
+    if (widget._add != null){
+      //Add _add = Add();
       _add = widget._add;
+    }
+
 
 
     int minutes;
@@ -38,7 +48,6 @@ class _SAdCardState extends State<SAdCard> {
       }
 
       if(widget._apiAdd != null){
-        print("_aiAdd != null");
         minValue = _add.dateTime.toDate().minute.toString();
         if(_add.dateTime.toDate().minute < 10)
           minValue = "0$minValue";
@@ -57,7 +66,9 @@ class _SAdCardState extends State<SAdCard> {
       bool textColor = false;
       Color textClr; // = Colors.transparent;
 
+
       if (_add.textColorGreen == true || _add.textColorRose == true) {
+        print("we got the color!!");
         setState(() {
           textColor = true;
           if (_add.textColorRose == true)
@@ -132,7 +143,7 @@ class _SAdCardState extends State<SAdCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "${_add.cost} ₴", style: SemiBoldText(18, Colors.black),),
+                      "${_add.cost} ₴ ", style: SemiBoldText(18, Colors.black),),
                     SizedBox(height: 5),
                     Container(
                       padding: EdgeInsets.only(

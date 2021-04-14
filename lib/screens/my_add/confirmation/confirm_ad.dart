@@ -8,8 +8,6 @@ import 'package:swipe_app/global/style/text_styles.dart';
 import 'package:swipe_app/global/user.dart';
 import 'package:swipe_app/models/add_model.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-import 'package:swipe_app/models/repository/api_add.dart';
-import 'package:swipe_app/screens/add_cards/own_add.dart';
 import 'package:swipe_app/screens/add_cards/standart_ad_card.dart';
 import 'package:swipe_app/screens/feed/landing_page.dart';
 import 'package:swipe_app/screens/my_add/confirmation/decoration_text_variant.dart';
@@ -27,7 +25,6 @@ class ConfirmAD extends StatefulWidget {
 }
 
 class _ConfirmADState extends State<ConfirmAD> {
-
   bool activeOption2 = false;
   bool option2sub1 = false;
   bool option2sub2 = false;
@@ -74,6 +71,7 @@ class _ConfirmADState extends State<ConfirmAD> {
   String _userId;
   @override
   Widget build(BuildContext context) {
+
    widget._add.textColorRose = option2sub1;
    widget._add.textColorGreen = option2sub2;
 

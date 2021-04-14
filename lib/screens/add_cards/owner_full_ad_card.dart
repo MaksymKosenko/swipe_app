@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:swipe_app/global/custom_widgets/app_bars/own_ad_appbar.dart';
 import 'package:swipe_app/global/custom_widgets/custom_button.dart';
-import 'package:swipe_app/global/custom_widgets/report_add.dart';
 import 'package:swipe_app/global/style/text_styles.dart';
 import 'package:swipe_app/global/user.dart';
 import 'package:swipe_app/models/repository/api_add.dart';
 import 'package:swipe_app/models/repository/api_user.dart';
 import 'package:swipe_app/screens/maps/add_on_map.dart';
+import 'package:swipe_app/screens/own_ads/add_promotion.dart';
 import 'package:swipe_app/screens/own_ads/own_ads_list.dart';
 
 class OwnerFullAdCard extends StatefulWidget {
@@ -346,7 +346,7 @@ class _OwnerFullAdCardState extends State<OwnerFullAdCard> {
             SizedBox(height: 30),
             Padding(padding: EdgeInsets.symmetric(horizontal: 10),
               child: GestureDetector(
-                onTap: ()=> null,
+                onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context) => PromoteAd(widget._add, widget._id))),
                 child: Container(
                   alignment: Alignment.center,
                   height: 50,

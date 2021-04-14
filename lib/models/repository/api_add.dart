@@ -42,6 +42,7 @@ class ApiAdd {
   final int watches;
   final int saves;
   final String ownerID;
+
   ApiAdd.fromApi(QueryDocumentSnapshot snapshot)
       :  location = snapshot.data()['location'],
         address = snapshot.data()['address'],
@@ -63,8 +64,8 @@ class ApiAdd {
         photos = snapshot.data()['photos'],
 
         chosenPhrase = snapshot.data()['chosenPhrase'],
-        textColorRose = snapshot.data()['textColor1'],
-        textColorGreen = snapshot.data()['textColor2'],
+        textColorRose = snapshot.data()['textColorRose'],
+        textColorGreen = snapshot.data()['textColorGreen'],
 
         bigAd = snapshot.data()['icon1'],
         promotedAd = snapshot.data()['icon2'],
