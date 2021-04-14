@@ -6,7 +6,7 @@ import 'package:swipe_app/screens/my_add/map_screen.dart';
 import 'package:swipe_app/screens/my_add/whole_ad_container.dart';
 
 class Address extends StatefulWidget {
-  final MyNewADState _addState;
+  final dynamic _addState;
   final Add _add;
   Address(this._addState, this._add);
 

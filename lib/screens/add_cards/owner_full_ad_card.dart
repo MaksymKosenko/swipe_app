@@ -9,6 +9,7 @@ import 'package:swipe_app/global/user.dart';
 import 'package:swipe_app/models/repository/api_add.dart';
 import 'package:swipe_app/models/repository/api_user.dart';
 import 'package:swipe_app/screens/maps/add_on_map.dart';
+import 'package:swipe_app/screens/own_ads/add_editing.dart';
 import 'package:swipe_app/screens/own_ads/add_promotion.dart';
 import 'package:swipe_app/screens/own_ads/own_ads_list.dart';
 
@@ -379,7 +380,7 @@ class _OwnerFullAdCardState extends State<OwnerFullAdCard> {
                     )]
                 ),
                 child: GestureDetector(
-                  onTap: ()=> null,
+                  onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=> EditAdContainer(widget._add, widget._id, this.widget))),
                   child: Container(
                     alignment: Alignment.center,
                     height: 52,

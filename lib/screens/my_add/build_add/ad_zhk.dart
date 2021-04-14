@@ -6,7 +6,7 @@ import 'package:swipe_app/screens/my_add/search_field.dart';
 import 'package:swipe_app/screens/my_add/whole_ad_container.dart';
 
 class ZhK extends StatefulWidget {
-  final MyNewADState _addState;
+  final dynamic _addState;
   final Add _add;
   ZhK(this._addState, this._add);
 

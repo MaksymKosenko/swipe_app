@@ -20,7 +20,7 @@ class Add{
   String description;
   String cost;
   String agentPayment;
-  List<String> photos = List<String>.empty(growable: true);
+  List<dynamic> photos = List<dynamic>.empty(growable: true);
   List<File> photoFiles = [null, null, null, null, null, null];
 
 
