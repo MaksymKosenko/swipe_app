@@ -7,6 +7,7 @@ import 'package:swipe_app/global/style/text_styles.dart';
 import 'package:swipe_app/models/add_model.dart';
 import 'package:swipe_app/models/repository/api_add.dart';
 import 'package:swipe_app/screens/add_cards/owner_full_ad_card.dart';
+import 'package:swipe_app/screens/add_cards/promoting_edit_card.dart';
 import 'package:swipe_app/screens/add_cards/standart_ad_card.dart';
 import 'package:swipe_app/screens/feed/landing_page.dart';
 import 'package:swipe_app/screens/my_add/confirmation/decoration_text_variant.dart';
@@ -39,7 +40,7 @@ class _PromoteAdState extends State<PromoteAd> {
   changeView(String option) {
     setState(() {
       switch (option) {
-        case "activeOption1": SAdCard.fromApi(widget._add).createState(); break;
+        case "activeOption1": PromotingEditCard(_add, widget._add).createState(); break;
         case "activeOption2":
           activeOption2 = !activeOption2;
           option2sub1 = false;
@@ -48,21 +49,21 @@ class _PromoteAdState extends State<PromoteAd> {
           _add.textColorRose = false;
           if(activeOption2 == true)
             changeView("option2sub1");
-          SAdCard.fromApi(widget._add).createState();
+          PromotingEditCard(_add, widget._add).createState();
           break;
         case "option2sub1":
           option2sub1 = true;
           option2sub2 = false;
           _add.textColorGreen = false;
           _add.textColorRose = true;
-          SAdCard.fromApi(widget._add).createState();
+          PromotingEditCard(_add, widget._add).createState();
           break;
         case "option2sub2":
           option2sub2 = true;
           option2sub1 = false;
           _add.textColorRose = false;
           _add.textColorGreen = true;
-          SAdCard.fromApi(widget._add).createState();
+          PromotingEditCard(_add, widget._add).createState();
           break;
       }
     });
@@ -76,7 +77,7 @@ class _PromoteAdState extends State<PromoteAd> {
     Future<void> updateAD(){
       return _ad
           .update({
-        'chosenPhrase': widget._add.chosenPhrase,
+        'chosenPhrase': _add.chosenPhrase,
 
         'textColorRose': option2sub1,
         'textColorGreen': option2sub2,
@@ -85,7 +86,7 @@ class _PromoteAdState extends State<PromoteAd> {
         'icon2': icon2,
         'icon3': icon3,
 
-        'dateTime': widget._add.dateTime,
+        'dateTime': _add.dateTime,
       })
           .then((value) {print("ads updated");})
           .catchError((error) => print("Failed to add asd: $error"));
@@ -170,14 +171,14 @@ class _PromoteAdState extends State<PromoteAd> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                SAdCard.fromApi(widget._add),
+                PromotingEditCard(_add, widget._add),
                 Container(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       GestureDetector(
                           onTap: () => changeView("activeOption1"),
-                          child: AddPhrase(_add, this)),
+                          child: ChangePhrase(_add, this, widget._add)),//AddPhrase(_add, this)),
                       GestureDetector(
                           onTap: () => {changeView("activeOption2"),}, //changeView("option2sub1"), setState((){})},
                           child: Row(
@@ -271,19 +272,10 @@ class _PromoteAdState extends State<PromoteAd> {
                   SizedBox(height: 16),
                   TextButton(
                     onPressed: (){
-                      _add.dateTime = Timestamp.now();
-                      _add.textColorGreen = false;
-                      _add.textColorRose = false;
-                      _add.chosenPhrase = null;
-                      _add.bigAd = false;
-                      _add.promotedAd = false;
-                      _add.promotedBig = false;
-                      //widget._add.cost = cashToPay.toString();
-                      updateAD();
                       Navigator.pushReplacement(context, MaterialPageRoute(builder:
                           (context)=> LandingPage()));},
 
-                    child: Text("Разместить без оплаты",
+                    child: Text("Отменить",
                         style: MediumText(14, Color(0xff636363)),
                         textAlign: TextAlign.center),
                   )
@@ -295,5 +287,151 @@ class _PromoteAdState extends State<PromoteAd> {
       ),
     );
 
+  }
+}
+
+class ChangePhrase extends StatefulWidget {
+  final Add _add;
+  dynamic _confirmADState;
+  final ApiAdd _apiAdd;
+  ChangePhrase(this._add, this._confirmADState, this._apiAdd);
+  @override
+  _ChangePhraseState createState() => _ChangePhraseState();
+}
+
+class _ChangePhraseState extends State<ChangePhrase> {
+  bool activeOption1 = false;
+  changeView(){
+    setState(() {
+      if (widget._add.chosenPhrase == null){
+        activeOption1 = false;
+        widget._confirmADState.setState((){
+          //widget._confirmADState.activeOption1 = false;
+          print("state updated to false");
+        });
+      }
+      else{
+        activeOption1 = true;
+        widget._confirmADState.setState((){
+          //widget._confirmADState.activeOption1 = true;
+          print("state updated to true");
+        });
+        //widget.createState();
+      }
+      //print("activeOption1 $activeOption1");
+    });
+  }
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+        onTap: () {
+          if(activeOption1 == false){
+            widget._add.chosenPhrase = null;
+            showPhrases();
+          }
+          if(activeOption1 == true)
+            setState(() {
+              activeOption1 = false;
+              widget._add.chosenPhrase = null;
+              widget._confirmADState.setState((){
+                //  widget._confirmADState.chosenPhrase = null;
+                // widget._confirmADState.activeOption1 = false;
+              });
+            });
+
+          // widget._concreteAd.setNullPhrases();
+          //showPhrases();
+
+        },
+        child: Row(
+          children: [
+            Container(
+              height: 15,
+              width: 15,
+              decoration: BoxDecoration(
+                color: activeOption1
+                    ? Color(0xff41BFB5)
+                    : Color(0xffE8E8E8),
+                borderRadius: BorderRadius.circular(7.5),
+              ),
+            ),
+            SizedBox(width: 8),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Добавить фразу",
+                  style: MediumText(14, Color(0xff374252)),
+                ),
+                SizedBox(height: 5),
+                Text(
+                  "199₴/мес",
+                  style: MediumText(14, Color(0xff8F969F)),
+                ),
+              ],
+            ),
+          ],
+        ));
+  }
+  Future<void> showPhrases() {
+    return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return Dialog(
+            insetPadding:
+            EdgeInsets.only(left: 10, right: 10, top: 56, bottom: 36),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0)),
+            //elevation: 0,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: 28,
+                      height: 20,
+                    ),
+                    Text(
+                      "Выбор фразы",
+                      style: MediumText(16, Colors.black),
+                      textAlign: TextAlign.center,
+                    ),
+                    IconButton(
+                      icon: Icon(CupertinoIcons.clear_thick),
+                      iconSize: 20,
+                      onPressed: (){widget._add.chosenPhrase = null;//SAdCard(widget._concreteAd).createState();
+                      PromotingEditCard(widget._add, widget._apiAdd).createState();
+                      //SAdCard.fromApi(widget._apiAdd).createState();
+                      changeView(); Navigator.of(context).pop();} ,
+                    ),
+                  ],
+                ),
+                // SizedBox(height: 40),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15),
+                  child: GestureDetector(
+                      child: VariantsBlock(widget._add)),
+                ),
+                GestureDetector(
+                  child: Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: CustomButton(330, 45, 10, Color(0xff56C486), Color(0xff42C0B5),
+                        Alignment.centerLeft, Alignment.centerRight, "Подтвердить", SemiBoldText(14, Colors.white), Colors.transparent),
+                  ),
+                  onTap: () {
+                    changeView();
+                    PromotingEditCard(widget._add, widget._apiAdd).createState();
+                    //SAdCard.fromApi(widget._apiAdd).createState();
+                    Navigator.of(context).pop();
+                    //SAdCard(widget._concreteAd).createState();
+                  },
+                )
+              ],
+            ),
+          );
+        });
   }
 }
