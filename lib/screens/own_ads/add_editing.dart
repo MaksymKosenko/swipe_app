@@ -1,6 +1,11 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:swipe_app/global/custom_widgets/app_bars/default_app_bar.dart';
 import 'package:swipe_app/global/custom_widgets/custom_button.dart';
@@ -21,16 +26,16 @@ import 'package:swipe_app/screens/my_add/build_add/ad_object_living_state.dart';
 import 'package:swipe_app/screens/my_add/build_add/ad_object_overall_area.dart';
 import 'package:swipe_app/screens/my_add/build_add/ad_object_plan.dart';
 import 'package:swipe_app/screens/my_add/build_add/ad_payment_type.dart';
-import 'package:swipe_app/screens/my_add/build_add/ad_photos.dart';
 import 'package:swipe_app/screens/my_add/build_add/ad_price.dart';
 import 'package:swipe_app/screens/my_add/build_add/ad_rooms_quantity.dart';
 import 'package:swipe_app/screens/my_add/build_add/ad_zhk.dart';
+import 'package:swipe_app/screens/own_ads/edit_add_photos.dart';
+import 'package:swipe_app/screens/own_ads/own_ads_list.dart';
 
 class EditAdContainer extends StatefulWidget {
   final ApiAdd _add;
   final String _addID;
-  final dynamic _state;
-  EditAdContainer([this._add, this._addID, this._state]);
+  EditAdContainer(this._add, this._addID);
   @override
   EditAdContainerState createState() => EditAdContainerState();
 }
@@ -65,7 +70,105 @@ class EditAdContainerState extends State<EditAdContainer> {
     );
   }
 
+/*
+downloadPhotos(List<dynamic> photoFiles, int index) async{
+  if(index >= 1)
+  try {
+    var image0 = await ImageDownloader.downloadImage(widget._add.photos[0]);
+    if (image0 != null) {
+      var path = await ImageDownloader.findPath(image0);
+      if(path!= null){
+         photoFiles[0] = File(path);
+        print(File(path));
+        print("add.photoFiles - ${_add.photoFiles}");
+      }
+    }
+    // Below is a method of obtaining saved image information.
+    // var fileName = await ImageDownloader.findName(imageId);
+    // var path = await ImageDownloader.findPath(imageId);
+    //var size = await ImageDownloader.findByteSize(imageId);
+    //var mimeType = await ImageDownloader.findMimeType(imageId);
+  } on PlatformException catch (error) {
+    print(error);
+  }
 
+  if(index >= 2)
+    try {
+      var image1 = await ImageDownloader.downloadImage(widget._add.photos[1]);
+      if (image1 == null) {
+        return;
+      }else{
+        var path = await ImageDownloader.findPath(image1);
+        if(path!= null){
+           photoFiles[1] = File(path);
+          print(File(path));
+        }
+      }
+    } on PlatformException catch (error) {
+      print(error);
+    }
+
+  if(index >= 3)
+    try {
+      var image2 = await ImageDownloader.downloadImage(widget._add.photos[2]);
+      if (image2 == null) {
+        return;
+      }else{
+        var path = await ImageDownloader.findPath(image2);
+        if(path!= null){
+           photoFiles[0] = File(path);
+          print(File(path));
+        }
+      }
+    } on PlatformException catch (error) {
+      print(error);
+    }
+  if(index >= 4)
+    try {
+      var image3 = await ImageDownloader.downloadImage(widget._add.photos[3]);
+      if (image3 == null) {
+        return;
+      }else{
+        var path = await ImageDownloader.findPath(image3);
+        if(path!= null){
+           photoFiles[3] = File(path);
+          print(File(path));
+        }
+      }
+    } on PlatformException catch (error) {
+      print(error);
+    }
+  if(index >= 5)
+    try {
+      var image4 = await ImageDownloader.downloadImage(widget._add.photos[4]);
+      if (image4 == null) {
+        return;
+      }else{
+        var path = await ImageDownloader.findPath(image4);
+        if(path!= null){
+           photoFiles[4] = File(path);
+          print(File(path));
+        }
+      }
+    } on PlatformException catch (error) {
+      print(error);
+    }
+  if(index >= 6)
+    try {
+      var image5 = await ImageDownloader.downloadImage(widget._add.photos[5]);
+      if (image5 == null) {
+        return;
+      }else{
+        var path = await ImageDownloader.findPath(image5);
+        if(path!= null){
+           photoFiles[5] = File(path);
+          print(File(path));
+        }
+      }
+    } on PlatformException catch (error) {
+      print(error);
+    }
+}*/
   @override
   Widget build(BuildContext context) {
     Add _add;// = Add();
@@ -89,48 +192,42 @@ class EditAdContainerState extends State<EditAdContainer> {
         'description': _add.description,
         'cost': _add.cost,
         'agentPayment': _add.agentPayment,
-        //'photos': widget._add.photos,
+        'photos': widget._add.photos,
 
         'dateTime': _add.dateTime,
 
         'location' : _add.location})
-          .then((value) {print("ads updated"); widget._state.setState((){});})
+          .then((value) {print("ads updated"); /*widget._state.setState((){}); */})
           .catchError((error) => print("Failed to add asd: $error id = ${widget._addID}"));
     }
-      //'location' = _add.location;
-      //'address' = _add.address;
-     // 'chosenZhK' = _add.chosenZhK;
-   /*   String apartmentsType;
-      String roomsQuantity;
-      String housePlan;
-      String houseState;
-      String overallArea;
-      String kitchenArea;
-      String balconyState;
-      String heatingType;
-      String paymentType;
-      String connectionType;
-      String description;
-      String cost;
-      String agentPayment;
-      List<dynamic> photos = List<dynamic>.empty(growable: true);
-      List<File> photoFiles = [null, null, null, null, null, null];
 
-
-      String chosenPhrase;
-
-      bool textColorRose = false;
-      bool textColorGreen = false;
-
-      bool bigAd;
-      bool promotedAd;
-      bool promotedBig;
-
-      Timestamp dateTime;*/
-
+    Future<void> downloadPhoto(String phone, String addId, int index) async{
+      Directory appDocDir = await getApplicationDocumentsDirectory(); //getApplicationDocumentsDirectory();
+      //File('${appDocDir.path}/${widget._addID}/download-photo$index.png').delete();
+      File tmp = File('${appDocDir.path}/${widget._addID}/download-photo$index.png');
+      //tmp.delete();
+      //print("error- $phone/ads/houseImage/$addId/photo$index");
+      try{
+        await firebase_storage.FirebaseStorage.instance
+        //.refFromURL(widget._apiAdd.photos[index])
+            .ref('$phone/ads/houseImage/$addId/')
+            .child('photo$index')
+            .writeToFile(tmp).whenComplete(() {_add.photoFiles[index]=tmp; print("tmp - $tmp");});
+      }catch (e) {
+        print("error c0de - $e $phone/ads/houseImage/$addId/photo$index");
+        // e.g, e.code == 'canceled'
+      }}
 
      if (_add == null){
         _add = Add();
+        _add.photoFiles = [null, null,null, null,null, null];
+       // downloadPhotos(_add.photoFiles, widget._add.photos.length);
+
+        for(int i = 0; i < widget._add.photos.length; i++){
+          print("length - ${widget._add.photos.length}");
+          print("index - $i");
+          downloadPhoto(widget._add.ownerID, widget._addID, i);
+        }
       //_add.dateTime = Timestamp.now();
       _add.address = widget._add.address;
       _add.chosenZhK = widget._add.chosenZhK;
@@ -183,14 +280,14 @@ class EditAdContainerState extends State<EditAdContainer> {
 
       if(error == ""){
         updateAD();
-        Navigator.push(context, MaterialPageRoute(builder: (context)=> OwnerFullAdCard(widget._add, widget._add.id)));
+        Navigator.push(context, MaterialPageRoute(builder: (context)=> OwnAdsScreen(widget._add.ownerID)));
       }
       else showError(error, context);
     }
 
     final ConcreteUser user = Provider.of<ConcreteUser>(context);
     return Scaffold(
-      appBar: MyCustomAppBar("Редактирование", 82,/*104,*/ MaterialPageRoute(builder: (context) => OwnerFullAdCard(widget._add, widget._add.id)),),
+      appBar: MyCustomAppBar("Редактирование", 82,/*104,*/ MaterialPageRoute(builder: (context) => OwnerFullAdCard(widget._add, widget._addID)),),
       body: Container(
         color: Colors.white,
         child: ListView(
@@ -231,11 +328,12 @@ class EditAdContainerState extends State<EditAdContainer> {
               child: Text("Главное фото", style: RegularText(12, Color(0xff737373))),
             ),
             SizedBox(height: 7),
-            ADPhotos(user, _add),
+           // EditAdPhotos(user, _add, widget._add, widget._addID),//TODO - закончить редактирование фото
             SizedBox(height: 40),
             Container(padding: EdgeInsets.symmetric(horizontal: 10),
                 child: GestureDetector(
                   onTap: (){
+                    print(_add.photoFiles);
                     checkFields();
                   },//=> Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> ConfirmAD(_concreteAd, _add))),//Navigator.push(context, MaterialPageRoute(builder: (context) => ConfirmAD(_concreteAd))),
                   child: CustomButton(double.maxFinite, 45, 10, Color(0xff56C486), Color(0xff42C0B5),

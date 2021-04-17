@@ -23,7 +23,7 @@ class FullAdCard extends StatefulWidget {
   _FullAdCardState createState() => _FullAdCardState();
 }
 
-int photoIndex = 0;
+
 class _FullAdCardState extends State<FullAdCard> {
   ApiUser _user;
 
@@ -40,6 +40,7 @@ class _FullAdCardState extends State<FullAdCard> {
     }
     );
   }
+  int photoIndex = 0;
   @override
   Widget build(BuildContext context) {
     final ConcreteUser user = Provider.of<ConcreteUser>(context);

@@ -24,7 +24,8 @@ class _UserToUserChatState extends State<UserToUserChat> {
 
 
   Future<bool> checkChat() async {
-    DocumentReference _concreteChat = FirebaseFirestore.instance.collection('chats').doc('${widget._userId}to${widget._add.ownerID}');
+    DocumentReference _concreteChat = FirebaseFirestore.instance.collection('chats')
+        .doc('${widget._userId}').collection("chats").doc(widget._add.ownerID).collection('messages').doc('message0');
       try{
         var doc = await _concreteChat.get();
         //print(doc.exists);
@@ -34,35 +35,77 @@ class _UserToUserChatState extends State<UserToUserChat> {
       }
       }
 
-  Future<void> createChat(String text){
+  Future<void> createChat(String text, String id, String otherUserId){
     return _chats
-        .doc("${widget._userId}to${widget._add.ownerID}")
+        .doc("$id").collection("chats")
+        .doc("$otherUserId")
         .set({
       'owner': widget._add.ownerID,
       'client': widget._userId,
+
     })
-        .then((value) {createMessage(text, 0); isChatExist = true;})
+        .then((value) {setName(id, otherUserId); setName(otherUserId, id); createMessage(text,id, otherUserId, 0); isChatExist = true;})
         .catchError((error) => print("Failed to add chat: $error"));
   }
 
-  Future<void> createMessage(String text, int index){
+  Future<void> setName(String id, String otherUserId) async{
+    try{
+      DocumentSnapshot user = await FirebaseFirestore.instance.collection('users')
+          .doc('$otherUserId').get();
+      if(user != null){
+        return _chats
+            .doc("$id").collection("chats")
+            .doc("$otherUserId")
+            .update({
+          'name': "${user.data()['name']} ${user.data()['surName']}",
+          'photo' : "${user.data()['profilePic']}"
+        })
+            .then((value) => print("username added"))
+            .catchError((error) => print("Failed to add username: $error"));
+      }
+    }catch(e){
+      print(e);
+    }
+  }
+
+  Future<void> createMessage(String text,  String id, String otherUserId, int index){
     return _chats
-        .doc("${widget._userId}to${widget._add.ownerID}")
+        .doc("$id")
+        .collection("chats")
+        .doc("$otherUserId")
         .collection('messages')
         .doc('message$index')
         .set({'message$index' : text, 'author' : widget._userId, 'time' : Timestamp.now()})
         .then((value) {
+          createLastMessage(text, id, otherUserId);
+          createLastMessage(text, otherUserId, id);
           print("$index message added"); _chatController.clear();
     })
         .catchError((error) => print("Failed to add 1s message: $error"));
   }
 
-  Future<void> pushMessageToDB(String text) async{
+  Future<void> createLastMessage(String text,  String id, String otherUserId){
+    return _chats
+        .doc("$id").collection("chats")
+        .doc("$otherUserId")
+        .update({
+      'lastMessage': "$text",
+      'lastTime' : Timestamp.now()
+    })
+        .then((value) => print("lastMessage added"))
+        .catchError((error) => print("Failed to add lastMessage: $error"));
+  }
+
+
+  Future<void> pushMessageToDB(String text, String id, String otherUserId) async{
     try{
      await  FirebaseFirestore.instance.collection('chats')
-          .doc('${widget._userId}to${widget._add.ownerID}').collection('messages')
+         .doc("${widget._add.ownerID}")
+         .collection("chats")
+         .doc("${widget._userId}")
+         .collection('messages')
           .get()
-          .then((value) => createMessage(text, value.size));
+          .then((value) => createMessage(text,id, otherUserId, value.size));
       _chatController.clear();
       //print("messages length - ${docs}");
     }catch(e){
@@ -73,11 +116,14 @@ class _UserToUserChatState extends State<UserToUserChat> {
   Future<void> getLength() async{
     try{
       await  FirebaseFirestore.instance.collection('chats')
-          .doc('${widget._userId}to${widget._add.ownerID}').collection('messages')
+          .doc("${widget._add.ownerID}")
+          .collection("chats")
+          .doc("${widget._userId}")
+          .collection('messages')
           .get()
           .then((value)=> { if(value.size != counter) setState(() {counter = value.size; })} );
       _chatController.clear();
-      print("messages length - ${counter}");
+      print("messages length - $counter");
     }catch(e){
       print(e);
     }
@@ -100,14 +146,17 @@ class _UserToUserChatState extends State<UserToUserChat> {
     void sendMessage(String text){
       if(text.isNotEmpty){
         print("text exist in sendMessage");
-        pushMessageToDB(text);
+        pushMessageToDB(text,widget._userId, widget._add.ownerID);
+        pushMessageToDB(text, widget._add.ownerID, widget._userId);
       }else print("text not exist");
     }
 
     void startChat(String text){
       if(text.isNotEmpty){
         print("text exist");
-        createChat(text);
+        print("user id - ${widget._userId}, widget.id - ${widget._add.ownerID}");
+        createChat(text, widget._userId, widget._add.ownerID);
+        createChat(text, widget._add.ownerID, widget._userId);
       }else print("text not exist");
     }
 
@@ -159,7 +208,7 @@ class _UserToUserChatState extends State<UserToUserChat> {
   Widget getMessages(){
 
     Stream _messages = FirebaseFirestore.instance.collection('chats')
-        .doc('${widget._userId}to${widget._add.ownerID}').collection('messages').orderBy("time", descending: false).snapshots();
+        .doc('${widget._userId}').collection('chats').doc('${widget._add.ownerID}').collection('messages').orderBy("time", descending: false).snapshots();
     return StreamBuilder(
         stream: _messages,
         builder: (BuildContext context, AsyncSnapshot snapshot) {

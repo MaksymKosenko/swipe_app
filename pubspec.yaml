@@ -35,6 +35,8 @@ dependencies:
   google_maps_flutter: ^1.2.0
   geocoder: ^0.2.1
   url_launcher: ^6.0.3
+  image_downloader: ^0.30.0
+  path_provider: ^1.6.8
   flutter:
     sdk: flutter
 

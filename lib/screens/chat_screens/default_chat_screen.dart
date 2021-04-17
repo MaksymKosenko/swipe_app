@@ -1,26 +1,30 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:swipe_app/global/custom_widgets/app_bars/default_app_bar.dart';
 import 'package:swipe_app/global/style/text_styles.dart';
-import 'package:swipe_app/global/user.dart';
+import 'package:swipe_app/models/repository/api_add.dart';
+import 'package:swipe_app/screens/add_cards/full_ad_card.dart';
 import 'package:swipe_app/screens/chat_screens/chat_screen.dart';
 import 'package:swipe_app/screens/chat_screens/input.dart';
-import 'package:swipe_app/screens/feed/landing_page.dart';
 
-class UserToSupportChat extends StatefulWidget {
+class DefaultChat extends StatefulWidget {
+  final String _name;
+  final String _myPhone;
+  final String _userPhone;
+  DefaultChat(this._name, this._myPhone, this._userPhone);
   @override
-  _UserToSupportChatState createState() => _UserToSupportChatState();
+  _DefaultChatState createState() => _DefaultChatState();
 }
 
-class _UserToSupportChatState extends State<UserToSupportChat> {
+class _DefaultChatState extends State<DefaultChat> {
   CollectionReference _chats = FirebaseFirestore.instance.collection('chats');
   TextEditingController _chatController = TextEditingController();
 
 
-  Future<bool> checkChat(String userId, String otherUser) async {
-    DocumentReference _concreteChat = FirebaseFirestore.instance.collection('chats').doc('$userId').collection('chats').doc('$otherUser');
+  Future<bool> checkChat() async {
+    DocumentReference _concreteChat = FirebaseFirestore.instance.collection('chats')
+        .doc('${widget._myPhone}').collection("chats").doc(widget._userPhone).collection('messages').doc('message0');
     try{
       var doc = await _concreteChat.get();
       //print(doc.exists);
@@ -30,16 +34,16 @@ class _UserToSupportChatState extends State<UserToSupportChat> {
     }
   }
 
-  Future<void> createChat(String userId, String otherUser, String text){
+  Future<void> createChat(String text, String id, String otherUserId){
     return _chats
-        .doc('$userId').collection('chats').doc('$otherUser')
+        .doc("$id").collection("chats")
+        .doc("$otherUserId")
         .set({
-      'owner': userId,
-      'client' : "$otherUser"
+      'owner': widget._userPhone,
+      'client': widget._myPhone,
+
     })
-        .then((value) {setName(userId, otherUser);
-        setName(otherUser, userId); createMessage(userId,otherUser, text, 0); createMessage(otherUser, userId, text, 0);
-        isChatExist = true;})
+        .then((value) {setName(id, otherUserId); setName(otherUserId, id); createMessage(text,id, otherUserId, 0); isChatExist = true;})
         .catchError((error) => print("Failed to add chat: $error"));
   }
 
@@ -63,15 +67,17 @@ class _UserToSupportChatState extends State<UserToSupportChat> {
     }
   }
 
-  Future<void> createMessage(String userId, String otherUser, String text, int index){
+  Future<void> createMessage(String text,  String id, String otherUserId, int index){
     return _chats
-        .doc('$userId').collection('chats').doc('$otherUser')
+        .doc("$id")
+        .collection("chats")
+        .doc("$otherUserId")
         .collection('messages')
         .doc('message$index')
-        .set({'message$index' : text, 'author' : userId, 'time' : Timestamp.now(),})
+        .set({'message$index' : text, 'author' : widget._myPhone, 'time' : Timestamp.now()})
         .then((value) {
-      createLastMessage(text, userId, otherUser);
-      createLastMessage(text, otherUser, userId);
+      createLastMessage(text, id, otherUserId);
+      createLastMessage(text, otherUserId, id);
       print("$index message added"); _chatController.clear();
     })
         .catchError((error) => print("Failed to add 1s message: $error"));
@@ -89,15 +95,16 @@ class _UserToSupportChatState extends State<UserToSupportChat> {
         .catchError((error) => print("Failed to add lastMessage: $error"));
   }
 
-  Future<void> pushMessageToDB(String userId, String otherUser, String text) async{
+
+  Future<void> pushMessageToDB(String text, String id, String otherUserId) async{
     try{
       await  FirebaseFirestore.instance.collection('chats')
-          .doc('$userId').collection('chats').doc('$otherUser').collection('messages')
+          .doc("${widget._userPhone}")
+          .collection("chats")
+          .doc("${widget._myPhone}")
+          .collection('messages')
           .get()
-          .then((value) {
-        createMessage(userId, otherUser, text, value.size);
-        createMessage(otherUser, userId, text, value.size);
-      });
+          .then((value) => createMessage(text,id, otherUserId, value.size));
       _chatController.clear();
       //print("messages length - ${docs}");
     }catch(e){
@@ -105,14 +112,17 @@ class _UserToSupportChatState extends State<UserToSupportChat> {
     }
   }
 
-  Future<void> getLength(String userId) async{
+  Future<void> getLength() async{
     try{
       await  FirebaseFirestore.instance.collection('chats')
-          .doc('$userId').collection('chats').doc('Support').collection('messages')
+          .doc("${widget._userPhone}")
+          .collection("chats")
+          .doc("${widget._myPhone}")
+          .collection('messages')
           .get()
           .then((value)=> { if(value.size != counter) setState(() {counter = value.size; })} );
       _chatController.clear();
-      //print("messages length - ${docs}");
+      print("messages length - $counter");
     }catch(e){
       print(e);
     }
@@ -122,11 +132,10 @@ class _UserToSupportChatState extends State<UserToSupportChat> {
   bool isChatExist;// = false;
   @override
   Widget build(BuildContext context) {
-    final ConcreteUser user = Provider.of<ConcreteUser>(context);
-    getLength(user.phone);
+    getLength();
     //createChat();
     if(isChatExist == null)
-      checkChat(user.phone, "Support").then((value) => value == true ? {print("exist"), setState(() {
+      checkChat().then((value) => value == true? {print("exist"), setState(() {
         isChatExist = true;}) }
           : {print("Notexist"), setState(() {isChatExist = false;})});
 
@@ -136,27 +145,28 @@ class _UserToSupportChatState extends State<UserToSupportChat> {
     void sendMessage(String text){
       if(text.isNotEmpty){
         print("text exist in sendMessage");
-        pushMessageToDB(user.phone,"Support", text);
-        pushMessageToDB("Support", user.phone, text);
+        pushMessageToDB(text,widget._myPhone, widget._userPhone);
+        pushMessageToDB(text, widget._userPhone, widget._myPhone);
       }else print("text not exist");
     }
 
     void startChat(String text){
       if(text.isNotEmpty){
         print("text exist");
-        createChat(user.phone,"Support", text);
-        createChat("Support", user.phone, text);
+        print("user id - ${widget._myPhone}, widget.id - ${widget._userPhone}");
+        createChat(text, widget._myPhone, widget._userPhone);
+        createChat(text, widget._userPhone, widget._myPhone);
       }else print("text not exist");
     }
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: MyCustomAppBar("Обратная связь", 82,
-        MaterialPageRoute(builder: (context) => ChatScreen()),),//MaterialPageRoute(builder: (context) => LandingPage()),),
+      appBar: MyCustomAppBar("${widget._name}", 82,
+        MaterialPageRoute(builder: (context) => ChatScreen()),),
       body: Container(
         padding: EdgeInsets.only(top: 20),
         color: Colors.white,
-        child: getMessages(user.phone),
+        child: getMessages(),
       ),
       bottomNavigationBar: Container(
         padding: EdgeInsets.symmetric(vertical: 12),
@@ -194,30 +204,31 @@ class _UserToSupportChatState extends State<UserToSupportChat> {
   }
 
 
-  Widget getMessages(String userId){
-    Stream _messages = FirebaseFirestore.instance.collection('chats').doc('$userId').collection('chats').doc('Support')
-        .collection("messages").orderBy("time", descending: false).snapshots();
+  Widget getMessages(){
+    Stream _messages = FirebaseFirestore.instance.collection('chats')
+        .doc('${widget._myPhone}').collection('chats').doc('${widget._userPhone}').collection('messages').orderBy("time", descending: false).snapshots();
     return StreamBuilder(
         stream: _messages,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           var data;
           if (snapshot.connectionState == ConnectionState.waiting) {return Container();}
           if (snapshot.connectionState == ConnectionState.active) {
-            snapshot.data.toString();
             data = snapshot.data;
-            print("data docs length - ${data.docs.length}");
-
+            print("datadocslength - ${data.docs.length}");
+            // print("datata in index 10  - ${data.docs[10]['message10']}");
             return ListView.builder(
               itemCount: data.docs.length,
               shrinkWrap: true,
               itemBuilder: (context, index){
                 print("index - $index");
-                if(data.docs[index]['author'] == userId)
+                print("drawing  - ${data.docs[index]['message$index']}");
+                if(data.docs[index]['author'] == widget._myPhone)
                   return sendedMessage("${data.docs[index]['message$index']}");
                 else return recivedMessage("${data.docs[index]['message$index']}");
               },
             );
           }
+          print("length for use - ${data.docs.length}");
           return Container(color: Colors.white,);
         });
 

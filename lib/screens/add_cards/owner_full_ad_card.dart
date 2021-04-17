@@ -6,6 +6,7 @@ import 'package:swipe_app/global/custom_widgets/app_bars/own_ad_appbar.dart';
 import 'package:swipe_app/global/custom_widgets/custom_button.dart';
 import 'package:swipe_app/global/style/text_styles.dart';
 import 'package:swipe_app/global/user.dart';
+import 'package:swipe_app/models/add_model.dart';
 import 'package:swipe_app/models/repository/api_add.dart';
 import 'package:swipe_app/models/repository/api_user.dart';
 import 'package:swipe_app/screens/maps/add_on_map.dart';
@@ -16,14 +17,13 @@ import 'package:swipe_app/screens/own_ads/own_ads_list.dart';
 class OwnerFullAdCard extends StatefulWidget {
   final ApiAdd _add;
   final String _id;
-
   OwnerFullAdCard(this._add, this._id);
 
   @override
   _OwnerFullAdCardState createState() => _OwnerFullAdCardState();
 }
 
-int photoIndex = 0;
+
 class _OwnerFullAdCardState extends State<OwnerFullAdCard> {
   ApiUser _user;
 
@@ -48,10 +48,11 @@ class _OwnerFullAdCardState extends State<OwnerFullAdCard> {
         .catchError((error) => print("Failed to add user: $error"));
 
   }
+  int photoIndex = 0;
   @override
   Widget build(BuildContext context) {
-    final ConcreteUser user = Provider.of<ConcreteUser>(context);
 
+    final ConcreteUser user = Provider.of<ConcreteUser>(context);
     if(_user == null)
       getData();
 
@@ -380,7 +381,8 @@ class _OwnerFullAdCardState extends State<OwnerFullAdCard> {
                     )]
                 ),
                 child: GestureDetector(
-                  onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=> EditAdContainer(widget._add, widget._id, this.widget))),
+                  onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=>
+                      EditAdContainer(widget._add, widget._id))),
                   child: Container(
                     alignment: Alignment.center,
                     height: 52,
