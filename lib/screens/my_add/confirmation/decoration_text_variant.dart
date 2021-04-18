@@ -366,7 +366,7 @@ class _AddPhraseState extends State<AddPhrase> {
                       iconSize: 20,
                       onPressed: (){widget._add.chosenPhrase = null;//SAdCard(widget._concreteAd).createState();
                       SAdCard(widget._add).createState();
-                      SAdCard.fromApi(widget._apiAdd).createState();
+                      SAdCard.fromApi(widget._apiAdd, null).createState();
                         changeView(); Navigator.of(context).pop();} ,
                     ),
                   ],
@@ -386,7 +386,7 @@ class _AddPhraseState extends State<AddPhrase> {
                   onTap: () {
                     changeView();
                     SAdCard(widget._add).createState();
-                    SAdCard.fromApi(widget._apiAdd).createState();
+                    SAdCard.fromApi(widget._apiAdd, null).createState();
                     Navigator.of(context).pop();
                     //SAdCard(widget._concreteAd).createState();
                   },

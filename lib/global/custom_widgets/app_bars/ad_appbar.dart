@@ -8,7 +8,8 @@ import 'package:swipe_app/global/user.dart';
 class AdAppBar extends StatefulWidget {
   String _addId;
   MaterialPageRoute _previousScreen;
-  AdAppBar(this._addId, this._previousScreen);
+  bool _isFavourite;
+  AdAppBar(this._addId, this._previousScreen, this._isFavourite);
   @override
   _AdAppBarState createState() => _AdAppBarState();
 }
@@ -18,6 +19,8 @@ class _AdAppBarState extends State<AdAppBar> {
   bool isFavourite = false;
   @override
   Widget build(BuildContext context) {
+    if(widget._isFavourite)
+    isFavourite = widget._isFavourite;
     final ConcreteUser _user = Provider.of<ConcreteUser>(context);
     print("appbar id - ${widget._addId}");
     CollectionReference _users = FirebaseFirestore.instance.collection('users');

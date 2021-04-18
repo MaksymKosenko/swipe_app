@@ -15,9 +15,9 @@ class UserToUserChat extends StatefulWidget {
   final String _userId;
   final ApiAdd _add;
   final String _id;
-
+  final List _addIds;
   UserToUserChat(
-      this._userName, this._userSurName, this._userId, this._add, this._id);
+      this._userName, this._userSurName, this._userId, this._add, this._id, this._addIds);
 
   @override
   _UserToUserChatState createState() => _UserToUserChatState();
@@ -203,7 +203,7 @@ class _UserToUserChatState extends State<UserToUserChat> {
           "${widget._userName} ${widget._userSurName}",
           82,
           MaterialPageRoute(
-              builder: (context) => FullAdCard(widget._add, widget._id)),
+              builder: (context) => FullAdCard(widget._add, widget._id, widget._addIds)),
         ),
         body: Container(
           padding: EdgeInsets.only(top: 20),

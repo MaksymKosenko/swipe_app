@@ -86,7 +86,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
         child: AdAppBar(widget._id,
-            MaterialPageRoute(builder: (context) => LandingPage())),
+            MaterialPageRoute(builder: (context) => LandingPage()), false),
       ),
       body: Container(
         color: Colors.white,

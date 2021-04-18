@@ -16,8 +16,8 @@ import 'package:url_launcher/url_launcher.dart';
 class FullAdCard extends StatefulWidget {
   final ApiAdd _add;
   final String _id;
-
-  FullAdCard(this._add, this._id);
+  final List _addIds;
+  FullAdCard(this._add, this._id, this._addIds);
 
   @override
   _FullAdCardState createState() => _FullAdCardState();
@@ -44,6 +44,17 @@ class _FullAdCardState extends State<FullAdCard> {
   @override
   Widget build(BuildContext context) {
     final ConcreteUser user = Provider.of<ConcreteUser>(context);
+
+    bool isFavourite;
+    isFavourite = false;
+    if(widget._addIds != null)
+      widget._addIds.forEach((element)
+      {if(element == widget._add.id)
+        setState(() {
+          isFavourite = true;
+        });
+
+      });
 
   if(_user == null)
     getData();
@@ -87,7 +98,7 @@ class _FullAdCardState extends State<FullAdCard> {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
-        child: AdAppBar(widget._id, MaterialPageRoute(builder: (context)=> LandingPage())),
+        child: AdAppBar(widget._id, MaterialPageRoute(builder: (context)=> LandingPage()),isFavourite),
       ),
       body: Container(color: Colors.white,
         child: ListView(
@@ -210,7 +221,7 @@ class _FullAdCardState extends State<FullAdCard> {
                     onTap: (){
                       if(widget._add != null)
                         Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                            AddMapScreen(widget._add, widget._id, widget._add.location.latitude, widget._add.location.longitude)));
+                            AddMapScreen(widget._add, widget._id, widget._add.location.latitude, widget._add.location.longitude, widget._addIds)));
                     } ,
                     child: Container(
                       child: Row(
@@ -385,7 +396,7 @@ class _FullAdCardState extends State<FullAdCard> {
                         onTap: (){
                           if(_user != null){
                             Navigator.push(context, MaterialPageRoute(builder: (context)=>
-                                UserToUserChat(_user.userName, _user.userSurName, user.phone, widget._add, widget._id)));
+                                UserToUserChat(_user.userName, _user.userSurName, user.phone, widget._add, widget._id,  widget._addIds)));
                           }
                         },
                         child: Container(

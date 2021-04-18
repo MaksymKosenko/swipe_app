@@ -4,8 +4,10 @@ import 'dart:async' show Stream;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:rxdart/streams.dart';
+import 'package:swipe_app/global/user.dart';
 import 'package:swipe_app/models/repository/api_add.dart';
 import 'package:swipe_app/screens/add_cards/full_ad_card.dart';
 import 'package:swipe_app/screens/add_cards/preview_ad_card.dart';
@@ -18,8 +20,26 @@ class AdsList extends StatefulWidget {
 }
 
 class _AdsListState extends State<AdsList> {
+  List _id = [];
+  int quantity = 0;
   @override
   Widget build(BuildContext context) {
+    final ConcreteUser user = Provider.of<ConcreteUser>(context);
+    CollectionReference _userSaves = FirebaseFirestore.instance.collection('users').doc(user.phone).collection("user_collections").doc("myFavourites")
+        .collection("myFavourites");
+    Future<void> getQuantity() {
+      print("getQuantity starts");
+      return _userSaves
+          .get()
+          .then((value) { if(quantity != value.size){setState(() {
+        value.docs.forEach((element) {_id.add(element.id);});
+        quantity = value.size;
+      });} print("length is - $quantity");} )
+          .catchError((error) => print("Failed to get Favourite: $error"));
+    }
+
+    getQuantity();
+
     // Future<QuerySnapshot> _adsStream = FirebaseFirestore.instance.collection('ads').orderBy("dateTime", descending: true).get();//.snapshots();
 
     Stream _turbo = FirebaseFirestore.instance
@@ -113,34 +133,34 @@ class _AdsListState extends State<AdsList> {
                   return GestureDetector(
                     onLongPress: () => showPreview(list[index], list[index].id, context),
                       onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=>
-                          FullAdCard(ApiAdd.fromApi(list[index]),list[index].id))),
+                          FullAdCard(ApiAdd.fromApi(list[index]),list[index].id, _id))),
                       child: Container(alignment: Alignment.center, color: Colors.white,
-                          child: UpAdCard(ApiAdd.fromApi(list[index]))));
+                          child: UpAdCard(ApiAdd.fromApi(list[index]), _id)));
                 }
                 else if(counter2 <= data2.docs.length - 1){
                   counter2++;
                   return GestureDetector(
                       onLongPress: () => showPreview(list[index], list[index].id, context),
                       onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=>
-                          FullAdCard(ApiAdd.fromApi(list[index]), list[index].id))),
+                          FullAdCard(ApiAdd.fromApi(list[index]), list[index].id, _id))),
                       child: Container(alignment: Alignment.center,color: Colors.white,
-                          child: SAdCard.fromApi(ApiAdd.fromApi(list[index]))));//(ApiAdd.fromApi(snapshot.data[1].docs[counter1])));
+                          child: SAdCard.fromApi(ApiAdd.fromApi(list[index]), _id)));//(ApiAdd.fromApi(snapshot.data[1].docs[counter1])));
                 }else if(counter1 <= data1.docs.length - 1){
                   counter1++;
                   return GestureDetector(
                       onLongPress: ()=> showPreview(list[index], list[index].id, context),
                       onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=>
-                          FullAdCard(ApiAdd.fromApi(list[index]), list[index].id))),
+                          FullAdCard(ApiAdd.fromApi(list[index]), list[index].id, _id))),
                       child: Container(alignment: Alignment.center,color: Colors.white,
-                          child: UpAdCard(ApiAdd.fromApi(list[index]))));//(ApiAdd.fromApi(snapshot.data[1].docs[counter1])));
+                          child: UpAdCard(ApiAdd.fromApi(list[index]), _id)));//(ApiAdd.fromApi(snapshot.data[1].docs[counter1])));
                 }else if(counter0 <= data0.docs.length - 1){
                   counter0++;
                   return GestureDetector(
                       onLongPress: ()=> showPreview(list[index], list[index].id, context),
                       onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=>
-                          FullAdCard(ApiAdd.fromApi(list[index]), list[index].id))),
+                          FullAdCard(ApiAdd.fromApi(list[index]), list[index].id, _id))),
                       child: Container(alignment: Alignment.center, color: Colors.white,
-                          child:  SAdCard.fromApi(ApiAdd.fromApi(list[index]))));//(ApiAdd.fromApi(snapshot.data[1].docs[counter1])));
+                          child:  SAdCard.fromApi(ApiAdd.fromApi(list[index]), _id)));//(ApiAdd.fromApi(snapshot.data[1].docs[counter1])));
                 }
 
                 return Text("Wait a bit...");
@@ -168,7 +188,7 @@ class _AdsListState extends State<AdsList> {
                 borderRadius:
                 BorderRadius.circular(10.0)),
 
-            child: PreviewAdCard(ApiAdd.fromApi(_add), id),
+            child: PreviewAdCard(ApiAdd.fromApi(_add), id, _id),
           );
         }
     );

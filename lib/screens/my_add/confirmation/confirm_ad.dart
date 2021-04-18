@@ -343,9 +343,10 @@ class _ConfirmADState extends State<ConfirmAD> {
       'saves' : 0,
       'location' : widget._add.location
     })
-        .then((value) {print("ads added"); addToMyCollection(value.id, phone);addAdPhoto(phone, value.id); _addId = value.id;})
+        .then((value) {print("ads added"); value.update({'id': value.id}); addToMyCollection(value.id, phone);addAdPhoto(phone, value.id); _addId = value.id;})
         .catchError((error) => print("Failed to add asd: $error"));
   }
+
 
   Future<void>addToMyCollection(String addID, String phone){
     return _users

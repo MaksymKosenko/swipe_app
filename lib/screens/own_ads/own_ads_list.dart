@@ -74,9 +74,9 @@ class _OwnAdsScreenState extends State<OwnAdsScreen> {
                   return GestureDetector(
                       onLongPress: () => showPreview(list2[index], _id[index], context),//data[index], list[index].id, context),
                       onTap: () => Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => OwnerFullAdCard(ApiAdd.fromApi(list2[index]), _id[index]))),
+                          MaterialPageRoute(builder: (context) => OwnerFullAdCard(ApiAdd.fromApi(list2[index]), _id[index], _id))),
                       child: Container(
-                          alignment: Alignment.center, color: Colors.white, child: SAdCard.fromApi(ApiAdd.fromApi(list2[index]))));
+                          alignment: Alignment.center, color: Colors.white, child: SAdCard.fromApi(ApiAdd.fromApi(list2[index]),_id)));
                 },
                 staggeredTileBuilder: (index) => StaggeredTile.count(2, 2.35),
                 crossAxisSpacing: 15.0,
@@ -99,7 +99,7 @@ class _OwnAdsScreenState extends State<OwnAdsScreen> {
                 borderRadius:
                 BorderRadius.circular(10.0)),
 
-            child: PreviewAdCard(ApiAdd.fromApi(_add), id),
+            child: PreviewAdCard(ApiAdd.fromApi(_add), id, _id),
           );
         }
     );

@@ -17,7 +17,8 @@ import 'package:swipe_app/screens/own_ads/own_ads_list.dart';
 class OwnerFullAdCard extends StatefulWidget {
   final ApiAdd _add;
   final String _id;
-  OwnerFullAdCard(this._add, this._id);
+  final List _addIds;
+  OwnerFullAdCard(this._add, this._id, this._addIds);
 
   @override
   _OwnerFullAdCardState createState() => _OwnerFullAdCardState();
@@ -216,7 +217,7 @@ class _OwnerFullAdCardState extends State<OwnerFullAdCard> {
                     onTap: (){
                       if(widget._add != null)
                         Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                            AddMapScreen(widget._add, widget._id, widget._add.location.latitude, widget._add.location.longitude)));
+                            AddMapScreen(widget._add, widget._id, widget._add.location.latitude, widget._add.location.longitude, widget._addIds,)));
                     } ,
                     child: Container(
                       child: Row(
@@ -348,7 +349,7 @@ class _OwnerFullAdCardState extends State<OwnerFullAdCard> {
             SizedBox(height: 30),
             Padding(padding: EdgeInsets.symmetric(horizontal: 10),
               child: GestureDetector(
-                onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context) => PromoteAd(widget._add, widget._id))),
+                onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context) => PromoteAd(widget._add, widget._id, widget._addIds))),
                 child: Container(
                   alignment: Alignment.center,
                   height: 50,
@@ -382,7 +383,7 @@ class _OwnerFullAdCardState extends State<OwnerFullAdCard> {
                 ),
                 child: GestureDetector(
                   onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=>
-                      EditAdContainer(widget._add, widget._id))),
+                      EditAdContainer(widget._add, widget._id, widget._addIds))),
                   child: Container(
                     alignment: Alignment.center,
                     height: 52,

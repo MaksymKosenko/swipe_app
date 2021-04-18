@@ -19,7 +19,8 @@ class PromoteAd extends StatefulWidget {
 
   final ApiAdd _add;
   final String _id;
-  PromoteAd(this._add, this._id);
+  final List _addIds;
+  PromoteAd(this._add, this._id, this._addIds);
   @override
   _PromoteAdState createState() => _PromoteAdState();
 }
@@ -159,7 +160,7 @@ class _PromoteAdState extends State<PromoteAd> {
 
 
     return Scaffold(
-      appBar: MyCustomAppBar("Продвижение", 82, MaterialPageRoute(builder: (context) => OwnerFullAdCard(widget._add, widget._id))),
+      appBar: MyCustomAppBar("Продвижение", 82, MaterialPageRoute(builder: (context) => OwnerFullAdCard(widget._add, widget._id, widget._addIds))),
       body: Container(
         color: Colors.white,
         padding: EdgeInsets.symmetric(horizontal: 15),

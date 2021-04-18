@@ -11,7 +11,8 @@ class AddMapScreen extends StatefulWidget {
   final String _id;
   final double _lat;
   final double _long;
-  AddMapScreen(this._add, this._id, this._lat, this._long);
+  final List _addIds;
+  AddMapScreen(this._add, this._id, this._lat, this._long, this._addIds);
   @override
   _AddMapScreenState createState() => _AddMapScreenState();
 }
@@ -42,7 +43,7 @@ class _AddMapScreenState extends State<AddMapScreen> {
 
     return Scaffold(
       appBar: MyCustomAppBar("Адресс", 82,
-        MaterialPageRoute(builder: (context) => FullAdCard(widget._add, widget._id)),),
+        MaterialPageRoute(builder: (context) => FullAdCard(widget._add, widget._id, widget._addIds)),),
       body: Stack(
         children: [
           GoogleMap(

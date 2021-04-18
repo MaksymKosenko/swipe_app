@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:swipe_app/global/style/text_styles.dart';
@@ -7,14 +8,26 @@ import 'package:swipe_app/models/repository/api_add.dart';
 
 class UpAdCard extends StatefulWidget{
   final ApiAdd _add;
-  UpAdCard(this._add);
-
+  final List _addIds;
+  UpAdCard(this._add, this._addIds);
   @override
   _UpAdCardState createState() => _UpAdCardState();
 }
 
 class _UpAdCardState extends State<UpAdCard> {
   Widget build(BuildContext context){
+
+    bool isFavourite;
+    isFavourite = false;
+    if(widget._addIds != null)
+      widget._addIds.forEach((element)
+      {if(element == widget._add.id)
+        setState(() {
+          isFavourite = true;
+        });
+
+      });
+
     bool textColor = false;
     Color textClr;
 
@@ -79,7 +92,17 @@ class _UpAdCardState extends State<UpAdCard> {
                   // Image.network("https://images.unsplash.com/photo-1580587771525-78b9dba3b914?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=967&q=80"),
                   Positioned(
                     top: 9,right: 8,
-                    child: Icon(Icons.brightness_1_outlined, color: Colors.white,),
+                    child: isFavourite?
+                    Container(height: 22, width: 22,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        color: Color(0xff27AE60),
+                        borderRadius: BorderRadius.circular(11),
+                        border: Border.all(color: Colors.white, width: 2)
+                    ),
+                    child: Icon(
+                      CupertinoIcons.check_mark, color: Colors.white, size: 14,),)
+          : Icon(Icons.brightness_1_outlined, color: Colors.white,),
                   ),
                   Positioned(
                     top: 9,left: 8,

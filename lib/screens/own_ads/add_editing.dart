@@ -35,7 +35,8 @@ import 'package:swipe_app/screens/own_ads/own_ads_list.dart';
 class EditAdContainer extends StatefulWidget {
   final ApiAdd _add;
   final String _addID;
-  EditAdContainer(this._add, this._addID);
+  final List _addIds;
+  EditAdContainer(this._add, this._addID, this._addIds);
   @override
   EditAdContainerState createState() => EditAdContainerState();
 }
@@ -287,7 +288,7 @@ downloadPhotos(List<dynamic> photoFiles, int index) async{
 
     final ConcreteUser user = Provider.of<ConcreteUser>(context);
     return Scaffold(
-      appBar: MyCustomAppBar("Редактирование", 82,/*104,*/ MaterialPageRoute(builder: (context) => OwnerFullAdCard(widget._add, widget._addID)),),
+      appBar: MyCustomAppBar("Редактирование", 82,/*104,*/ MaterialPageRoute(builder: (context) => OwnerFullAdCard(widget._add, widget._addID, widget._addIds)),),
       body: Container(
         color: Colors.white,
         child: ListView(

@@ -30,7 +30,7 @@ class _LandingPageState extends State<LandingPage> {
                 print("landing page data = $data");
                 return Scaffold(
                     drawer: CustomDrawer(context, _userFromFirestoreData),
-                    appBar: CustomFeedAppBar(),
+                    appBar: CustomFeedAppBar(user.phone, context),
                     backgroundColor: Colors.white,
                     body: Column(
                       children: [
@@ -52,7 +52,7 @@ class _LandingPageState extends State<LandingPage> {
                 );
               }
               return Scaffold(backgroundColor: Colors.white,
-                appBar: CustomFeedAppBar());
+                appBar: CustomFeedAppBar(user.phone, context));
             }
 
     );

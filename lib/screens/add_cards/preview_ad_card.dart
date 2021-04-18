@@ -7,7 +7,8 @@ import 'package:swipe_app/screens/add_cards/full_ad_card.dart';
 class PreviewAdCard extends StatefulWidget {
   final ApiAdd _add;
   final String _id;
-  PreviewAdCard(this._add, this._id);
+  final List _addIds;
+  PreviewAdCard(this._add, this._id, this._addIds);
 
   @override
   _PreviewAdCardState createState() => _PreviewAdCardState();
@@ -148,7 +149,7 @@ class _PreviewAdCardState extends State<PreviewAdCard> {
                     ),
                     SizedBox(height: 4),
                     GestureDetector(
-                      onTap: ()=> Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> FullAdCard(widget._add, widget._id))),
+                      onTap: ()=> Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> FullAdCard(widget._add, widget._id, widget._addIds))),
                       child: Text("Смотреть объявление",
                           style: SemiBoldText(12, Color(0xff27AEA4))),
                     )
