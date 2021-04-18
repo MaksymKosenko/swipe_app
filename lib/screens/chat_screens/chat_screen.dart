@@ -32,6 +32,23 @@ class _ChatScreenState extends State<ChatScreen> {
       print("error - $e");
     }
   }
+
+  Future<void> deleteChat(String phone, String otherUserPhone) async {
+    try {
+      await FirebaseFirestore.instance.collection('chats')
+          .doc('$phone').collection('chats').doc(otherUserPhone).delete()
+          .whenComplete(() async{
+            await FirebaseFirestore.instance.collection('chats')
+          .doc('$phone').collection('chats').doc(otherUserPhone).collection('messages')
+                .get().then((snapshot) {for(DocumentSnapshot doc in snapshot.docs){
+                doc.reference.delete();
+                }
+            });} );
+      print("chat from $phone to $otherUserPhone deleted");
+    } catch (e) {
+      print("error - $e");
+    }
+  }
   /* Future<void> getLength(String userId) async{
     try{
       await  FirebaseFirestore.instance.collection('chats')
@@ -124,7 +141,8 @@ class _ChatScreenState extends State<ChatScreen> {
                                       ],),
                                   ],),
 
-                                  IconButton(icon: Icon(CupertinoIcons.trash_circle,size: 30, color: Color(0xffEB5757)), onPressed: null)
+                                  IconButton(icon: Icon(CupertinoIcons.trash_circle,size: 30, color: Color(0xffEB5757)),
+                                      onPressed: ()=> deleteChat(user.phone, _otherUserPhone))
                                 ]
                             ),
                           ),
@@ -133,42 +151,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   );
                 }
 
-                return ListView.builder(
-                    itemCount: counter,
-                    padding: EdgeInsets.symmetric(vertical: 5),
-                    itemBuilder:(BuildContext context, int index) {
-                     // String _name;
-                     // getUserInfo(index, user.phone, _name);
-                      return  GestureDetector(
-                        //onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=> UserToSupportChat())),
-                        child: Container(
-                          height: 70,
-                          padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: Color(0xffECECEC)),
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children:[
-                                Row(children: [
-                                  Container(height: 60, width: 60,
-                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),
-                                        color: Color.lerp(Color(0xff56C587), Color(0xff43C1B5), 0.5)), ),
-                                  SizedBox(width: 20),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text("Тех поддержка", style: RegularText(18, Colors.black),),
-                                      Text("lastMessage",style: RegularText(15, Color(0xff2E2E2E)),),
-                                    ],),
-                                ],),
-
-                                IconButton(icon: Icon(CupertinoIcons.trash_circle,size: 30, color: Color(0xffEB5757)), onPressed: null)
-                              ]
-                          ),
-                        ),
-                      );
-                    }
-                );
+                return Container();
               })),
       floatingActionButton: FloatingActionButton(
           backgroundColor:

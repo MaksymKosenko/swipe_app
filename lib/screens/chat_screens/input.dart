@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:swipe_app/global/style/text_styles.dart';
 
@@ -5,14 +7,27 @@ import 'package:swipe_app/global/style/text_styles.dart';
 class InputChat extends StatefulWidget {
 
   final TextEditingController _controller;
+  final ScrollController _scrollController;
   final String _hint;
-  InputChat(this._controller, this._hint);
+  InputChat(this._controller, this._scrollController, this._hint);
   @override
   _InputChatState createState() => _InputChatState();
 }
 
 class _InputChatState extends State<InputChat> {
+  FocusNode _focus = new FocusNode();
+  @override
+  void initState() {
+    super.initState();
+    _focus.addListener(_onFocusChange);
+  }
 
+  void _onFocusChange(){
+    debugPrint("Focus: "+_focus.hasFocus.toString());
+    if(_focus.hasFocus)
+    Timer(Duration(milliseconds: 2000), () => widget._scrollController
+        .jumpTo(widget._scrollController.position.maxScrollExtent));
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -22,9 +37,15 @@ class _InputChatState extends State<InputChat> {
       alignment: Alignment.centerLeft,
       padding: EdgeInsets.symmetric(horizontal: 12, vertical: 9.5),
       child: TextField(
-        //onEditingComplete:()=> setData(widget._dataForSet),
-        //onChanged: (value) => setData(widget._dataForSet),
-        //onSubmitted:(value) => setData(widget._dataForSet),
+        focusNode: _focus,
+      /*  onEditingComplete:()=> Timer(Duration(milliseconds: 100), () => widget._scrollController
+            .jumpTo(widget._scrollController.position.maxScrollExtent)),
+        onChanged: (value) => Timer(Duration(milliseconds: 100), () => widget._scrollController
+            .jumpTo(widget._scrollController.position.maxScrollExtent)),
+        onSubmitted:(value) => Timer(Duration(milliseconds: 100), () => widget._scrollController
+            .jumpTo(widget._scrollController.position.maxScrollExtent)),*/
+        onTap: ()=>  Timer(Duration(milliseconds: 100), () => widget._scrollController
+            .jumpTo(widget._scrollController.position.maxScrollExtent)),
         maxLines: 3,
         controller: widget._controller,
         obscureText: false,

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +22,7 @@ class DefaultChat extends StatefulWidget {
 class _DefaultChatState extends State<DefaultChat> {
   CollectionReference _chats = FirebaseFirestore.instance.collection('chats');
   TextEditingController _chatController = TextEditingController();
-
+  ScrollController _scrollController = ScrollController();
 
   Future<bool> checkChat() async {
     DocumentReference _concreteChat = FirebaseFirestore.instance.collection('chats')
@@ -120,7 +122,14 @@ class _DefaultChatState extends State<DefaultChat> {
           .doc("${widget._myPhone}")
           .collection('messages')
           .get()
-          .then((value)=> { if(value.size != counter) setState(() {counter = value.size; })} );
+          .then((value)=> { if(value.size != counter) setState(() {
+            counter = value.size;
+            print("chat length - $counter");
+
+          }),
+      } );
+      Timer(Duration(milliseconds: 1), () => _scrollController
+          .jumpTo(_scrollController.position.maxScrollExtent));
       _chatController.clear();
       print("messages length - $counter");
     }catch(e){
@@ -133,7 +142,6 @@ class _DefaultChatState extends State<DefaultChat> {
   @override
   Widget build(BuildContext context) {
     getLength();
-    //createChat();
     if(isChatExist == null)
       checkChat().then((value) => value == true? {print("exist"), setState(() {
         isChatExist = true;}) }
@@ -166,39 +174,46 @@ class _DefaultChatState extends State<DefaultChat> {
       body: Container(
         padding: EdgeInsets.only(top: 20),
         color: Colors.white,
-        child: getMessages(),
-      ),
-      bottomNavigationBar: Container(
-        padding: EdgeInsets.symmetric(vertical: 12),
-        color: Color(0xffF1F1F1),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Icon(CupertinoIcons.paperclip, color: Color(0xff8C8C8C),),
-            InputChat(_chatController, "Ок, супер!"),
-            GestureDetector(
-              onTap: () {
-                print("ischatexist - $isChatExist");
-                isChatExist ? sendMessage(_chatController.text) : startChat(
-                    _chatController.text);
-              },
-              child: Container(
-                  height: 50, width: 50,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(25),
-                      gradient: LinearGradient(
-                        //stops: [2],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Color(0xff56C587),
-                          Color(0xff43C1B5),
-                        ],
-                      )),
-                  child: Icon(CupertinoIcons.paperplane ,color: Colors.white,size: 28,)),
-            )
+            Expanded(child: getMessages()),
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 12),
+              color: Color(0xffF1F1F1),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Icon(CupertinoIcons.paperclip, color: Color(0xff8C8C8C),),
+                  InputChat(_chatController, _scrollController, "Ок, супер!"),
+                  GestureDetector(
+                    onTap: () {
+                      print("ischatexist - $isChatExist");
+                      isChatExist ? sendMessage(_chatController.text) : startChat(
+                          _chatController.text);
+                      Timer(Duration(milliseconds: 100), () => _scrollController
+                          .jumpTo(_scrollController.position.maxScrollExtent));
+                    },
+                    child: Container(
+                        height: 50, width: 50,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(25),
+                            gradient: LinearGradient(
+                              //stops: [2],
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                Color(0xff56C587),
+                                Color(0xff43C1B5),
+                              ],
+                            )),
+                        child: Icon(CupertinoIcons.paperplane ,color: Colors.white,size: 28,)),
+                  )
+                ],
+              ),
+            ),
           ],
-        ),
+        )
       ),
     );
   }
@@ -206,17 +221,25 @@ class _DefaultChatState extends State<DefaultChat> {
 
   Widget getMessages(){
     Stream _messages = FirebaseFirestore.instance.collection('chats')
-        .doc('${widget._myPhone}').collection('chats').doc('${widget._userPhone}').collection('messages').orderBy("time", descending: false).snapshots();
+        .doc('${widget._myPhone}').collection('chats').doc('${widget._userPhone}').collection('messages')
+        .orderBy("time", descending: false).snapshots();
     return StreamBuilder(
         stream: _messages,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           var data;
-          if (snapshot.connectionState == ConnectionState.waiting) {return Container();}
+          if (snapshot.connectionState == ConnectionState.waiting) {
+          Timer(Duration(milliseconds: 100), () => _scrollController
+              .jumpTo(_scrollController.position.maxScrollExtent));
+          return Text("loading...");}
           if (snapshot.connectionState == ConnectionState.active) {
             data = snapshot.data;
             print("datadocslength - ${data.docs.length}");
+            Timer(Duration(milliseconds: 100), () => _scrollController
+                .jumpTo(_scrollController.position.maxScrollExtent));
             // print("datata in index 10  - ${data.docs[10]['message10']}");
             return ListView.builder(
+              //reverse: true,
+              controller: _scrollController,
               itemCount: data.docs.length,
               shrinkWrap: true,
               itemBuilder: (context, index){
